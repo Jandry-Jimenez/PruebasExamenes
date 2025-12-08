@@ -1,3 +1,3 @@
 # Telecontrol
 Examenes
-- [Ir al Examen de Telecontrol](init.html)
+- [Ir al Examen de Telecontrol](examenTeleco.html)
