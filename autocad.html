@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repaso Examen AutoCAD: Subestación</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { color: #007acc; text-align: center; }
+        h2 { color: #333; border-bottom: 2px solid #007acc; padding-bottom: 10px; }
+        
+        /* Tabs */
+        .tabs { display: flex; cursor: pointer; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab {
+            padding: 10px 20px;
+            background: #e0e0e0;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .tab:hover { background: #d0d0d0; }
+        .tab.active { background: #007acc; color: white; }
+        .content { display: none; animation: fadeIn 0.5s; }
+        .content.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Image Styling */
+        .img-container {
+            text-align: center;
+            background-color: #fafafa;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+        }
+        .exam-image {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        /* Symbol Grid */
+        .symbol-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            transition: transform 0.2s;
+            background: #fff;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: #007acc; }
+        .symbol-draw {
+            height: 60px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Simple CSS drawing representations */
+        .box { width: 30px; height: 30px; border: 2px solid green; }
+        .switch { width: 40px; height: 2px; background: cyan; position: relative; }
+        .switch::after { content:''; position: absolute; width: 25px; height: 2px; background: cyan; transform: rotate(-30deg); top: -6px; left: 10px; }
+        
+        /* Quiz Styles */
+        .question { margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-radius: 5px; border-left: 4px solid #007acc; }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            background: white;
+            cursor: pointer;
+            text-align: left;
+            border-radius: 4px;
+        }
+        .options button:hover { background: #f0f0f0; }
+        .correct { background: #d4edda !important; border-color: #c3e6cb !important; color: #155724; font-weight: bold; }
+        .wrong { background: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24; }
+
+        /* Checklist */
+        .checklist-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+        }
+        .checklist-item:hover { background-color: #fcfcfc; }
+        .checklist-item input { margin-right: 15px; transform: scale(1.5); cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Repaso: Esquema Unifilar AutoCAD</h1>
+    
+    <div class="tabs">
+        <div class="tab active" onclick="openTab('imagen')">0. Imagen del Examen</div>
+        <div class="tab" onclick="openTab('simbolos')">1. Simbología (Bloques)</div>
+        <div class="tab" onclick="openTab('procedimiento')">2. Checklist Paso a Paso</div>
+        <div class="tab" onclick="openTab('test')">3. Test de Comandos</div>
+    </div>
+
+    <!-- TAB 0: IMAGEN -->
+    <div id="imagen" class="content active">
+        <h2>Referencia Visual</h2>
+        <div class="note">
+            <strong>⚠️ IMPORTANTE:</strong> Para ver la imagen, guarda la foto del examen como <code>esquema.png</code> en la misma carpeta que este archivo HTML. Si la imagen no carga, verifica el nombre del archivo.
+        </div>
+        <div class="img-container">
+            <!-- AQUÍ SE CARGA LA IMAGEN -->
+            <img src="esquema.png" alt="Esquema Unifilar de Subestación Eléctrica" class="exam-image" onerror="this.src='https://via.placeholder.com/800x400?text=Error:+Guarda+la+foto+como+esquema.png+en+esta+carpeta';">
+        </div>
+    </div>
+
+    <!-- TAB 1: SIMBOLOGÍA -->
+    <div id="simbolos" class="content">
+        <h2>Identificación de Componentes para Bloques</h2>
+        <p>Estos son los elementos que debes convertir en <strong>BLOQUES</strong> (Comando: `BLOCK` o `B`).</p>
+        <div class="symbol-grid">
+            <div class="card">
+                <div class="symbol-draw"><div class="switch"></div></div>
+                <strong>Seccionador</strong><br>
+                <small>Color: Verde (Capa Simbolos)</small>
+            </div>
+            <div class="card">
+                <div class="symbol-draw"><div class="box"></div></div>
+                <strong>Interruptor</strong><br>
+                <small>El cuadrado central</small>
+            </div>
+            <div class="card">
+                <div class="symbol-draw" style="flex-direction:column;">
+                    <div class="switch" style="transform: rotate(90deg); width:20px;"></div>
+                    <div style="width:20px; height:2px; background:green; margin-top:10px;"></div>
+                    <div style="width:14px; height:2px; background:green; margin-top:2px;"></div>
+                    <div style="width:8px; height:2px; background:green; margin-top:2px;"></div>
+                </div>
+                <strong>Seccionador de P.A.T.</strong><br>
+                <small>Conexión a tierra de seguridad</small>
+            </div>
+            <div class="card">
+                <div class="symbol-draw">
+                    <span style="font-size:30px; color:green; font-weight:bold;">)-(</span>
+                </div>
+                <strong>Trafo Capacitivo</strong><br>
+                <small>Símbolo del condensador</small>
+            </div>
+            <div class="card">
+                <div class="symbol-draw">
+                    <span style="font-size:30px; color:red; font-weight:bold;">&#8767;</span>
+                </div>
+                <strong>Trafo con Regulación</strong><br>
+                <small>Transformador superior (Rojo)</small>
+            </div>
+            <div class="card">
+                <div class="symbol-draw">
+                    <span style="font-size:30px; color:green; font-weight:bold;">&#8600;</span>
+                </div>
+                <strong>Autotransformador</strong><br>
+                <small>El elemento inferior (400/220 kV)</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: PROCEDIMIENTO -->
+    <div id="procedimiento" class="content">
+        <h2>Checklist del Examen (90 minutos)</h2>
+        <p>Marca las casillas conforme completes los pasos mentalmente o en AutoCAD.</p>
+        
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>1. INICIO:</strong> Abrir AutoCAD, plantilla métrica (acadiso.dwt) y guardar como "Examen_Apellido.dwg".
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>2. CAPAS:</strong> Crear `0_EJE` (Cyan), `0_SIMBOLOS` (Verde), `0_TEXTO` (Magenta), `0_LEYENDA` (Rojo).
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>3. BLOQUES:</strong> Dibujar la geometría de un seccionador y crear bloque "SECCIONADOR". Repetir con Interruptor y Trafos.
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>4. ESTRUCTURA:</strong> Dibujar el rectángulo principal del anillo (400 kV) con Polilinea.
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>5. MONTAJE:</strong> Insertar los bloques sobre la línea. Usar `OSNAP` (Cercano/Near o Punto Medio) para que toquen el cable.
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>6. SIMETRÍA:</strong> Dibujar una rama superior completa, seleccionarla y usar `MIRROR` (Simetría) para copiarla al otro lado.
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>7. DETALLES:</strong> Dibujar la bajada al autotransformador de 220 kV.
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>8. ACABADO:</strong> Crear el cuadro de Leyenda, insertar bloques de muestra y añadir Textos.
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox"> <strong>9. ENTREGA:</strong> Guardar y exportar a PDF (Ctrl+P -> DWG to PDF -> A3).
+        </div>
+    </div>
+
+    <!-- TAB 3: TEST -->
+    <div id="test" class="content">
+        <h2>Simulacro Teórico de Comandos</h2>
+        <div id="quiz-container"></div>
+        <button onclick="checkAnswers()" style="margin-top:20px; padding:15px 30px; background:#007acc; color:white; border:none; border-radius:5px; cursor:pointer; font-size:16px;">Corregir Test</button>
+        <p id="result" style="font-weight:bold; margin-top:20px; font-size:1.2em;"></p>
+    </div>
+
+</div>
+
+<script>
+    function openTab(tabName) {
+        var i;
+        var x = document.getElementsByClassName("content");
+        for (i = 0; i < x.length; i++) {
+            x[i].classList.remove("active");
+            x[i].style.display = "none";
+        }
+        var tabs = document.getElementsByClassName("tab");
+        for (i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove("active");
+        }
+        
+        document.getElementById(tabName).style.display = "block";
+        // Pequeño timeout para permitir la animación CSS
+        setTimeout(() => {
+            document.getElementById(tabName).classList.add("active");
+        }, 10);
+        
+        event.currentTarget.classList.add("active");
+    }
+
+    // Inicializar primera tab
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('imagen').style.display = "block";
+    });
+
+    // Quiz Data
+    const questions = [
+        {
+            q: "1. ¿Qué comando es el más eficiente para dibujar el Seccionador si se repite muchas veces?",
+            options: ["COPIAR (COPY)", "MATRIZ (ARRAY)", "BLOQUE (BLOCK) e INSERTAR", "GRUPO (GROUP)"],
+            answer: 2
+        },
+        {
+            q: "2. Si necesitas que el esquema sea simétrico en la parte superior para ahorrar tiempo, ¿qué comando usas?",
+            options: ["GIRA (ROTATE)", "SIMETRIA (MIRROR)", "ESCALA (SCALE)", "DESPLAZA (MOVE)"],
+            answer: 1
+        },
+        {
+            q: "3. Para asegurarte de que el cable conecta EXACTAMENTE con el final del interruptor, activas:",
+            options: ["Zoom manual", "La rejilla (Grid)", "Referencia a Objetos (OSNAP - EndPoint/PuntoFinal)", "Coordenadas relativas"],
+            answer: 2
+        },
+        {
+            q: "4. En la imagen, los cables son Cyan y los símbolos Verdes/Rojos. ¿Cómo gestionas esto correctamente?",
+            options: ["Cambiando el color de cada línea manualmente", "Usando CAPAS (LAYERS) distintas", "Usando grosores de línea", "No se puede hacer"],
+            answer: 1
+        },
+        {
+            q: "5. Para dibujar el cableado principal del anillo cerrado, es mejor usar:",
+            options: ["LINEA", "POLILINEA (para que sea un solo objeto)", "CIRCULO", "ARCO"],
+            answer: 1
+        },
+        {
+            q: "6. ¿Cómo defines el punto de inserción (Base Point) de un bloque para este esquema?",
+            options: ["En una esquina aleatoria", "En el centro geométrico o punto de conexión del cable", "Fuera del dibujo", "No importa"],
+            answer: 1
+        }
+    ];
+
+    function loadQuiz() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        questions.forEach((q, index) => {
+            html += `<div class="question" id="q${index}">
+                <p><strong>${q.q}</strong></p>
+                <div class="options">
+                    ${q.options.map((opt, i) => `<button onclick="selectOption(${index}, ${i})">${opt}</button>`).join('')}
+                </div>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    const userAnswers = {};
+
+    function selectOption(qIndex, optIndex) {
+        userAnswers[qIndex] = optIndex;
+        const buttons = document.querySelectorAll(`#q${qIndex} button`);
+        buttons.forEach((btn, i) => {
+            btn.style.backgroundColor = i === optIndex ? '#e2e6ea' : 'white';
+            btn.style.border = i === optIndex ? '2px solid #007acc' : '1px solid #ccc';
+            btn.classList.remove('correct', 'wrong'); // Reset si cambia opción
+        });
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        questions.forEach((q, index) => {
+            const buttons = document.querySelectorAll(`#q${index} button`);
+            
+            // Limpiar estilos previos
+            buttons.forEach(btn => btn.classList.remove('correct', 'wrong'));
+
+            if (userAnswers[index] === q.answer) {
+                score++;
+                buttons[userAnswers[index]].classList.add('correct');
+            } else {
+                if(userAnswers[index] !== undefined) buttons[userAnswers[index]].classList.add('wrong');
+                buttons[q.answer].classList.add('correct'); // Mostrar la correcta
+            }
+        });
+        
+        const resultText = document.getElementById('result');
+        resultText.innerText = `Tu puntuación: ${score} / ${questions.length}`;
+        
+        if(score === questions.length) {
+            resultText.style.color = "green";
+            resultText.innerText += " ¡Excelente! Estás listo para el examen.";
+        } else {
+            resultText.style.color = "#d9534f";
+            resultText.innerText += " Repasa los comandos fallados.";
+        }
+    }
+
+    loadQuiz();
+</script>
+
+</body>
+</html>
