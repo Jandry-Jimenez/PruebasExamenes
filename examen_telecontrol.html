@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen: Telecontrol y Automatismos</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --bg: #f4f6f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- Header --- */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+        h1 { margin: 0; color: #333; font-size: 1.8rem; }
+        h3 { margin: 5px 0 0; color: #777; font-weight: normal; }
+
+        /* --- Menú Principal --- */
+        #menu-screen { text-align: center; }
+        .menu-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .menu-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 20px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+        .menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+            background-color: #0056b3;
+        }
+        .menu-btn.calc { background-color: #6610f2; }
+        .menu-btn.calc:hover { background-color: #520dc2; }
+
+        /* --- Pantalla Quiz --- */
+        #quiz-screen { display: none; }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Caja de Info Extra (Imágenes o Datos Matemáticos) */
+        .info-box {
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #0c5460;
+            font-family: monospace, sans-serif;
+            font-size: 1rem;
+        }
+        .img-icon { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+
+        .options-list {
+            display: grid;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: white;
+            border: 2px solid #dee2e6;
+            padding: 15px;
+            text-align: left;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .option-btn:hover {
+            background-color: #f8f9fa;
+            border-color: var(--primary);
+        }
+        
+        /* Estados de respuesta */
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+        }
+        .option-btn.wrong {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+        .option-btn.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+
+        .nav-controls {
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .next-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: none; /* Oculto hasta responder */
+        }
+        .next-btn:hover { background-color: #0056b3; }
+
+        /* --- Pantalla Resultados --- */
+        #result-screen { display: none; text-align: center; }
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+        .final-msg { font-size: 1.2rem; color: #555; margin-bottom: 30px; }
+        .home-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .home-btn:hover { background-color: #5a6268; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Telecontrol y Automatismos</h1>
+        <h3 id="sub-title">Selecciona un tema</h3>
+    </div>
+
+    <!-- PANTALLA MENÚ -->
+    <div id="menu-screen">
+        <div class="menu-grid">
+            <button class="menu-btn" onclick="startQuiz('theory1')">
+                📚 BLOQUE 1<br><span style="font-size:0.9em; font-weight:normal">Teoría: Actuadores Eléctricos</span>
+            </button>
+            <button class="menu-btn" onclick="startQuiz('theory2')">
+                ⚙️ BLOQUE 2<br><span style="font-size:0.9em; font-weight:normal">Teoría: Neumática e Hidráulica</span>
+            </button>
+            <button class="menu-btn calc" onclick="startQuiz('calc')">
+                🧮 BLOQUES 3 y 4<br><span style="font-size:0.9em; font-weight:normal">Cálculos: Motores y Cilindros</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- PANTALLA QUIZ -->
+    <div id="quiz-screen">
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        <div style="text-align: right; color:#888; margin-bottom:10px; font-size:0.9em;">Pregunta <span id="q-idx">1</span> de <span id="q-total">10</span></div>
+        
+        <div id="question-container">
+            <!-- La pregunta se inyecta aquí -->
+        </div>
+
+        <div id="options-container" class="options-list">
+            <!-- Botones se inyectan aquí -->
+        </div>
+
+        <div id="explanation" class="explanation-box"></div>
+
+        <div class="nav-controls">
+            <button id="next-btn" class="next-btn" onclick="nextQuestion()">Siguiente &rarr;</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA RESULTADOS -->
+    <div id="result-screen">
+        <h2>Examen Finalizado</h2>
+        <div class="score-circle" id="final-score">0</div>
+        <p class="final-msg" id="final-msg">Mensaje feedback</p>
+        <button class="home-btn" onclick="showMenu()">Volver al Menú Principal</button>
+    </div>
+</div>
+
+<script>
+    // --- BASE DE DATOS ---
+
+    const databases = {
+        theory1: [
+            { q: "En un sistema de control en lazo cerrado:", options: ["La salida no tiene efecto sobre la entrada.", "Se utilizan actuadores manuales exclusivamente.", "La salida se compara con la entrada para corregir el error.", "No se requieren sensores."], ans: 2 },
+            { q: "¿Qué dispositivo convierte una magnitud eléctrica en una acción mecánica?", options: ["El Sensor", "El Actuador", "El Controlador PID", "El Scada"], ans: 1 },
+            { q: "Según la Ley de Lenz:", options: ["Polos opuestos se repelen.", "La corriente inducida se opone a la causa que la produjo.", "La fuerza electromotriz es proporcional a la resistencia.", "El campo magnético es constante."], ans: 1 },
+            { q: "¿Cuál es la fórmula de la velocidad de sincronismo (ns)?", options: ["ns = P · ω", "ns = (60 · f) / p", "ns = V / R", "ns = M · a"], ans: 1 },
+            { q: "En el bornero del motor trifásico, si los puentes unen W2, U2 y V2, es conexión:", options: ["Triángulo", "Estrella", "Serie", "Brushless"], ans: 1, info: "🖼️ IMAGEN: Bornero con chapas uniendo horizontalmente las 3 bornas de abajo." },
+            { q: "¿Qué elemento es indispensable en un motor DC para invertir la corriente?", options: ["Variador de frecuencia", "Colector de delgas y escobillas", "Condensador de arranque", "Jaula de ardilla"], ans: 1 },
+            { q: "En el motor DC, ¿qué regla determina la fuerza de giro?", options: ["Regla de la mano izquierda (FBI)", "Regla del tornillo", "Ley de Ohm", "Regla de la mano derecha"], ans: 0, info: "🖼️ IMAGEN: Mano izquierda con dedos Pulgar (F), Índice (B), Corazón (I)." },
+            { q: "Los motores Brushless (sin escobillas):", options: ["Son más baratos que los DC.", "Necesitan un controlador electrónico para conmutar.", "Tienen peor par que los de jaula.", "Usan escobillas de grafito."], ans: 1 },
+            { q: "¿Cómo se controla la posición en un motor paso a paso?", options: ["Con un reóstato.", "Variando la frecuencia senoidal.", "Mediante pulsos de tensión (un pulso = un paso).", "No se puede controlar la posición."], ans: 2 },
+            { q: "Según la tabla de pasos del PDF, ¿cuántos grados gira por paso en el ejemplo de 4 bobinas?", options: ["90º", "180º", "45º", "10º"], ans: 2, info: "🖼️ IMAGEN: Tabla de verdad activando bobinas secuencialmente." },
+            { q: "¿Qué diferencia un Servomotor de un motor DC simple?", options: ["No tiene partes móviles.", "Tiene sensor de posición y control en bucle cerrado.", "Solo funciona con aire.", "Gira continuamente sin detenerse."], ans: 1 },
+            { q: "En los actuadores eléctricos lineales:", options: ["El campo magnético es lineal.", "Se convierte rotación en lineal mediante husillo y tuerca.", "Usan aceite hidráulico.", "Son muy rápidos pero con poca fuerza."], ans: 1 },
+            { q: "Una ventaja de los motores con rotor en jaula de ardilla es:", options: ["Gran robustez y bajo coste.", "Facilidad de regulación sin electrónica.", "No necesitan red eléctrica.", "Giran a velocidad de sincronismo."], ans: 0 },
+            { q: "¿Qué hace girar el rotor de un motor asíncrono?", options: ["Imanes permanentes.", "Inducción electromagnética por campo giratorio.", "Presión de aire.", "Corriente continua en el rotor."], ans: 1 },
+            { q: "¿Qué hace el variador de frecuencia?", options: ["Convierte AC en DC.", "Controla velocidad y par variando frecuencia y tensión.", "Solo sirve para arrancar.", "Refrigera el motor."], ans: 1 }
+        ],
+        theory2: [
+            { q: "En neumática, ¿qué elemento almacena el aire y amortigua pulsaciones?", options: ["Presostato", "Válvula distribuidora", "Calderín o Depósito", "Secador"], ans: 2 },
+            { q: "¿Qué función tiene la unidad de mantenimiento (FRL)?", options: ["Comprimir el aire.", "Filtrar, regular presión y lubricar.", "Distribuir el aire.", "Convertir aire en aceite."], ans: 1 },
+            { q: "¿Cómo sabemos que un cilindro es de simple efecto?", options: ["Tiene dos entradas.", "Es cuadrado.", "Tiene muelle de reposición y una sola entrada.", "No tiene vástago."], ans: 2, info: "🖼️ IMAGEN: Corte transversal de un cilindro con un muelle en la cámara trasera." },
+            { q: "Fórmula de la fuerza de avance en un cilindro:", options: ["F = P / S", "F = P · S - Frozamiento - Fmuelle", "F = m · a", "F = Caudal · Tiempo"], ans: 1 },
+            { q: "En un cilindro de doble efecto, la fuerza de retroceso es menor porque:", options: ["El aire escapa.", "Se resta la superficie del vástago a la del émbolo.", "No hay presión en retroceso.", "Es falso, es igual."], ans: 1 },
+            { q: "¿Qué significa válvula '5/2'?", options: ["5 posiciones, 2 vías.", "5 bares, 2 amperios.", "5 vías, 2 posiciones.", "5 cm x 2 cm."], ans: 2 },
+            { q: "El símbolo de un triángulo con flecha diagonal en el accionamiento indica:", options: ["Pulsador", "Pilotaje neumático", "Rodillo abatible", "Bobina eléctrica (solenoide)"], ans: 1, info: "🖼️ IMAGEN: Símbolo de accionamiento con triángulo negro." },
+            { q: "Para regular la velocidad de un cilindro de doble efecto se debe:", options: ["Regular el caudal a la entrada.", "Regular el caudal al escape (salida).", "Bajar la presión general.", "Usar válvula de simultaneidad."], ans: 1 },
+            { q: "¿Para qué sirve la válvula de escape rápido?", options: ["Detener el cilindro.", "Salida directa a atmósfera para aumentar velocidad.", "Mantener presión.", "Mezclar aire y aceite."], ans: 1, info: "🖼️ IMAGEN: Válvula con membrana móvil interna." },
+            { q: "Una válvula selectora de circuito (OR) permite:", options: ["Activar desde dos puntos diferentes.", "Activar solo si se pulsan dos botones a la vez.", "Regular presión.", "Evitar retorno."], ans: 0 },
+            { q: "Ventaja principal de los actuadores hidráulicos:", options: ["Más limpios.", "Fluido compresible.", "Grandes cargas y precisión (fluido incompresible).", "Sin retorno al tanque."], ans: 2 },
+            { q: "¿Qué cilindro hidráulico parece una antena telescópica?", options: ["Doble vástago", "Rotativo", "Telescópico", "Amortiguador"], ans: 2 },
+            { q: "En hidráulica, el aceite tras pasar por el actuador:", options: ["Se expulsa fuera.", "Se consume.", "Retorna al tanque.", "Se solidifica."], ans: 2 },
+            { q: "¿Qué es una válvula antirretorno?", options: ["Deja pasar en ambos sentidos.", "Bloquea un sentido y permite el otro.", "Regula presión.", "Es una válvula 3/2."], ans: 1 },
+            { q: "Los motores neumáticos de aletas funcionan por:", options: ["Giro limitado.", "Fuerza centrífuga que empuja las aletas.", "Pistones axiales.", "Electricidad estática."], ans: 1 }
+        ],
+        calc: [
+            { q: "Calcula el par de un motorreductor de 1.5KW con rendimiento 0.88 que gira a 20rpm.", options: ["630.3 N·m", "716.2 N·m", "1500 N·m", "1320 N·m"], ans: 0, info: "DATOS: P = 1.5kW | η = 0.88 | ω = 20 rpm", expl: "P_util = 1500 * 0.88 = 1320W.<br>ω(rad/s) = 20 * 2π/60 = 2.094.<br>M = P/ω = 1320 / 2.094 = 630.3 Nm" },
+            { q: "Si el mismo motor anterior (1.5KW, η=0.88) girase a solo 5rpm, ¿cuál sería su par?", options: ["Igual que a 20rpm", "Menor, unos 150 N·m", "Mayor, aprox 2524 N·m", "314 N·m"], ans: 2, info: "DATOS: P = 1.5kW | η = 0.88 | ω = 5 rpm", expl: "Al reducir la velocidad manteniendo la potencia, el par aumenta.<br>ω = 0.523 rad/s.<br>M = 1320 / 0.523 = 2523.9 Nm." },
+            { q: "Un motor debe vencer 400N·m a 20rpm. ¿Qué potencia eléctrica absorbe de la red si su rendimiento es del 75%?", options: ["837 W", "1117 W (1.12 kW)", "628 W", "1500 W"], ans: 1, info: "DATOS: Par = 400 Nm | ω = 20 rpm | η = 0.75", expl: "P_mec = 400 * (20*2π/60) = 837.7W.<br>P_elec = P_mec / 0.75 = 1116.9W." },
+            { q: "Cilindro Doble Efecto: Presión 10 bar, Diámetro 100mm, Vástago 30mm. Calcula fuerza de avance y retroceso.", options: ["Avance: 7854 N | Retroceso: 7854 N", "Avance: 7147 N | Retroceso: 7854 N", "Avance: 7854 N | Retroceso: 7147 N", "Avance: 3141 N | Retroceso: 2800 N"], ans: 2, info: "DATOS: P = 10 bar (1 N/mm²) | Ø = 100mm | d_vast = 30mm", expl: "S_av = π*50² = 7854mm².<br>S_ret = 7854 - π*15² = 7147mm².<br>F = P*S." },
+            { q: "Calcula la sección necesaria de un cilindro para vencer 30kg a 10 bar (Avance).", options: ["294 mm²", "3000 mm²", "30 mm²", "2940 mm²"], ans: 0, info: "DATOS: Masa = 30kg | P = 10 bar", expl: "Fuerza = 30 * 9.8 = 294 N.<br>Presión 10 bar = 1 N/mm².<br>S = F/P = 294/1 = 294 mm²." },
+            { q: "Si queremos levantar el peso en RETROCESO (vástago 10mm), ¿qué ocurre?", options: ["Necesitamos menos presión.", "El cilindro debe tener un diámetro mayor.", "El cilindro puede ser más pequeño.", "No cambia nada."], ans: 1, info: "DATOS: F = 294N | P = 1 N/mm² | d_vast = 10mm", expl: "Al haber un vástago, el área útil disminuye. Se necesita un émbolo más grande para compensar el área perdida." },
+            { q: "Consumo de aire: Compresor de 120 l/min funcionando 5 horas y 45 minutos.", options: ["690 litros", "34,500 litros", "41,400 litros", "72,000 litros"], ans: 2, info: "DATOS: Q = 120 l/min | t = 5h 45m", expl: "Tiempo total = (5*60)+45 = 345 min.<br>Vol = 120 * 345 = 41,400 L." },
+            { q: "Cilindro moviendo 1300kg (coef 0.3) a 6 bar en avance. Calcula diámetro.", options: ["Aprox 50 mm", "Aprox 90 mm", "Aprox 125 mm", "Aprox 200 mm"], ans: 1, info: "DATOS: m = 1300kg | μ = 0.3 | P = 6 bar", expl: "F = 0.3 * 1300 * 9.8 = 3822 N.<br>P = 0.6 N/mm².<br>S = 6370 mm² -> D = 90.06mm." },
+            { q: "Cilindro en RETROCESO: 2800kg (coef 0.25) a 7 bar. Vástago 20mm. Calcula diámetro.", options: ["Aprox 100 mm", "Aprox 113.5 mm", "Aprox 80 mm", "Aprox 140 mm"], ans: 1, info: "DATOS: m = 2800kg | μ = 0.25 | P = 7 bar | d_v = 20mm", expl: "F = 6860 N. S_anular = 9800 mm².<br>S_total = 9800 + π*10² = 10114 mm².<br>D = 113.5mm." },
+            { q: "Cilindro hidráulico Ø40mm, Carrera 600mm, Q=20 l/min. Calcula tiempo de salida.", options: ["10 segundos", "5.4 segundos", "2.26 segundos", "1.1 segundos"], ans: 2, info: "DATOS: Ø = 40mm | C = 0.6m | Q = 20 l/min", expl: "Vol = 12.57 cm² * 60 cm = 0.754 L.<br>t = 0.754L / (20 L/60s) = 2.26 s." }
+        ]
+    };
+
+    // --- VARIABLES DE ESTADO ---
+    let currentQuestions = [];
+    let currentIdx = 0;
+    let score = 0;
+    let canAnswer = true;
+
+    // --- FUNCIONES ---
+
+    function showMenu() {
+        document.getElementById('menu-screen').style.display = 'block';
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'none';
+        document.getElementById('sub-title').innerText = "Selecciona un tema";
+    }
+
+    function startQuiz(type) {
+        currentQuestions = [...databases[type]];
+        // Reset
+        currentIdx = 0;
+        score = 0;
+        
+        let title = "Examen";
+        if(type === 'theory1') title = "Bloque 1: Actuadores Eléctricos";
+        if(type === 'theory2') title = "Bloque 2: Neumática e Hidráulica";
+        if(type === 'calc') title = "Bloques 3 y 4: Cálculo y Dimensionamiento";
+
+        document.getElementById('sub-title').innerText = title;
+        document.getElementById('menu-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        canAnswer = true;
+        const qData = currentQuestions[currentIdx];
+        
+        // UI Textos
+        document.getElementById('q-idx').innerText = currentIdx + 1;
+        document.getElementById('q-total').innerText = currentQuestions.length;
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('explanation').style.display = 'none';
+        document.getElementById('explanation').innerHTML = "";
+        
+        // Barra Progreso
+        const pct = (currentIdx / currentQuestions.length) * 100;
+        document.getElementById('progress').style.width = pct + "%";
+
+        // Render Pregunta
+        let htmlQ = `<div class="question-text">${qData.q}</div>`;
+        
+        // Render Info Box (Imagen o Datos Matemáticos)
+        if (qData.info) {
+            htmlQ += `<div class="info-box">${qData.info}</div>`;
+        }
+        document.getElementById('question-container').innerHTML = htmlQ;
+
+        // Render Opciones
+        const optsDiv = document.getElementById('options-container');
+        optsDiv.innerHTML = "";
+        
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = `<b>${['a','b','c','d'][index]})</b> ${opt}`;
+            btn.onclick = () => checkAnswer(index, btn);
+            optsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedIndex, btnElement) {
+        if (!canAnswer) return;
+        canAnswer = false;
+
+        const qData = currentQuestions[currentIdx];
+        const correctIndex = qData.ans;
+        const allBtns = document.querySelectorAll('.option-btn');
+
+        if (selectedIndex === correctIndex) {
+            btnElement.classList.add('correct');
+            score++;
+        } else {
+            btnElement.classList.add('wrong');
+            allBtns[correctIndex].classList.add('correct'); // Marcar la correcta
+        }
+
+        // Desactivar click en botones
+        allBtns.forEach(b => b.classList.add('disabled'));
+
+        // Mostrar explicación si existe (Cálculos) o simple feedback (Teoría)
+        const explBox = document.getElementById('explanation');
+        explBox.style.display = 'block';
+        
+        if (qData.expl) {
+            explBox.innerHTML = "<b>EXPLICACIÓN:</b> " + qData.expl;
+        } else {
+            if(selectedIndex === correctIndex) explBox.innerHTML = "<span style='color:green'><b>¡Correcto!</b></span>";
+            else explBox.innerHTML = "<span style='color:red'><b>Incorrecto.</b></span> La respuesta correcta era la opción marcada en verde.";
+        }
+
+        document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if (currentIdx < currentQuestions.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('sub-title').innerText = "Resultados";
+        
+        const total = currentQuestions.length;
+        document.getElementById('final-score').innerText = `${score}/${total}`;
+        
+        let msg = "";
+        const percentage = (score / total) * 100;
+
+        if (percentage === 100) msg = "¡Impresionante! Lo dominas a la perfección.";
+        else if (percentage >= 70) msg = "¡Muy buen trabajo! Tienes los conceptos claros.";
+        else if (percentage >= 50) msg = "Aprobado, pero conviene repasar algunos fallos.";
+        else msg = "Necesitas estudiar más este bloque.";
+
+        document.getElementById('final-msg').innerText = msg;
+    }
+
+</script>
+
+</body>
+</html>
