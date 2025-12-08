@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Sistemas Energías Renovables</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c7a7b;
+            text-align: center;
+        }
+        .intro {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .question-card {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #2c7a7b;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
+            margin: 5px 0;
+            background-color: #e2e8f0;
+            border: 1px solid #cbd5e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .option-btn:hover {
+            background-color: #cbd5e0;
+        }
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+            color: #22543d;
+        }
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+            color: #742a2a;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-style: italic;
+            font-size: 0.9em;
+            display: none;
+        }
+        #result-area {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            display: none;
+        }
+        .score-final {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c7a7b;
+        }
+        button#check-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #2c7a7b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button#check-btn:hover {
+            background-color: #234e52;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Test: Sistemas de Energías Renovables</h1>
+    
+    <div class="intro">
+        <p><strong>Instrucciones:</strong> Selecciona la respuesta correcta para cada una de las 20 preguntas. Al finalizar, pulsa el botón "Corregir Examen" para ver tu nota y las soluciones.</p>
+    </div>
+
+    <div id="quiz-container">
+        <!-- Las preguntas se generarán aquí con JS -->
+    </div>
+
+    <button id="check-btn" onclick="checkAnswers()">Corregir Examen</button>
+
+    <div id="result-area">
+        <h2>Resultado Final</h2>
+        <p class="score-final" id="score-display"></p>
+        <p id="message-display"></p>
+        <button onclick="location.reload()" style="padding:10px 20px; cursor:pointer;">Repetir Test</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "1. ¿Cuál es el valor aproximado de la Constante Solar (energía recibida fuera de la atmósfera)?",
+                options: ["1000 W/m²", "1353 W/m²", "500 W/m²", "2000 W/m²"],
+                answer: 1
+            },
+            {
+                q: "2. ¿Qué tres fenómenos provocan que la radiación real en la superficie sea menor que la constante solar?",
+                options: ["Reflexión, refracción y convección", "Dispersión, absorción y atenuación por masa de aire", "Lluvia, viento y nieve", "Evaporación, condensación y sublimación"],
+                answer: 1
+            },
+            {
+                q: "3. ¿Cuál es la diferencia clave entre Energía Solar Térmica y Termoeléctrica?",
+                options: ["La Térmica genera electricidad directamente", "La Termoeléctrica usa paneles fotovoltaicos", "La Térmica calienta un fluido y la Termoeléctrica usa ese calor para generar electricidad (ciclo termodinámico)", "Son sinónimos"],
+                answer: 2
+            },
+            {
+                q: "4. La Arquitectura Bioclimática (muros gruesos, orientación sur) es un ejemplo de:",
+                options: ["Solar Activa", "Solar Fotovoltaica", "Solar Pasiva", "Solar Termodinámica"],
+                answer: 2
+            },
+            {
+                q: "5. ¿Qué característica define a la Energía Solar Activa?",
+                options: ["No utiliza ningún elemento externo", "Utiliza dispositivos mecánicos (bombas, ventiladores)", "Solo se puede usar en verano", "Se basa en el color de la fachada"],
+                answer: 1
+            },
+            {
+                q: "6. ¿Cuál es el rango de temperatura típico de los sistemas de Baja Temperatura (ACS)?",
+                options: ["150-400ºC", "35-150ºC", "400-2000ºC", "0-35ºC"],
+                answer: 1
+            },
+            {
+                q: "7. En una instalación de ACS, ¿cuál es la función de la 'Cubierta' del colector?",
+                options: ["Absorber la radiación", "Crear el 'efecto invernadero' para retener el calor", "Circular el agua", "Enfriar el sistema"],
+                answer: 1
+            },
+            {
+                q: "8. ¿De qué material suele estar hecha la Placa Absorbedora y cuál es su color?",
+                options: ["Vidrio transparente", "Plástico blanco", "Metal (cobre/aluminio) pintado de negro", "Madera aislante"],
+                answer: 2
+            },
+            {
+                q: "9. ¿Qué elemento es el 'cerebro' de la instalación que decide cuándo encender la bomba?",
+                options: ["Acumulación", "Sistema de Control", "Sistema auxiliar", "Tuberías"],
+                answer: 1
+            },
+            {
+                q: "10. ¿Para qué sirve el aislamiento en un colector plano?",
+                options: ["Para evitar congelación", "Para reducir pérdidas de calor hacia el exterior", "Para filtrar UV", "Para dar rigidez"],
+                answer: 1
+            },
+            {
+                q: "11. Los sistemas de Media Temperatura suelen operar en un rango de:",
+                options: ["35-100ºC", "150-400ºC", "500-1000ºC", "Más de 2000ºC"],
+                answer: 1
+            },
+            {
+                q: "12. ¿Qué ciclo termodinámico utilizan principalmente las tecnologías de Media Temperatura?",
+                options: ["Ciclo Stirling", "Ciclo Brayton", "Ciclo Rankine (vapor)", "Ciclo Diesel"],
+                answer: 2
+            },
+            {
+                q: "13. ¿Qué tecnología usa espejos curvos para concentrar la luz en un tubo central?",
+                options: ["Lentes Fresnel", "Disco Stirling", "Torre Central", "Colectores Cilindro-Parabólicos (CCP)"],
+                answer: 3
+            },
+            {
+                q: "14. ¿Cuál es la principal ventaja de las Lentes Lineales Fresnel frente a los CCP?",
+                options: ["Usan espejos planos (más baratos)", "Alcanzan 2000ºC", "No necesitan fluido", "Son más eficientes que la torre"],
+                answer: 0
+            },
+            {
+                q: "15. Las tecnologías de Alta Temperatura pueden alcanzar:",
+                options: ["Hasta 150ºC", "Hasta 400ºC", "400-2000ºC", "Exactamente 100ºC"],
+                answer: 2
+            },
+            {
+                q: "16. ¿Qué sistema parece una antena parabólica gigante con un motor en el foco?",
+                options: ["Cilindro-Parabólico", "Torre Central", "Disco Stirling", "Panel plano"],
+                answer: 2
+            },
+            {
+                q: "17. ¿Qué ciclo termodinámico es característico de los sistemas Disco Stirling?",
+                options: ["Rankine", "Carnot", "Stirling o Brayton", "Otto"],
+                answer: 2
+            },
+            {
+                q: "18. En una central de Torre, ¿cómo se llaman los espejos que apuntan al receptor?",
+                options: ["Helióstatos", "Fotovoltaicos", "Fresnels", "Parabólicas"],
+                answer: 0
+            },
+            {
+                q: "19. ¿Qué es el Movimiento Browniano en este contexto?",
+                options: ["Movimiento de la tierra", "Dispersión de partículas de agua y polvo en suspensión", "Flujo del agua en tuberías", "Seguimiento solar"],
+                answer: 1
+            },
+            {
+                q: "20. ¿Qué fuentes son ideales para hibridación con solar térmica?",
+                options: ["Carbón y Nuclear", "Biomasa o Gas Natural", "Eólica y Mareomotriz", "Solo baterías"],
+                answer: 1
+            }
+        ];
+
+        function loadQuiz() {
+            const container = document.getElementById('quiz-container');
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `<button class="option-btn" onclick="selectOption(${index}, ${optIndex}, this)">${String.fromCharCode(97 + optIndex)}) ${opt}</button>`;
+                });
+
+                card.innerHTML = `
+                    <div class="question-title">${q.q}</div>
+                    <div class="options" id="opt-container-${index}">
+                        ${optionsHtml}
+                    </div>
+                    <div class="feedback" id="feedback-${index}"></div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        const userAnswers = new Array(questions.length).fill(null);
+
+        function selectOption(qIndex, optIndex, btnElement) {
+            // Guardar respuesta
+            userAnswers[qIndex] = optIndex;
+            
+            // Visual selection
+            const container = document.getElementById(`opt-container-${qIndex}`);
+            const buttons = container.getElementsByClassName('option-btn');
+            
+            for (let btn of buttons) {
+                btn.style.backgroundColor = '#e2e8f0';
+                btn.style.borderColor = '#cbd5e0';
+            }
+            
+            btnElement.style.backgroundColor = '#b2f5ea';
+            btnElement.style.borderColor = '#2c7a7b';
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            let answeredCount = 0;
+
+            questions.forEach((q, index) => {
+                const feedback = document.getElementById(`feedback-${index}`);
+                const container = document.getElementById(`opt-container-${index}`);
+                const buttons = container.getElementsByClassName('option-btn');
+                
+                // Reset styles
+                for (let btn of buttons) {
+                    btn.classList.remove('correct', 'incorrect');
+                    btn.disabled = true; // Deshabilitar cambios
+                }
+
+                if (userAnswers[index] !== null) {
+                    answeredCount++;
+                    if (userAnswers[index] === q.answer) {
+                        score++;
+                        buttons[userAnswers[index]].classList.add('correct');
+                        feedback.innerHTML = "¡Correcto!";
+                        feedback.style.color = "green";
+                    } else {
+                        buttons[userAnswers[index]].classList.add('incorrect');
+                        buttons[q.answer].classList.add('correct'); // Show correct one
+                        feedback.innerHTML = `Incorrecto. La respuesta correcta era: ${q.options[q.answer]}`;
+                        feedback.style.color = "red";
+                    }
+                } else {
+                    buttons[q.answer].classList.add('correct'); // Show missed correct one
+                    feedback.innerHTML = "No respondida.";
+                    feedback.style.color = "orange";
+                }
+                feedback.style.display = 'block';
+            });
+
+            // Mostrar resultados finales
+            const resultArea = document.getElementById('result-area');
+            const scoreDisplay = document.getElementById('score-display');
+            const msgDisplay = document.getElementById('message-display');
+            const btnCheck = document.getElementById('check-btn');
+
+            resultArea.style.display = 'block';
+            btnCheck.style.display = 'none';
+
+            scoreDisplay.innerText = `${score} / ${questions.length}`;
+            
+            if (score >= 18) {
+                msgDisplay.innerText = "¡Excelente! Dominas el temario.";
+            } else if (score >= 10) {
+                msgDisplay.innerText = "Aprobado. Buen trabajo, pero repasa los fallos.";
+            } else {
+                msgDisplay.innerText = "Suspenso. Necesitas repasar los apuntes de nuevo.";
+            }
+            
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        // Iniciar
+        loadQuiz();
+    </script>
+</body>
+</html>
