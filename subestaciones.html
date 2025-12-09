@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Recuperación - Subestaciones Eléctricas</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #2980b9;
+            --correct-color: #27ae60;
+            --bg-correct: #e8f8f5;
+            --warning-bg: #fdfefe;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ecf0f1;
+        }
+        .paper {
+            background: white;
+            padding: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        header {
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .logo-box {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 25px;
+            font-weight: bold;
+            font-size: 1.4em;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+        .header-info {
+            text-align: right;
+            font-size: 0.95em;
+            color: #555;
+        }
+        h1, h2, h3 { color: var(--primary-color); }
+        h3 { 
+            border-left: 5px solid var(--accent-color);
+            padding-left: 10px;
+            margin-top: 30px;
+        }
+        .student-data {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .question-block {
+            margin-bottom: 35px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fff;
+            transition: box-shadow 0.3s;
+        }
+        .question-block:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .question-title {
+            font-weight: 600;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+            display: block;
+            color: #2c3e50;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.3);
+        }
+        
+        /* Contenedor de la imagen */
+        .diagram-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 10px;
+            background: #fff;
+            border: 2px dashed #bdc3c7;
+        }
+        .diagram-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+
+        /* Tabla de maniobras */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: center;
+        }
+        th { 
+            background-color: var(--primary-color); 
+            color: white;
+        }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        
+        /* Soluciones */
+        .solution-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--bg-correct);
+            border-left: 5px solid var(--correct-color);
+            color: #145a32;
+            font-size: 0.95em;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .btn-check {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+        .btn-check:hover { background-color: #1f618d; }
+        
+        @media print {
+            .btn-check, textarea { display: none; }
+            .solution-box { display: block; border: none; padding: 0; color: black; border-left: none; }
+            .paper { box-shadow: none; padding: 0; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="paper">
+    <header>
+        <div>
+            <div class="logo-box">I.E.S. SATAFI</div>
+            <div style="font-size: 0.9em; margin-top:5px; color:#555;">Departamento de Electricidad</div>
+        </div>
+        <div class="header-info">
+            <strong>EXAMEN DE RECUPERACIÓN</strong><br>
+            Módulo: Subestaciones Eléctricas<br>
+            Curso Académico 2025/2026<br>
+            <em>Puntuación Máxima: 10 Puntos</em>
+        </div>
+    </header>
+
+    <div class="student-data">
+        <label><strong>NOMBRE DEL ALUMNO:</strong></label> 
+        <input type="text" style="border:none; border-bottom: 2px solid #ccc; width: 60%; outline: none; background: transparent; padding: 5px;" placeholder="Escribe tu nombre y apellidos...">
+    </div>
+
+    <!-- TEORÍA -->
+    <h3>PARTE 1: CONCEPTOS TEÓRICOS (4 Puntos)</h3>
+
+    <div class="question-block">
+        <span class="question-title">1.- Describe tres tipos de configuraciones de barras (ej: Simple, Doble, Interruptor y medio), indicando en cada una sus ventajas respecto a la continuidad del servicio y mantenimiento.</span>
+        <textarea id="q1-input"></textarea>
+        <button class="btn-check" onclick="toggleSolution('sol-1')">Ver Respuesta Modelo</button>
+        <div id="sol-1" class="solution-box">
+            <strong>Solución:</strong><br>
+            1. <strong>Barra Simple:</strong> Económica. Desventaja: Mantenimiento en barras implica corte total.<br>
+            2. <strong>Doble Barra:</strong> Dos juegos de barras con seccionadores selectores. Ventaja: Permite limpiar una barra pasando la carga a la otra sin corte.<br>
+            3. <strong>Interruptor y medio:</strong> 3 interruptores para 2 circuitos. Ventaja: Máxima fiabilidad, si falla un interruptor no se pierde la línea.
+        </div>
+    </div>
+
+    <div class="question-block">
+        <span class="question-title">2.- Describe y haz un ligero croquis mental de los elementos habituales en una posición de transformador de potencia (lado alta tensión), incluyendo protección contra sobretensiones.</span>
+        <textarea id="q2-input"></textarea>
+        <button class="btn-check" onclick="toggleSolution('sol-2')">Ver Respuesta Modelo</button>
+        <div id="sol-2" class="solution-box">
+            <strong>Solución (Orden desde la línea al trafo):</strong><br>
+            1. Seccionador de barras.<br>
+            2. Interruptor automático (Corte en carga).<br>
+            3. Transformadores de medida (TI y TT).<br>
+            4. <strong>Autoválvulas / Pararrayos:</strong> Conectados en paralelo justo antes del trafo para derivar rayos a tierra.<br>
+            5. Transformador de potencia.
+        </div>
+    </div>
+
+    <div class="question-block">
+        <span class="question-title">3.- Define qué son los Servicios Auxiliares. Diferencia entre C.A. y C.C.</span>
+        <textarea id="q3-input"></textarea>
+        <button class="btn-check" onclick="toggleSolution('sol-3')">Ver Respuesta Modelo</button>
+        <div id="sol-3" class="solution-box">
+            <strong>Solución:</strong><br>
+            Son los suministros para el funcionamiento interno de la SE.<br>
+            - <strong>C.A. (Alterna):</strong> Motores de seccionadores, ventiladores de trafos, luz.<br>
+            - <strong>C.C. (Continua):</strong> Baterías. Crítico para Protecciones, Disparo de interruptores y Comunicaciones.
+        </div>
+    </div>
+
+    <div class="question-block">
+        <span class="question-title">4.- Enumera y explica brevemente 3 relés de protección habituales (Códigos ANSI).</span>
+        <textarea id="q4-input"></textarea>
+        <button class="btn-check" onclick="toggleSolution('sol-4')">Ver Respuesta Modelo</button>
+        <div id="sol-4" class="solution-box">
+            <strong>Solución:</strong><br>
+            - <strong>50/51 Sobrecorriente:</strong> Dispara por exceso de intensidad (Instantáneo/Temporizado).<br>
+            - <strong>87 Diferencial:</strong> Compara entrada vs salida de una zona. Si difieren, hay falta interna.<br>
+            - <strong>21 Distancia:</strong> Mide impedancia (V/I) para localizar faltas en líneas largas.
+        </div>
+    </div>
+
+    <!-- PRÁCTICA -->
+    <h3>PARTE 2: MANIOBRAS Y ANÁLISIS DE ESQUEMA (6 Puntos)</h3>
+    <p>Atendiendo al esquema unifilar suministrado de la instalación:</p>
+
+    <!-- AQUÍ VA LA IMAGEN -->
+    <div class="diagram-container">
+        <!-- NOTA: Asegúrate de que la imagen se llame esquema_examen.jpg y esté en la misma carpeta -->
+        <img src="esquema_examen.png" alt="Esquema Unifilar Subestación" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=Error:+Guarda+tu+imagen+como+esquema_examen.jpg';">
+        <p style="font-size: 0.8em; color: #777;"><em>Fig 1. Configuración de Barra Principal + Transferencia con Acoplamiento</em></p>
+    </div>
+
+    <div class="question-block">
+        <span class="question-title">5a) <strong>Identificación (1 punto):</strong> Observa el conjunto de equipos en la parte inferior derecha formado por los seccionadores <strong>89-16, 89-17</strong> y el interruptor <strong>52-6</strong>. ¿Qué función tiene este conjunto y por qué es fundamental?</span>
+        <textarea id="q5a-input"></textarea>
+        <button class="btn-check" onclick="toggleSolution('sol-5a')">Ver Solución</button>
+        <div id="sol-5a" class="solution-box">
+            Es el <strong>Paño de Acoplamiento</strong> (o enlace de barras).<br>
+            Su función es unir la Barra Principal con la Barra de Transferencia. Es fundamental porque permite realizar mantenimiento de cualquier interruptor de línea sin cortar el suministro, utilizando el interruptor 52-6 como "comodín" o sustituto.
+        </div>
+    </div>
+
+    <div class="question-block">
+        <span class="question-title">5b) <strong>Maniobra de Mantenimiento (2,5 puntos):</strong> El interruptor <strong>52-2</strong> de la <strong>Línea 2</strong> necesita revisión. Describe la secuencia exacta de maniobras para alimentar la línea por la Barra de Transferencia sin cortes. Usa los códigos del plano.</span>
+        <textarea id="q5b-input" style="height: 120px;"></textarea>
+        <button class="btn-check" onclick="toggleSolution('sol-5b')">Ver Solución</button>
+       <!-- <div id="sol-5b" class="solution-box">
+            <strong>Secuencia Correcta:</strong><br>
+            1. Cerrar seccionadores de acoplamiento <strong>89-16</strong> y <strong>89-17</strong>.<br>
+            2. Cerrar interruptor de acoplamiento <strong>52-6</strong> (Energizamos barra transferencia).<br>
+            3. Cerrar seccionador de bypass de Línea 2 <strong>89-6</strong> (Corriente en paralelo).<br>
+            4. Abrir interruptor de línea <strong>52-2</strong> (Transferimos la carga).<br>
+            5. Abrir seccionadores de línea <strong>89-4</strong> y <strong>89-5</strong> para aislar el interruptor.
+        </div> -->
+	<div id="sol-5b" class="solution-box">
+            <strong>Secuencia Correcta (Criterio de tu examen):</strong><br>
+            1. <strong>Abrir 57-2:</strong> Verificar que la puesta a tierra está abierta (Seguridad).<br>
+            2. <strong>Cerrar 89-6 (Bypass):</strong> Conectamos la línea a la barra de transferencia (vacía).<br>
+            3. <strong>Cerrar 89-16 y 89-17:</strong> Cerramos los seccionadores del acoplamiento.<br>
+            4. <strong>Cerrar 52-6 (Acoplamiento):</strong> Cerramos el interruptor para poner en paralelo total las barras.<br>
+            5. <strong>Abrir 52-2:</strong> Abrimos el interruptor de línea (la carga se queda por el camino del bypass).<br>
+            6. <strong>Abrir 89-4 y 89-5:</strong> Aislamos el interruptor 52-2 para poder tocarlo.
+        </div>
+    </div>
+
+    <div class="question-block">
+        <span class="question-title">5c) <strong>Protecciones (0,5 puntos):</strong> Una vez realizada la maniobra del apartado b), la Línea 2 está en transferencia. Si cae un rayo en la línea, ¿qué interruptor disparará? Razona la respuesta.</span>
+        <textarea id="q5c-input"></textarea>
+        <button class="btn-check" onclick="toggleSolution('sol-5c')">Ver Solución</button>
+        <div id="sol-5c" class="solution-box">
+            Disparará el interruptor <strong>52-6 (Acoplamiento)</strong>.<br>
+            Razón: Al estar el 52-2 abierto, la línea está unida eléctricamente a la barra de transferencia. La única fuente de energía que llega a esa barra viene a través del interruptor 52-6, que ahora actúa como protección de cabecera.
+        </div>
+    </div>
+
+<div class="question-block">
+        <span class="question-title">5d) <strong>Análisis de Errores (1 punto):</strong> En la maniobra anterior, imagina que el operario cierra el bypass <strong>89-6</strong> y, acto seguido, abre el interruptor de línea <strong>52-2</strong>, olvidándose de cerrar el interruptor de acoplamiento <strong>52-6</strong>. ¿Qué ocurriría con el suministro de la Línea 2?</span>
+        <textarea id="q5d-input"></textarea>
+        <button class="btn-check" onclick="toggleSolution('sol-5d')">Ver Solución</button>
+        <div id="sol-5d" class="solution-box">
+            <strong>Se cortaría el suministro (Apagón).</strong><br>
+            Aunque el bypass 89-6 esté cerrado, la Barra de Transferencia no recibe energía de la Barra Principal porque el interruptor que las une (52-6) está abierto. Al abrir el 52-2, dejamos la línea conectada a una barra muerta (sin tensión).
+        </div>
+    </div>
+
+    <!-- TABLA DE MANIOBRAS INTERACTIVA (EXTRA: RESTAURACIÓN) -->
+    <div class="question-block">
+        <span class="question-title"><strong>Extra: Tabla de Restauración.</strong> Rellena la tabla para devolver la Línea 2 a su estado normal (usando 52-2) y dejar libre la barra de transferencia.</span>
+        
+        <table id="maneuver-table">
+            <thead>
+                <tr>
+                    <th style="width:10%">Orden</th>
+                    <th style="width:20%">Equipo (Código)</th>
+                    <th style="width:20%">Acción</th>
+                    <th>Razón breve</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" placeholder="Ej: 89-5"></td>
+                    <td><select><option>--</option><option>Cerrar</option><option>Abrir</option></select></td>
+                    <td><input type="text" placeholder="Preparar circuito..."></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="text" placeholder="Ej: 52-2"></td>
+                    <td><select><option>--</option><option>Cerrar</option><option>Abrir</option></select></td>
+                    <td><input type="text" placeholder="Entrar en paralelo..."></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="text" placeholder="Ej: 89-6"></td>
+                    <td><select><option>--</option><option>Cerrar</option><option>Abrir</option></select></td>
+                    <td><input type="text" placeholder="Cortar bypass..."></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input type="text" placeholder="Ej: 52-6"></td>
+                    <td><select><option>--</option><option>Cerrar</option><option>Abrir</option></select></td>
+                    <td><input type="text" placeholder="Liberar acoplamiento..."></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <button class="btn-check" onclick="checkTable()">Comprobar Tabla</button>
+        <div id="sol-table" class="solution-box">
+            <strong>Solución de Restauración:</strong><br>
+            1. <strong>Cerrar 89-4 y 89-5:</strong> Preparamos el camino del interruptor principal.<br>
+            2. <strong>Cerrar 52-2:</strong> Metemos la línea por su interruptor (ahora va por los dos caminos).<br>
+            3. <strong>Abrir 89-6:</strong> Quitamos el bypass (el seccionador abre sin carga porque está en paralelo con el 52-2).<br>
+            4. <strong>Abrir 52-6:</strong> Desconectamos el acoplamiento y liberamos la barra de transferencia.
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleSolution(id) {
+        var x = document.getElementById(id);
+        if (x.style.display === "none" || x.style.display === "") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    function checkTable() {
+        var x = document.getElementById("sol-table");
+        x.style.display = "block";
+        alert("¡Revisa! La solución correcta ha aparecido debajo de la tabla.");
+    }
+</script>
+
+</body>
+</html>
