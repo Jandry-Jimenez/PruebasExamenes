@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrenamiento Numérico UT2: Actuadores</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #8b5cf6; /* Morado para trucos */
+            --success: #10b981;
+            --error: #ef4444;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 { color: var(--secondary); margin-bottom: 5px; font-size: 2.2em;}
+        .subtitle { color: #64748b; font-size: 1.1em; margin-bottom: 20px;}
+
+        /* SECCIÓN DE CHULETAS (NUEVO) */
+        .cheatsheet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .trick-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(139, 92, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trick-card::before {
+            content: "TRUCO";
+            position: absolute;
+            top: -5px;
+            right: -25px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 30px;
+            font-size: 0.7em;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+
+        .trick-title {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trick-content {
+            font-size: 0.95em;
+        }
+        
+        .math-example {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #5b21b6;
+        }
+
+        /* SECCIÓN DEL TEST */
+        .stat-bar {
+            background: #e2e8f0;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            border-top: 6px solid var(--primary);
+        }
+
+        .data-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            font-family: monospace;
+            font-size: 1.1em;
+            color: #1e3a8a;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button.option-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        button.option-btn:hover {
+            border-color: var(--primary);
+            background: #f1f5f9;
+        }
+
+        button.option-btn.correct {
+            background: #d1fae5;
+            border-color: var(--success);
+            color: #065f46;
+        }
+
+        button.option-btn.wrong {
+            background: #fee2e2;
+            border-color: var(--error);
+            color: #991b1b;
+        }
+
+        .logic-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fffbeb; 
+            border: 1px solid #fcd34d;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .logic-title {
+            font-weight: bold;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .tag {
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🔢 Simulador Numérico UT2</h1>
+        <div class="subtitle">Aprende a calcular sin calculadora usando lógica</div>
+    </header>
+
+    <!-- SECCIÓN DE CHULETAS -->
+    <h2 style="color: var(--accent); text-align: center;">🧠 CHULETAS DE CÁLCULO MENTAL</h2>
+    <div class="cheatsheet-grid">
+        
+        <!-- TRUCO 1: UNIDADES -->
+        <div class="trick-card">
+            <div class="trick-title">🔄 El Juego de los Ceros</div>
+            <div class="trick-content">
+                Para <b>Fuerza = Presión x Superficie</b>:
+                <ul>
+                    <li><b>BAR a Pascales:</b> Añade 5 ceros.</li>
+                    <li><b>mm a Metros:</b> Mueve la coma 3 izq.</li>
+                </ul>
+                <div class="math-example">
+                    10 bar -> 1.000.000<br>
+                    100 mm -> 0,1 m
+                </div>
+            </div>
+        </div>
+
+        <!-- TRUCO 2: RPM -->
+        <div class="trick-card">
+            <div class="trick-title">⚡ RPM a Rad/s</div>
+            <div class="trick-content">
+                ¿Necesitas la velocidad angular (w)?
+                <br>No uses la fórmula de 2·π/60.
+                <br><b>Simplemente divide entre 10.</b>
+                <div class="math-example">
+                    3000 rpm ≈ 300 rad/s<br>
+                    20 rpm ≈ 2 rad/s
+                </div>
+            </div>
+        </div>
+
+        <!-- TRUCO 3: ROZAMIENTO -->
+        <div class="trick-card">
+            <div class="trick-title">🧮 Porcentajes (µ)</div>
+            <div class="trick-content">
+                El coeficiente de rozamiento (µ) es solo un porcentaje.
+                <ul>
+                    <li><b>µ = 0,5:</b> La mitad del peso.</li>
+                    <li><b>µ = 0,25:</b> Un cuarto (divide por 4).</li>
+                    <li><b>µ = 0,1:</b> Quita un cero.</li>
+                </ul>
+                <div class="math-example">
+                    1000N con µ=0,3<br>
+                    -> 30% de 1000 = 300N
+                </div>
+            </div>
+        </div>
+
+        <!-- TRUCO 4: POTENCIA -->
+        <div class="trick-card">
+            <div class="trick-title">🔌 Rendimiento (η)</div>
+            <div class="trick-content">
+                <b>Potencia Eléctrica</b> (entrada) siempre es el número <b>GRANDE</b>.
+                <br><b>Potencia Mecánica</b> (salida) siempre es el número <b>PEQUEÑO</b>.
+                <div class="math-example">
+                    Si Mecánica = 800W<br>
+                    Eléctrica > 800W (Ej: 1000W)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-bar">⬇️ AHORA APLÍCALO EN EL TEST ⬇️</div>
+
+    <div id="quiz-area">
+        <!-- Las preguntas se generan aquí -->
+    </div>
+
+    <button class="reset-btn" onclick="location.reload()">🔄 Generar Nuevo Test</button>
+</div>
+
+<script>
+    // Datos extraídos EXACTAMENTE de las capturas del PDF
+    const exercises = [
+        {
+            id: 1,
+            title: "Ejercicio 1 (Pág 2): Par Motor",
+            data: "Pe = 1500 W | η = 0.88 | n = 20 rpm",
+            question: "¿Cuál es el Par Motor (M) resultante?",
+            options: [
+                "631,58 N·m",
+                "63,1 N·m",
+                "6.310 N·m",
+                "3.000 N·m"
+            ],
+            correct: 0,
+            logic: "💡 <b>Aproximación mental:</b><br>1. Potencia útil es un poco menos de 1500 (digamos 1350).<br>2. Velocidad (rad/s) ≈ 20 rpm / 10 = <b>2 rad/s</b>.<br>3. Par = Potencia / Vel → 1350 / 2 = <b>675 aprox</b>.<br>Busca el número cercano a 675. Es 631."
+        },
+        {
+            id: 2,
+            title: "Ejercicio 2 (Pág 2): Par Motor Lento",
+            data: "Pe = 1500 W | η = 0.88 | n = 5 rpm",
+            question: "¿Cuál es el Par Motor (M) ahora que va más lento?",
+            options: [
+                "631 N·m",
+                "2.538 N·m",
+                "12.000 N·m",
+                "100 N·m"
+            ],
+            correct: 1,
+            logic: "💡 <b>Lógica de Balancín:</b><br>Comparado con el ejercicio anterior (20 rpm), ahora va a 5 rpm (4 veces más lento).<br>Si la velocidad baja 4 veces, la fuerza DEBE subir 4 veces.<br>631 x 4 ≈ <b>2500</b>. La respuesta es 2.538."
+        },
+        {
+            id: 3,
+            title: "Ejercicio 3 (Pág 2): Potencia Consumida",
+            data: "M = 400 N·m | n = 20 rpm | η = 75% (0.75)",
+            question: "¿Qué Potencia Eléctrica (Pe) consume?",
+            options: [
+                "836 W",
+                "627 W",
+                "1.114 W",
+                "2.000 W"
+            ],
+            correct: 2,
+            logic: "💡 <b>Truco del Grande/Pequeño:</b><br>1. Potencia Mecánica (Salida) = 400 x 2 (rad/s) ≈ 800 W.<br>2. La Eléctrica (Entrada) debe ser <b>MAYOR</b> que 800 W porque la máquina no es perfecta.<br>Descartamos 627 (menor) y 836 (muy cerca).<br>800 / 0.75 tiene que dar más de 1000. Respuesta: 1.114 W."
+        },
+        {
+            id: 4,
+            title: "Ejercicio 4 (Pág 3): Fuerza Avance",
+            data: "D = 100 mm | p = 10 bar",
+            question: "¿Cuál es la Fuerza de Avance (FA)?",
+            options: [
+                "785 N",
+                "7.850 N",
+                "78.500 N",
+                "100.000 N"
+            ],
+            correct: 1,
+            logic: "💡 <b>Juego de Ceros:</b><br>10 bar -> 1.000.000 (un millón).<br>D = 0,1 m -> Área tiene decimales (0,00...).<br>Al multiplicar 1.000.000 x 0,007... le quitas ceros.<br>El resultado lógico no puede ser enorme (78.000 es fuerza de camión) ni pequeño (785 es fuerza de persona). Para 10 bar industrial, <b>7.850 N</b> es lo correcto."
+        },
+        {
+            id: 5,
+            title: "Ejercicio 4 (Pág 3): Fuerza Retroceso",
+            data: "FA (Avance) = 7.850 N | d (vástago) = 30 mm",
+            question: "¿Cuál es la Fuerza de Retroceso (FR)?",
+            options: [
+                "7.850 N",
+                "8.500 N",
+                "7.140 N",
+                "714 N"
+            ],
+            correct: 2,
+            logic: "💡 <b>Menos es más (seguro):</b><br>Al retroceder, el vástago ocupa sitio. La fuerza TIENE que ser <b>menor</b> que 7.850 N.<br>Descartamos 7.850 y 8.500.<br>El vástago es fino (30mm) comparado con el tubo (100mm), así que no pierde tanta fuerza como para bajar a 714 N.<br>Respuesta lógica: <b>7.140 N</b>."
+        },
+        {
+            id: 6,
+            title: "Ejercicio 5 (Pág 3): Dimensionado",
+            data: "Masa = 30 kg | p = 10 bar",
+            question: "¿Qué diámetro (D) de émbolo necesito?",
+            options: [
+                "19,3 mm",
+                "193 mm",
+                "50 mm",
+                "200 mm"
+            ],
+            correct: 0,
+            logic: "💡 <b>Mucha presión, poco peso:</b><br>30 kg son solo unos 300 Newtons.<br>10 bar es muchísima presión.<br>Si tengo mucha presión para tan poco peso, necesito un cilindro <b>muy pequeñito</b>.<br>19 mm es pequeño (2 cm). 193 mm es enorme (20 cm). Respuesta: 19,3 mm."
+        },
+        {
+            id: 7,
+            title: "Ejercicio 7 (Pág 4): Volumen Total",
+            data: "Q = 120 l/min | t = 5h 45min",
+            question: "¿Qué volumen (V) se ha llenado?",
+            options: [
+                "690 Litros",
+                "41.400 Litros",
+                "4.140 Litros",
+                "414.000 Litros"
+            ],
+            correct: 1,
+            logic: "💡 <b>Redondeo mental:</b><br>Tiempo ≈ <b>6 horas</b>.<br>Caudal por hora = 120 (minuto) x 60 = 7.200 l/h.<br>Total = 7.200 x 6 ≈ <b>43.000</b>.<br>El valor más cercano es 41.400."
+        },
+        {
+            id: 8,
+            title: "Ejercicio 8 (Pág 5): Fricción",
+            data: "Masa = 1300 kg | µ = 0,3",
+            question: "¿Qué Fuerza Real (F) necesito para moverlo?",
+            options: [
+                "13.000 N",
+                "1.300 N",
+                "3.822 N",
+                "390 N"
+            ],
+            correct: 2,
+            logic: "💡 <b>Truco del Porcentaje:</b><br>Peso total ≈ 13.000 N.<br>Como µ = 0,3, solo necesito el <b>30%</b> de esa fuerza.<br>10% es 1.300 -> 30% es 3.900.<br>El valor exacto (usando g=9,8) es <b>3.822 N</b>."
+        },
+        {
+            id: 9,
+            title: "Ejercicio 9 (Pág 5): Retroceso con Carga",
+            data: "Masa = 2800 kg | µ = 0,25 | p = 7 bar",
+            question: "Primero, ¿qué fuerza de arrastre necesito?",
+            options: [
+                "28.000 N",
+                "6.860 N",
+                "2.800 N",
+                "700 N"
+            ],
+            correct: 1,
+            logic: "💡 <b>El Cuarto:</b><br>Peso ≈ 28.000 N.<br>Coeficiente 0,25 es exactamente <b>1/4 (un cuarto)</b>.<br>La cuarta parte de 28.000 es 7.000.<br>La respuesta exacta más cercana es <b>6.860 N</b>."
+        },
+        {
+            id: 10,
+            title: "Ejercicio 10 (Pág 6): Tiempo de Llenado",
+            data: "Volumen Cilindro = 0,754 L | Q = 20 l/min",
+            question: "¿Cuánto tarda (t) en llenarse?",
+            options: [
+                "2,26 segundos",
+                "22,6 segundos",
+                "0,2 segundos",
+                "1 minuto"
+            ],
+            correct: 0,
+            logic: "💡 <b>Litros por Segundo:</b><br>20 litros/minuto divido entre 60 segundos ≈ 0,33 litros cada segundo.<br>Tengo que llenar 0,75 litros.<br>0,33 + 0,33 = 0,66 (van 2 seg). Falta un poquito.<br>Tiene que ser <b>un poco más de 2 segundos</b>. Respuesta: 2,26 s."
+        }
+    ];
+
+    const quizArea = document.getElementById('quiz-area');
+
+    function loadQuiz() {
+        quizArea.innerHTML = ""; // Limpiar
+
+        exercises.forEach((ex, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            let buttonsHtml = '';
+            ex.options.forEach((opt, i) => {
+                buttonsHtml += `<button class="option-btn" onclick="checkAnswer(this, ${index}, ${i})">${opt}</button>`;
+            });
+
+            card.innerHTML = `
+                <span class="tag">${ex.title}</span>
+                <div class="data-box">${ex.data}</div>
+                <h3 style="margin-top:0">${ex.question}</h3>
+                <div class="options-grid">
+                    ${buttonsHtml}
+                </div>
+                <div class="logic-box" id="logic-${index}">
+                    <div class="logic-title">🧠 Lógica aplicada:</div>
+                    ${ex.logic}
+                </div>
+            `;
+            quizArea.appendChild(card);
+        });
+    }
+
+    function checkAnswer(btn, exerciseIndex, selectedOptionIndex) {
+        const ex = exercises[exerciseIndex];
+        const parent = btn.parentElement;
+        const buttons = parent.getElementsByClassName('option-btn');
+        const logicBox = document.getElementById(`logic-${exerciseIndex}`);
+
+        // Bloquear botones
+        for(let b of buttons) {
+            b.disabled = true;
+            b.style.cursor = 'default';
+        }
+
+        if(selectedOptionIndex === ex.correct) {
+            btn.classList.add('correct');
+            btn.innerHTML += " ✅";
+        } else {
+            btn.classList.add('wrong');
+            btn.innerHTML += " ❌";
+            buttons[ex.correct].classList.add('correct'); // Mostrar la correcta
+        }
+
+        // Mostrar explicación
+        logicBox.style.display = 'block';
+    }
+
+    // Iniciar
+    loadQuiz();
+
+</script>
+
+</body>
+</html>
