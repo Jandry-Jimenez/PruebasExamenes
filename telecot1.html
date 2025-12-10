@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Unidad 1: Sensores y Transductores (Con Esquemas Gráficos)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+        }
+
+        .section-block {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .question-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+            color: #000;
+        }
+
+        .circuit-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #eee;
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .options label:hover {
+            background-color: #f0f8ff;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .btn-correct {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .btn-correct:hover {
+            background-color: #219150;
+        }
+
+        .result-msg {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        /* Estilos de corrección */
+        .correct {
+            background-color: #d4edda !important;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+
+        .missed-correct {
+            font-weight: bold;
+            color: #155724;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>EXAMEN UNIDAD 1: SENSORES Y TRANSDUCTORES</h1>
+        <p>A continuación se presenta el examen completo. Los esquemas han sido digitalizados para mayor claridad.</p>
+    </header>
+
+    <!-- BLOQUE CE1A -->
+    <section class="section-block" id="block-ce1a">
+        <h2>CE1A: Conceptos Generales</h2>
+        
+        <div class="question" data-correct="c">
+            <span class="question-title">Pregunta 1: El final de carrera es un elemento muy utilizado...:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1a_q1" value="a"> a. Ninguna de las opciones es correcta.</label>
+                <label><input type="radio" name="ce1a_q1" value="b"> b. Todas las opciones son correctas.</label>
+                <label><input type="radio" name="ce1a_q1" value="c"> c. Para conocer la posición de un elemento en un sistema.</label>
+                <label><input type="radio" name="ce1a_q1" value="d"> d. Para medir la velocidad de un elemento en un sistema.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 2: El final de carrera es un elemento que permite...:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1a_q2" value="a"> a. Ninguna de las opciones es correcta.</label>
+                <label><input type="radio" name="ce1a_q2" value="b"> b. Medir el tiempo que un elemento tarda al pasar de un lugar a otro del sistema.</label>
+                <label><input type="radio" name="ce1a_q2" value="c"> c. Medir distancias recorridas por un elemento.</label>
+                <label><input type="radio" name="ce1a_q2" value="d"> d. Todas las opciones son correctas.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 3: El potenciómetro es en realidad:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1a_q3" value="a"> a. Ninguna de las opciones es correcta.</label>
+                <label><input type="radio" name="ce1a_q3" value="b"> b. Un sensor de velocidad de tipo pasivo.</label>
+                <label><input type="radio" name="ce1a_q3" value="c"> c. Un sensor de velocidad de tipo activo</label>
+                <label><input type="radio" name="ce1a_q3" value="d"> d. Un sensor de desplazamiento de tipo pasivo.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 4: Entre los sensores de proximidad magnéticos se tienen:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1a_q4" value="a"> a. Ninguna de las respuestas es correcta.</label>
+                <label><input type="radio" name="ce1a_q4" value="b"> b. Todas las respuestas son correctas.</label>
+                <label><input type="radio" name="ce1a_q4" value="c"> c. Inductivos y capacitivos únicamente.</label>
+                <label><input type="radio" name="ce1a_q4" value="d"> d. Inductivos, capacitivos y ópticos.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="c">
+            <span class="question-title">Pregunta 5: Los sensores de proximidad ópticos...</span>
+            <div class="options">
+                <label><input type="radio" name="ce1a_q5" value="a"> a. Todas las respuestas son correctas.</label>
+                <label><input type="radio" name="ce1a_q5" value="b"> b. Son tipo reflex cuando emisor y receptor están en distinto encapsulado.</label>
+                <label><input type="radio" name="ce1a_q5" value="c"> c. Todas las respuestas son incorrectas.</label>
+                <label><input type="radio" name="ce1a_q5" value="d"> d. Son de barrera cuando emisor y receptor están en el mismo encapsulado.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 6: Los sensores eléctricos pueden ser activos o pasivos si se tiene en cuenta que:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1a_q6" value="a"> a. Ninguna de las opciones es correcta.</label>
+                <label><input type="radio" name="ce1a_q6" value="b"> b. Los pasivos tienen la propiedad de producir una pequeña cantidad de energía eléctrica cuando cambian su forma y además la transforman de alguna manera.</label>
+                <label><input type="radio" name="ce1a_q6" value="c"> c. Todas las opciones son correctas.</label>
+                <label><input type="radio" name="ce1a_q6" value="d"> d. Los activos tienen la propiedad de producir una pequeña cantidad de energía eléctrica cuando cambian su forma.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 7: Los sensores eléctricos se pueden clasificar atendiendo al tipo de magnitud que miden en:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1a_q7" value="a"> a. Transductores de luz y medidores de PH.</label>
+                <label><input type="radio" name="ce1a_q7" value="b"> b. Todas las opciones son correctas.</label>
+                <label><input type="radio" name="ce1a_q7" value="c"> c. Sensores de velocidad y sensores de fuerza y presión.</label>
+                <label><input type="radio" name="ce1a_q7" value="d"> d. Sensores de desplazamiento, posición y proximidad, y medidores de flujo.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="b">
+            <span class="question-title">Pregunta 8: Los sensores eléctricos se pueden clasificar atendiendo al tipo de señal que producen en:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1a_q8" value="a"> a. Ninguna de las opciones es correcta</label>
+                <label><input type="radio" name="ce1a_q8" value="b"> b. Analógicos y digitales</label>
+                <label><input type="radio" name="ce1a_q8" value="c"> c. Activos y pasivos</label>
+                <label><input type="radio" name="ce1a_q8" value="d"> d. De dos hilos o de tres hilos</label>
+            </div>
+        </div>
+
+        <button class="btn-correct" onclick="checkAnswers('block-ce1a')">Corregir CE1A</button>
+        <div class="result-msg" id="result-block-ce1a"></div>
+    </section>
+
+    <!-- BLOQUE CE1B -->
+    <section class="section-block" id="block-ce1b">
+        <h2>CE1B: Encoders y Sensores Específicos</h2>
+        
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 1: El encoder absoluto:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1b_q1" value="a"> a. Será más preciso cuantos más bits formen parte de la señal de salida.</label>
+                <label><input type="radio" name="ce1b_q1" value="b"> b. Proporciona una señal de salida de la forma 0110 por ejemplo (en código binario).</label>
+                <label><input type="radio" name="ce1b_q1" value="c"> c. Permite identificar la posición de un eje, porque se compone de un disco con sectores blancos y negros, y todos sectores son diferentes entre ellos.</label>
+                <label><input type="radio" name="ce1b_q1" value="d"> d. Todas las opciones son correctas.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 2: El encoder incremental:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1b_q2" value="a"> a. Permite identificar la posición de un eje que gira a través de unas muescas que permiten o no el paso de luz, aunque se usa más para la medición de velocidades.</label>
+                <label><input type="radio" name="ce1b_q2" value="b"> b. Ninguna de las anteriores es correcta.</label>
+                <label><input type="radio" name="ce1b_q2" value="c"> c. Permite identificar la posición de un eje que gira a través de un disco con franjas blancas y negras en las que se refleja o absorbe la luz.</label>
+                <label><input type="radio" name="ce1b_q2" value="d"> d. Permite identificar la posición de un eje que gira a través de unas muescas que permiten que ultrasonidos se reflejen o se transmitan.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="b">
+            <span class="question-title">Pregunta 3: El final de carrera:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1b_q3" value="a"> a. Proporciona una señal más potente cuando se acciona con más fuerza.</label>
+                <label><input type="radio" name="ce1b_q3" value="b"> b. Es realmente un interruptor que al ser accionado cierra o abre mecánicamente unos contactos eléctricos.</label>
+                <label><input type="radio" name="ce1b_q3" value="c"> c. Ninguna de las opciones es correcta.</label>
+                <label><input type="radio" name="ce1b_q3" value="d"> d. Es un interruptor magnético que no necesita estar en contacto con un cuerpo para cambiar la posición de sus contactos.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 4: El sensor de posición inductivo:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1b_q4" value="a"> a. Se basa en la variación del campo magnético de una bobina producido cuando se mueve una pieza metálica cerca de dicha bobina.</label>
+                <label><input type="radio" name="ce1b_q4" value="b"> b. Se basa en la variación de la capacidad de un condensador cuando se mueve su dieléctrico.</label>
+                <label><input type="radio" name="ce1b_q4" value="c"> c. Todas las respuestas son correctas.</label>
+                <label><input type="radio" name="ce1b_q4" value="d"> d. Todas las respuestas son incorrectas.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 5: El sensor de posición inductivo:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1b_q5" value="a"> a. Sólo se emplea para medir la posición de elementos metálicos.</label>
+                <label><input type="radio" name="ce1b_q5" value="b"> b. Todas las respuestas son incorrectas.</label>
+                <label><input type="radio" name="ce1b_q5" value="c"> c. Todas las respuestas son correctas.</label>
+                <label><input type="radio" name="ce1b_q5" value="d"> d. Se utiliza en muchos casos para medir si un cilindro neumático está abierto o crrd.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="c">
+            <span class="question-title">Pregunta 6: El sensor reflectivo difuso:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1b_q6" value="a"> a. Utiliza una emisión luminosa que no se refleja en ningún caso, sino que se recibe por un receptor que está en otro encapsulado diferente.</label>
+                <label><input type="radio" name="ce1b_q6" value="b"> b. Utiliza una emisión luminosa que es reflejada en un espejo para detectar posición.</label>
+                <label><input type="radio" name="ce1b_q6" value="c"> c. Utiliza una emisión luminosa que es reflejada por la propia pieza, cuya posición se desea detectar.</label>
+                <label><input type="radio" name="ce1b_q6" value="d"> d. Ninguna de las opciones es correcta.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 7: El tacogenerador:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1b_q7" value="a"> a. Es lo mismo que un sensor tacométrico: mide la velocidad de giro por la emisión de una radiación luminosa que es percibida por un receptor.</label>
+                <label><input type="radio" name="ce1b_q7" value="b"> b. Se basa en un interruptor magnético que se coloca en una posición de un eje que gira, y permite medir su velocidad.</label>
+                <label><input type="radio" name="ce1b_q7" value="c"> c. Es un freno de un eje y permite bloquearlo si se desea.</label>
+                <label><input type="radio" name="ce1b_q7" value="d"> d. Ninguna de las anteriores es correcta.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="b">
+            <span class="question-title">Pregunta 8: Las galgas extensiométricas:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1b_q8" value="a"> a. Son sensores de fuerza y presión.</label>
+                <label><input type="radio" name="ce1b_q8" value="b"> b. Se basan en la variación de resistencia que sufre la galga al deformarse.</label>
+                <label><input type="radio" name="ce1b_q8" value="c"> c. Todas las respuestas son correctas.</label>
+                <label><input type="radio" name="ce1b_q8" value="d"> d. Son sensores de carácter pasivo.</label>
+            </div>
+        </div>
+
+        <button class="btn-correct" onclick="checkAnswers('block-ce1b')">Corregir CE1B</button>
+        <div class="result-msg" id="result-block-ce1b"></div>
+    </section>
+
+    <!-- BLOQUE CE1E -->
+    <section class="section-block" id="block-ce1e">
+        <h2>CE1E: Acondicionadores de Señal</h2>
+        
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 1: Cuando se trabaja con sensores generadores, los acondicionadores de señal más comunes son:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1e_q1" value="a"> a. Amplificadores operacionales.</label>
+                <label><input type="radio" name="ce1e_q1" value="b"> b. Puentes de Wheatstone.</label>
+                <label><input type="radio" name="ce1e_q1" value="c"> c. Ninguna de las opciones es correcta.</label>
+                <label><input type="radio" name="ce1e_q1" value="d"> d. Divisores de tensión.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 2: Cuando se trabaja con señales de corriente alterna los acondicionadores de señal más frecuentes son:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1e_q2" value="a"> a. Divisores de tensión y puentes de Wheatstone</label>
+                <label><input type="radio" name="ce1e_q2" value="b"> b. Puentes de Wheatstone y amplificadores operacionales</label>
+                <label><input type="radio" name="ce1e_q2" value="c"> c. Divisores de tensión únicamente.</label>
+                <label><input type="radio" name="ce1e_q2" value="d"> d. Puentes de Graetz y amplificadores operacionales.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 3: Cuando se trabaja con señales de corriente continua los acondicionadores de señal más frecuentes son:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1e_q3" value="a"> a. Puentes de Wheatstone y amplificadores operacionales</label>
+                <label><input type="radio" name="ce1e_q3" value="b"> b. Divisores de tensión y puentes de Wheatstone</label>
+                <label><input type="radio" name="ce1e_q3" value="c"> c. Puentes de Graetz y amplificadores operacionales</label>
+                <label><input type="radio" name="ce1e_q3" value="d"> d. Divisores de tensión, puentes de Wheatstone y amplificadores operacionales.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 4: El acondicionador de señal permite:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1e_q4" value="a"> a. Obtener una señal que sea combinación de otras dos de entrada.</label>
+                <label><input type="radio" name="ce1e_q4" value="b"> b. Amplificar el valor de una señal eléctrica en caso de que sea débil.</label>
+                <label><input type="radio" name="ce1e_q4" value="c"> c. Reducir el valor de una señal eléctrica en caso de que sea excesivamente elevada.</label>
+                <label><input type="radio" name="ce1e_q4" value="d"> d. Todas las opciones son correctas.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="c">
+            <span class="question-title">Pregunta 5: El puente de Wheatstone, y el amplificador operacional son:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1e_q5" value="a"> a. Acondicionadores de señal para sensores de reactancia variable.</label>
+                <label><input type="radio" name="ce1e_q5" value="b"> b. Todas las opciones son correctas.</label>
+                <label><input type="radio" name="ce1e_q5" value="c"> c. Acondicionadores de señal para sensores resistivos.</label>
+                <label><input type="radio" name="ce1e_q5" value="d"> d. Acondicionadores de señal para sensores electromagnéticos.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 6: El sensor piezoeléctrico produce una señal de tensión o de corriente muy débil, que siempre es necesario amplificar:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1e_q6" value="a"> a. Correcto, para ello se emplean los divisores de tensión.</label>
+                <label><input type="radio" name="ce1e_q6" value="b"> b. Correcto, para ello se emplean los puentes de Wheatstone.</label>
+                <label><input type="radio" name="ce1e_q6" value="c"> c. Incorrecto, el sensor piezoeléctrico por si mismo produce una señal suficiente.</label>
+                <label><input type="radio" name="ce1e_q6" value="d"> d. Correcto, para ello se emplean los amplificadores operacionales.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 7: Indica cuál de estas opciones incluye únicamente acondiciones de señal:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1e_q7" value="a"> a. Puente de Wheatstone, fotodiodo</label>
+                <label><input type="radio" name="ce1e_q7" value="b"> b. Termopar, amplificador operacional.</label>
+                <label><input type="radio" name="ce1e_q7" value="c"> c. Divisor de tensión, fotorresistencia.</label>
+                <label><input type="radio" name="ce1e_q7" value="d"> d. Puente de Wheatstone, amplificador operacional.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="c">
+            <span class="question-title">Pregunta 8: Los acondicionadores de señal son específicos para cada tipo de sensor:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1e_q8" value="a"> a. Todas las respuestas son incorrectas.</label>
+                <label><input type="radio" name="ce1e_q8" value="b"> b. Es correcto, hay un único acondicionador para un único sensor.</label>
+                <label><input type="radio" name="ce1e_q8" value="c"> c. Es correcto, hay acondicionadores de señal para una familia de sensores.</label>
+                <label><input type="radio" name="ce1e_q8" value="d"> d. Es incorrecto, cualquier acondicionador de señal es válido para cualquier sensor.</label>
+            </div>
+        </div>
+
+        <button class="btn-correct" onclick="checkAnswers('block-ce1e')">Corregir CE1E</button>
+        <div class="result-msg" id="result-block-ce1e"></div>
+    </section>
+
+    <!-- BLOQUE CE1G -->
+    <section class="section-block" id="block-ce1g">
+        <h2>CE1G: Cálculos de Señal</h2>
+        
+        <div class="question" data-correct="b">
+            <span class="question-title">Pregunta 1: Calcula el valor máximo de una señal cuadrada con 18V de valor eficaz.</span>
+            <div class="options">
+                <label><input type="radio" name="ce1g_q1" value="a"> a. Vmax 9V</label>
+                <label><input type="radio" name="ce1g_q1" value="b"> b. Vmax 18V</label>
+                <label><input type="radio" name="ce1g_q1" value="c"> c. Vmax 36V</label>
+                <label><input type="radio" name="ce1g_q1" value="d"> d. Ninguna de las opciones es correcta</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 2: Calcula el valor máximo de una señal senoidal con 230V de valor eficaz.</span>
+            <div class="options">
+                <label><input type="radio" name="ce1g_q2" value="a"> a. Vmax 325V</label>
+                <label><input type="radio" name="ce1g_q2" value="b"> b. Ninguna de las opciones es correcta</label>
+                <label><input type="radio" name="ce1g_q2" value="c"> c. Vmax 330V</label>
+                <label><input type="radio" name="ce1g_q2" value="d"> d. Vmax 460V</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 3: Calcula los valores medio y eficaz de una señal cuadrada que oscila entre +24V y -24V.</span>
+            <div class="options">
+                <label><input type="radio" name="ce1g_q3" value="a"> a. Ninguna de las opciones es correcta</label>
+                <label><input type="radio" name="ce1g_q3" value="b"> b. Vm 0V y Vef 12V</label>
+                <label><input type="radio" name="ce1g_q3" value="c"> c. Vm 24V y Vef 24V</label>
+                <label><input type="radio" name="ce1g_q3" value="d"> d. Vm 0V y Vef 24V</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="a">
+            <span class="question-title">Pregunta 4: Calcula los valores medio y eficaz de una señal senoidal de valor máximo 68V.</span>
+            <div class="options">
+                <label><input type="radio" name="ce1g_q4" value="a"> a. Vm 0V y Vef 48V</label>
+                <label><input type="radio" name="ce1g_q4" value="b"> b. Ninguna de las opciones es correcta</label>
+                <label><input type="radio" name="ce1g_q4" value="c"> c. Vm 68V y Vef 68V</label>
+                <label><input type="radio" name="ce1g_q4" value="d"> d. Vm 0V y Vef 34V</label>
+            </div>
+        </div>
+
+        <button class="btn-correct" onclick="checkAnswers('block-ce1g')">Corregir CE1G</button>
+        <div class="result-msg" id="result-block-ce1g"></div>
+    </section>
+
+    <!-- BLOQUE CE1I -->
+    <section class="section-block" id="block-ce1i">
+        <h2>CE1I: Análisis de Circuitos</h2>
+        
+        <div class="question" data-correct="d">
+            <div class="circuit-container">
+                <svg width="350" height="220" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Rail VCC 12V -->
+                    <line x1="20" y1="30" x2="380" y2="30" stroke="black" stroke-width="2"/>
+                    <text x="5" y="35" font-family="Arial" font-size="14">12V</text>
+                    
+                    <!-- Rail GND -->
+                    <line x1="20" y1="220" x2="380" y2="220" stroke="black" stroke-width="2"/>
+                    <line x1="20" y1="220" x2="20" y2="230" stroke="black" stroke-width="2"/>
+                    <line x1="10" y1="230" x2="30" y2="230" stroke="black" stroke-width="2"/>
+                    <line x1="14" y1="235" x2="26" y2="235" stroke="black" stroke-width="2"/>
+
+                    <!-- Divisor R1 / LDR -->
+                    <line x1="80" y1="30" x2="80" y2="60" stroke="black" stroke-width="2"/>
+                    <rect x="70" y="60" width="20" height="40" fill="white" stroke="black" stroke-width="2"/> <!-- R1 -->
+                    <text x="45" y="70" font-family="Arial" font-size="12">R1</text>
+                    <text x="45" y="85" font-family="Arial" font-size="12">10k</text>
+                    
+                    <line x1="80" y1="100" x2="80" y2="130" stroke="black" stroke-width="2"/>
+                    <rect x="70" y="130" width="20" height="40" fill="white" stroke="black" stroke-width="2"/> <!-- LDR Box -->
+                    <text x="40" y="160" font-family="Arial" font-size="12">LDR</text>
+                    <text x="100" y="145" font-family="Arial" font-size="12">R2</text>
+                    <!-- Arrows LDR -->
+                    <line x1="55" y1="135" x2="65" y2="145" stroke="black" stroke-width="1.5"/>
+                    <line x1="55" y1="145" x2="65" y2="155" stroke="black" stroke-width="1.5"/>
+                    <polygon points="65,145 62,142 63,147" fill="black"/>
+                    <polygon points="65,155 62,152 63,157" fill="black"/>
+                    
+                    <line x1="80" y1="170" x2="80" y2="220" stroke="black" stroke-width="2"/>
+
+                    <!-- LM358 OpAmp -->
+                    <polygon points="180,90 180,170 240,130" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="190" y="105" font-family="Arial" font-size="12">LM358</text>
+                    <text x="185" y="120" font-family="Arial" font-size="16">-</text> <!-- Pin 2 -->
+                    <text x="185" y="155" font-family="Arial" font-size="16">+</text> <!-- Pin 3 -->
+                    <text x="160" y="125" font-family="Arial" font-size="10">2</text>
+                    <text x="160" y="145" font-family="Arial" font-size="10">3</text>
+
+                    <!-- Connections to OpAmp -->
+                    <!-- R1/LDR to Pin 2 (-) -->
+                    <line x1="80" y1="115" x2="180" y2="115" stroke="black" stroke-width="2"/> 
+                    
+                    <!-- Pot R3 -->
+                    <line x1="140" y1="30" x2="140" y2="220" stroke="black" stroke-width="1" stroke-dasharray="4"/>
+                    <rect x="130" y="60" width="20" height="110" fill="white" stroke="black" stroke-width="2"/> <!-- Pot body -->
+                    <text x="110" y="120" font-family="Arial" font-size="12">R3</text>
+                    <!-- Wiper -->
+                    <line x1="150" y1="145" x2="180" y2="145" stroke="black" stroke-width="2"/>
+                    <polyline points="155,145 145,140 145,150 155,145" fill="black"/> <!-- Arrow head -->
+
+                    <!-- Output Side -->
+                    <line x1="240" y1="130" x2="260" y2="130" stroke="black" stroke-width="2"/>
+                    <rect x="260" y="120" width="30" height="20" fill="white" stroke="black" stroke-width="2"/> <!-- R4 -->
+                    <text x="265" y="115" font-family="Arial" font-size="12">R4</text>
+                    <text x="265" y="155" font-family="Arial" font-size="12">1k</text>
+                    
+                    <!-- Transistor Q1 -->
+                    <line x1="290" y1="130" x2="310" y2="130" stroke="black" stroke-width="2"/> <!-- Base wire -->
+                    <line x1="310" y1="110" x2="310" y2="150" stroke="black" stroke-width="3"/> <!-- Base Plate -->
+                    <line x1="310" y1="120" x2="330" y2="100" stroke="black" stroke-width="2"/> <!-- Collector leg -->
+                    <line x1="310" y1="140" x2="330" y2="160" stroke="black" stroke-width="2"/> <!-- Emitter leg -->
+                    <polyline points="325,160 330,160 330,155" fill="black" stroke="black" stroke-width="1"/> <!-- Arrow -->
+                    <text x="340" y="140" font-family="Arial" font-size="14" font-weight="bold">Q1</text>
+                    <text x="340" y="155" font-family="Arial" font-size="10">BC547</text>
+
+                    <!-- Emitter to GND -->
+                    <line x1="330" y1="160" x2="330" y2="220" stroke="black" stroke-width="2"/>
+
+                    <!-- Relay & Diode -->
+                    <line x1="330" y1="100" x2="330" y2="90" stroke="black" stroke-width="2"/>
+                    <!-- Relay Coil -->
+                    <rect x="315" y="50" width="30" height="40" fill="white" stroke="black" stroke-width="2"/>
+                    <line x1="315" y1="50" x2="345" y2="90" stroke="black" stroke-width="1"/> <!-- Slash for coil -->
+                    <text x="350" y="60" font-family="Arial" font-size="12">Relé</text>
+                    <line x1="330" y1="50" x2="330" y2="30" stroke="black" stroke-width="2"/>
+
+                    <!-- Diode D2 -->
+                    <line x1="300" y1="90" x2="300" y2="50" stroke="black" stroke-width="2"/>
+                    <polygon points="295,65 305,65 300,55" fill="white" stroke="black" stroke-width="2"/> <!-- Diode Triangle -->
+                    <line x1="295" y1="55" x2="305" y2="55" stroke="black" stroke-width="2"/> <!-- Diode Bar -->
+                    <line x1="300" y1="90" x2="330" y2="90" stroke="black" stroke-width="2"/>
+                    <line x1="300" y1="50" x2="330" y2="50" stroke="black" stroke-width="2"/>
+                    <text x="280" y="65" font-family="Arial" font-size="10">D2</text>
+
+                    <!-- RED CIRCLE around Transistor -->
+                    <ellipse cx="325" cy="135" rx="35" ry="35" fill="none" stroke="red" stroke-width="3"/>
+
+                </svg>
+            </div>
+            <span class="question-title">Pregunta 1: El elemento marcado bajo círculo rojo:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1i_q1" value="a"> a. Es un puente de Wheatstone que amplifica la señal de salida.</label>
+                <label><input type="radio" name="ce1i_q1" value="b"> b. Es un amplificador operacional que amplifica la señal de salida.</label>
+                <label><input type="radio" name="ce1i_q1" value="c"> c. Es un puente de Wheatstone que acondiciona la señal de salida.</label>
+                <label><input type="radio" name="ce1i_q1" value="d"> d. Es un transistor que amplifica la señal de salida.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <div class="circuit-container">
+                <svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Graetz Bridge Schematic -->
+                    <line x1="20" y1="75" x2="60" y2="75" stroke="black" stroke-width="2"/> <!-- AC In 1 -->
+                    <text x="5" y="80" font-family="Arial" font-size="12">Vac</text>
+                    
+                    <!-- Diamond -->
+                    <line x1="100" y1="20" x2="140" y2="75" stroke="black" stroke-width="2"/>
+                    <line x1="140" y1="75" x2="100" y2="130" stroke="black" stroke-width="2"/>
+                    <line x1="100" y1="130" x2="60" y2="75" stroke="black" stroke-width="2"/>
+                    <line x1="60" y1="75" x2="100" y2="20" stroke="black" stroke-width="2"/>
+                    
+                    <!-- Diodes (simplified as triangles on lines) -->
+                    <polygon points="80,47 85,55 75,55" fill="black"/> 
+                    <polygon points="120,102 125,110 115,110" fill="black"/>
+                    
+                    <line x1="100" y1="20" x2="180" y2="20" stroke="black" stroke-width="2"/> <!-- DC+ -->
+                    <line x1="100" y1="130" x2="180" y2="130" stroke="black" stroke-width="2"/> <!-- DC- -->
+                    
+                    <text x="90" y="15" font-family="Arial" font-size="12">D1</text>
+                </svg>
+            </div>
+            <span class="question-title">Pregunta 2: El siguiente circuito:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1i_q2" value="a"> a. Es un puente de Wheatstone para acondicionar señales.</label>
+                <label><input type="radio" name="ce1i_q2" value="b"> b. Es un puente de Wheatstone para rectificar señales.</label>
+                <label><input type="radio" name="ce1i_q2" value="c"> c. Es un puente de Graetz para acondicionar señales.</label>
+                <label><input type="radio" name="ce1i_q2" value="d"> d. Es un puente de Graetz para rectificar señales.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <div class="circuit-container">
+                <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                     <!-- Wheatstone Bridge -->
+                     <polyline points="100,20 160,100 100,180 40,100 100,20" fill="none" stroke="black" stroke-width="2"/>
+                     <!-- AC Source -->
+                     <circle cx="30" cy="140" r="10" stroke="black" fill="none"/>
+                     <text x="25" y="145" font-family="Arial" font-size="14">~</text>
+                     <line x1="30" y1="130" x2="30" y2="100" stroke="black" stroke-width="2"/>
+                     <line x1="30" y1="150" x2="30" y2="180" stroke="black" stroke-width="2"/>
+                     <line x1="30" y1="180" x2="100" y2="180" stroke="black" stroke-width="2"/>
+                     <line x1="30" y1="100" x2="40" y2="100" stroke="black" stroke-width="2"/>
+
+                     <!-- Resistors -->
+                     <rect x="55" y="50" width="15" height="30" transform="rotate(-45 62 65)" fill="white" stroke="black" stroke-width="1"/>
+                     <rect x="125" y="50" width="15" height="30" transform="rotate(45 132 65)" fill="white" stroke="black" stroke-width="1"/>
+                     <rect x="55" y="130" width="15" height="30" transform="rotate(45 62 145)" fill="white" stroke="black" stroke-width="1"/>
+                     <rect x="125" y="130" width="15" height="30" transform="rotate(-45 132 145)" fill="white" stroke="black" stroke-width="1"/>
+
+                     <text x="40" y="50" font-family="Arial" font-size="12">R1</text>
+                     <text x="140" y="50" font-family="Arial" font-size="12">Rx</text>
+                     <text x="40" y="170" font-family="Arial" font-size="12">R2</text>
+                     <text x="140" y="170" font-family="Arial" font-size="12">R3</text>
+                     
+                     <text x="95" y="15" font-family="Arial" font-size="12">A</text>
+                     <text x="165" y="105" font-family="Arial" font-size="12">B</text>
+                </svg>
+            </div>
+            <span class="question-title">Pregunta 3: El siguiente circuito:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1i_q3" value="a"> a. R2 y Rx representan dos sensores capacitivos.</label>
+                <label><input type="radio" name="ce1i_q3" value="b"> b. Se emplea para acondicionar señales en corriente continua.</label>
+                <label><input type="radio" name="ce1i_q3" value="c"> c. R1 y R3 representan dos sensores resistivos.</label>
+                <label><input type="radio" name="ce1i_q3" value="d"> d. Se emplea para acondicionar señales en corriente alterna.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <div class="circuit-container">
+                 <svg width="250" height="150" viewBox="0 0 250 150" xmlns="http://www.w3.org/2000/svg">
+                    <!-- OpAmp Differential -->
+                    <polygon points="100,40 100,100 160,70" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="105" y="55" font-family="Arial">-</text>
+                    <text x="105" y="90" font-family="Arial">+</text>
+                    
+                    <text x="10" y="50" font-family="Arial">V1</text>
+                    <text x="10" y="90" font-family="Arial">V2</text>
+                    <line x1="30" y1="50" x2="100" y2="50" stroke="black" stroke-width="2"/>
+                    <line x1="30" y1="90" x2="100" y2="90" stroke="black" stroke-width="2"/>
+                    <line x1="160" y1="70" x2="200" y2="70" stroke="black" stroke-width="2"/>
+                    <text x="210" y="75" font-family="Arial">Vout</text>
+                </svg>
+            </div>
+            <span class="question-title">Pregunta 4: El siguiente circuito permite:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1i_q4" value="a"> a. Amplificar las señales de entrada.</label>
+                <label><input type="radio" name="ce1i_q4" value="b"> b. Reducir las señales de entrada.</label>
+                <label><input type="radio" name="ce1i_q4" value="c"> c. Obtener una señal de salida cuando V1 y V2 son iguales.</label>
+                <label><input type="radio" name="ce1i_q4" value="d"> d. Obtener una señal de salida cuando V1 y V2 son diferentes.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="d">
+            <span class="question-title">Pregunta 5: Entre los siguientes circuitos:</span>
+            <!-- Esquema simplificado texto/SVG para contexto de la pregunta -->
+             <div class="circuit-container">
+                <svg width="300" height="120" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+                    <text x="50" y="60" font-family="Arial" font-weight="bold">CIRCUITO 1</text>
+                    <text x="200" y="60" font-family="Arial" font-weight="bold">CIRCUITO 2</text>
+                    <rect x="20" y="20" width="100" height="80" rx="5" fill="none" stroke="gray" stroke-dasharray="4"/>
+                    <rect x="170" y="20" width="100" height="80" rx="5" fill="none" stroke="gray" stroke-dasharray="4"/>
+                </svg>
+            </div>
+            <div class="options">
+                <label><input type="radio" name="ce1i_q5" value="a"> a. El circuito de la derecha es un puente de Graetz.</label>
+                <label><input type="radio" name="ce1i_q5" value="b"> b. El circuito de la izquierda es un divisor de corriente.</label>
+                <label><input type="radio" name="ce1i_q5" value="c"> c. Ambos circuitos se usan para rectificar la tensión.</label>
+                <label><input type="radio" name="ce1i_q5" value="d"> d. Ninguna de las opciones es correcta.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="b">
+            <div class="circuit-container">
+                 <svg width="100" height="120" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- TO-220 Package Drawing -->
+                    <rect x="25" y="10" width="50" height="50" fill="#333" stroke="black"/> <!-- Body -->
+                    <rect x="35" y="0" width="30" height="10" fill="#888" stroke="black"/> <!-- Tab -->
+                    <circle cx="50" cy="5" r="3" fill="white"/> <!-- Hole -->
+                    <line x1="35" y1="60" x2="35" y2="110" stroke="#888" stroke-width="4"/> <!-- Leg 1 -->
+                    <line x1="50" y1="60" x2="50" y2="110" stroke="#888" stroke-width="4"/> <!-- Leg 2 -->
+                    <line x1="65" y1="60" x2="65" y2="110" stroke="#888" stroke-width="4"/> <!-- Leg 3 -->
+                    <text x="30" y="40" font-family="Arial" font-size="8" fill="white">BJT</text>
+                </svg>
+            </div>
+            <span class="question-title">Pregunta 6: Indica el nombre del acondicionador de señal que se muestra en la siguiente imagen:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1i_q6" value="a"> a. Amplificador operacional</label>
+                <label><input type="radio" name="ce1i_q6" value="b"> b. Transistor BJT</label>
+                <label><input type="radio" name="ce1i_q6" value="c"> c. Diodo</label>
+                <label><input type="radio" name="ce1i_q6" value="d"> d. Puente de Wheatstone</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="c">
+            <span class="question-title">Pregunta 7: Los acondicionadores de señal para sensores de reactancia variable o electromagnéticos se alimentan:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1i_q7" value="a"> a. No necesitan alimentación.</label>
+                <label><input type="radio" name="ce1i_q7" value="b"> b. Es indiferente.</label>
+                <label><input type="radio" name="ce1i_q7" value="c"> c. Con señales de corriente alterna.</label>
+                <label><input type="radio" name="ce1i_q7" value="d"> d. Con señales de corriente continua.</label>
+            </div>
+        </div>
+
+        <div class="question" data-correct="b">
+            <span class="question-title">Pregunta 8: Para llevar a cabo la reducción de tensión de una señal del voltaje y así acondicionarla, es posible emplear:</span>
+            <div class="options">
+                <label><input type="radio" name="ce1i_q8" value="a"> a. Amplificadores operacionales</label>
+                <label><input type="radio" name="ce1i_q8" value="b"> b. Divisores de tensión</label>
+                <label><input type="radio" name="ce1i_q8" value="c"> c. Divisores de corriente</label>
+                <label><input type="radio" name="ce1i_q8" value="d"> d. Todas las opciones son correctas</label>
+            </div>
+        </div>
+
+        <button class="btn-correct" onclick="checkAnswers('block-ce1i')">Corregir CE1I</button>
+        <div class="result-msg" id="result-block-ce1i"></div>
+    </section>
+
+    <script>
+        function checkAnswers(blockId) {
+            const section = document.getElementById(blockId);
+            const questions = section.querySelectorAll('.question');
+            let correctCount = 0;
+            let totalCount = questions.length;
+
+            questions.forEach(q => {
+                const correctAnswer = q.getAttribute('data-correct');
+                const inputs = q.querySelectorAll('input[type="radio"]');
+                let selected = null;
+                
+                // Reset styles
+                q.querySelectorAll('label').forEach(l => {
+                    l.classList.remove('correct', 'incorrect', 'missed-correct');
+                });
+
+                inputs.forEach(input => {
+                    if (input.checked) {
+                        selected = input;
+                    }
+                });
+
+                if (selected) {
+                    const selectedLabel = selected.parentElement;
+                    if (selected.value === correctAnswer) {
+                        selectedLabel.classList.add('correct');
+                        correctCount++;
+                    } else {
+                        selectedLabel.classList.add('incorrect');
+                        // Find correct and mark it
+                        inputs.forEach(input => {
+                            if(input.value === correctAnswer) {
+                                input.parentElement.classList.add('missed-correct');
+                            }
+                        });
+                    }
+                } else {
+                    // Nothing selected, just show correct answer
+                    inputs.forEach(input => {
+                        if(input.value === correctAnswer) {
+                            input.parentElement.classList.add('missed-correct');
+                        }
+                    });
+                }
+            });
+
+            const resultDiv = document.getElementById('result-' + blockId);
+            resultDiv.innerHTML = `Has acertado ${correctCount} de ${totalCount} preguntas.`;
+            resultDiv.style.color = correctCount === totalCount ? '#27ae60' : '#c0392b';
+            resultDiv.style.backgroundColor = correctCount === totalCount ? '#e8f8f5' : '#fdedec';
+        }
+    </script>
+</body>
+</html>
