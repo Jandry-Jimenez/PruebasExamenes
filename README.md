@@ -6,4 +6,5 @@ Asignatura
 <!-- #[Ir al Examen de Energías Revables Tema 2](examenMajo.html) -->
 <!-- #[Ir al Examen de Autocad](autocad.html) -->
 <!--[Ir al Examen de Subestaciones](subestaciones.html) -->
-[Ir al Examen de Teleco](telecot1.html) 
+<!--[Ir al Examen de Teleco](telecot1.html)  -->
+[Examen Recuperación Centrales](recucentrales.html) 
