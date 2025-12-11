@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solucionario Completo - Energías Renovables</title>
+    <style>
+        :root {
+            --primary: #0056b3;
+            --secondary: #f0f4f8;
+            --accent: #e8590c;
+            --text: #333;
+            --border: #ddd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
+        h2 { font-size: 1.4rem; color: #444; border-left: 5px solid var(--primary); padding-left: 10px; margin-top: 30px;}
+        h2.tema1 { border-color: var(--accent); color: #b54708; }
+        h3 { font-size: 1.1rem; color: #666; margin-top: 20px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Navegación por pestañas */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            padding: 10px 15px;
+            border: none;
+            background: #e9ecef;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #555;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover { background-color: #dee2e6; }
+        
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Estilo especial para Tema 1 */
+        .tab-btn.tema1-btn.active {
+            background-color: var(--accent);
+        }
+
+        /* Contenido de los ejercicios */
+        .exercise-content { display: none; animation: fadeIn 0.4s; }
+        .exercise-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .problem-statement {
+            background-color: var(--secondary);
+            padding: 15px;
+            border-radius: 5px;
+            font-style: italic;
+            border: 1px solid #dae1e7;
+            margin-bottom: 20px;
+        }
+
+        .solution-step {
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 3px solid #ccc;
+            background: #fafafa;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .result-box {
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #1b5e20;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .formula {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1em;
+            background: #fffbe6;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* Estilos matemáticos simples */
+        .math-block {
+            font-family: 'Courier New', monospace;
+            background: #f4f4f4;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 5px 0;
+            display: block;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+            background-color: #fff;
+            margin-top: 15px;
+            display: block;
+        }
+
+        /* Listas para Tema 1 */
+        ul.specs { list-style-type: none; padding: 0; }
+        ul.specs li { 
+            background: #fff; 
+            border-bottom: 1px solid #eee; 
+            padding: 8px 10px; 
+            display: flex; 
+            justify-content: space-between;
+        }
+        ul.specs li strong { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Examen 1 EVA</h1>
+        <p>Departamento de Electricidad y Electrónica - Energías Renovables</p>
+    </header>
+
+    <!-- Botones de Navegación -->
+    <div class="tabs">
+
+        <!-- Tema 2 -->
+        <button class="tab-btn active" onclick="openExercise(1)">T2 - 1</button>
+        <button class="tab-btn" onclick="openExercise(2)">T2 - 2 </button>
+        <button class="tab-btn" onclick="openExercise(3)">T2 - 3</button>
+        <button class="tab-btn" onclick="openExercise(4)">T2 - 4</button>
+
+        <!-- Tema 1 -->
+        <button class="tab-btn tema1-btn" onclick="openExercise(5)">T1 - 3</button>
+        <button class="tab-btn tema1-btn" onclick="openExercise(6)">T1 - 4</button>
+    </div>
+
+   <!-- ========================================== -->
+    <!--           CONTENIDO TEMA 1                -->
+    <!-- ========================================== -->
+
+    <!-- EJERCICIO 3 (T1) -->
+    <div id="ex5" class="exercise-content">
+        <h2 class="tema1">Ejercicio 3: Tipos de Condensadores</h2>
+        <div class="problem-statement">
+            <p>Clasifica los tipos de condensadores que conoces e indica sus características básicas.</p>
+        </div>
+
+        <div class="solution-step">
+            <ul class="specs">
+                <li>
+                    <strong>Poliéster (Plástico)</strong> 
+                    <span>No Polarizado (NP). Capacidad media/baja.</span>
+                </li>
+                <li>
+                    <strong>Cerámico</strong> 
+                    <span>No Polarizado (NP). Capacidad muy baja. Uso en alta frecuencia.</span>
+                </li>
+                <li>
+                    <strong>Electrolítico</strong> 
+                    <span>Polarizado (SP). Alta capacidad. Peligro si se invierte polaridad.</span>
+                </li>
+                <li>
+                    <strong>Tantalio</strong> 
+                    <span>Polarizado (SP). Alta capacidad, mayor estabilidad y precisión.</span>
+                </li>
+                <li>
+                    <strong>Supercondensador</strong> 
+                    <span>Polarizado. Capacidad extremadamente alta (Faradios).</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- EJERCICIO 4 (T1) -->
+    <div id="ex6" class="exercise-content">
+        <h2 class="tema1">Ejercicio 4: Carga y Descarga</h2>
+        <div class="problem-statement">
+            <p>Datos: U=5V, C=1μF. <br>
+            Resistencias: R1=2MΩ, R2=2MΩ, R3=1MΩ, R4=1MΩ.<br>
+            Posición 1: Carga. Posición 2: Descarga.</p>
+        </div>
+
+        <h3>A) Posición 1 (Carga)</h3>
+        <div class="solution-step">
+            <p>El circuito activo incluye la fuente, R4 y R3 en serie con C.</p>
+            <p>Resistencia de carga (Req) = R4 + R3 = 1M + 1M = <strong>2 MΩ</strong>.</p>
+            <p>Constante de tiempo (<span class="formula">τ = R·C</span>):</p>
+            <p>τ = 2·10⁶ · 1·10⁻⁶ = <strong>2 segundos</strong>.</p>
+            <p>Tiempo de carga total (5τ):</p>
+            <div class="result-box">t = 10 segundos</div>
+            <p><em>Tensión máxima alcanzada: 5V.</em></p>
+        </div>
+
+        <h3>B) Posición 2 (Descarga)</h3>
+        <div class="solution-step">
+            <p>La fuente se desconecta. C se descarga a través de R4, el paralelo (R1||R2) y R3.</p>
+            <p>1. Paralelo R1||R2 = (2·2)/(2+2) = <strong>1 MΩ</strong>.</p>
+            <p>2. Resistencia total descarga = R4 + (R1||R2) + R3 = 1 + 1 + 1 = <strong>3 MΩ</strong>.</p>
+            <p>Constante de tiempo (τ):</p>
+            <p>τ = 3·10⁶ · 1·10⁻⁶ = <strong>3 segundos</strong>.</p>
+            <p>Tiempo de descarga total (5τ):</p>
+            <div class="result-box">t = 15 segundos</div>
+        </div>
+    </div>
+
+</div>
+
+
+    <!-- ========================================== -->
+    <!--           CONTENIDO UNIDAD 2              -->
+    <!-- ========================================== -->
+
+    <!-- EJERCICIO 1 (U2) -->
+    <div id="ex1" class="exercise-content active">
+        <h2>1. Conceptos Básicos Alterna</h2>
+        <div class="problem-statement">
+            <p>a) Calcula el valor máximo de una tensión eficaz de 120V.<br>
+            b) Calcula la corriente eficaz con un valor máximo de 40A.</p>
+        </div>
+        <div class="solution-step">
+            <h3>a) Tensión Máxima</h3>
+            <p><span class="formula">Vmax = Vrms · √2</span> = 120 · 1.4142</p>
+            <div class="result-box">Vmax = 169,7 V</div>
+        </div>
+        <div class="solution-step">
+            <h3>b) Corriente Eficaz</h3>
+            <p><span class="formula">Irms = Imax / √2</span> = 40 / 1.4142</p>
+            <div class="result-box">Irms = 28,28 A</div>
+        </div>
+    </div>
+
+    <!-- EJERCICIO 2 (U2) -->
+    <div id="ex2" class="exercise-content">
+        <h2>2. Circuito RLC Paralelo (Resolución Detallada)</h2>
+        <div class="problem-statement">
+	<p>Calcula las corrientes y tensiones de cada elemento, la impedancia total, P, Q, S y el factor de potencia. 
+	Dibuja el triángulo de potencias</p>
+            <p><strong>Datos:</strong> V = 230V, f = 50Hz (Estándar).</p>
+            <p><strong>Rama 1 (Serie):</strong> R = 15Ω, L = 0,0478H.</p>
+            <p><strong>Rama 2:</strong> C = 211,97μF.</p>
+        </div>
+
+        <div class="solution-step">
+            <h3>Paso 1: Calcular Reactancias (XL y XC)</h3>
+            <p>Calculamos la reactancia inductiva y capacitiva:</p>
+            <div class="math-block">XL = 2·π·f·L = 2·π·50·0,0478 ≈ 15 Ω</div>
+            <div class="math-block">XC = 1 / (2·π·f·C) = 1 / (2·π·50·211,97·10⁻⁶) ≈ 15 Ω</div>
+            <p><em>Nota: Las reactancias son numéricamente iguales a la resistencia.</em></p>
+        </div>
+
+        <div class="solution-step">
+            <h3>Paso 2: Análisis de la Rama 1 (R + L)</h3>
+            <p><strong>Impedancia Rama 1 (Z1):</strong></p>
+            <div class="math-block">Z1 = R + jXL = 15 + j15 = 21,21 ∠ 45° Ω</div>
+            
+            <p><strong>Corriente Rama 1 (I1):</strong></p>
+            <div class="math-block">I1 = V / Z1 = 230∠0° / 21,21∠45° = 10,84 ∠ -45° A</div>
+            <p>En forma rectangular:</p>
+            <div class="math-block">I1 = 7,66 - j7,66 A</div>
+
+            <p><strong>Tensiones en elementos de Rama 1:</strong></p>
+            <p>VR = I1 · R = 10,84 · 15 = <strong>162,6 V</strong></p>
+            <p>VL = I1 · XL = 10,84 · 15 = <strong>162,6 V</strong></p>
+        </div>
+
+        <div class="solution-step">
+            <h3>Paso 3: Análisis de la Rama 2 (Condensador)</h3>
+            <p><strong>Impedancia Rama 2 (Z2):</strong></p>
+            <div class="math-block">Z2 = -jXC = 0 - j15 = 15 ∠ -90° Ω</div>
+
+            <p><strong>Corriente Rama 2 (I2):</strong></p>
+            <div class="math-block">I2 = V / Z2 = 230∠0° / 15∠-90° = 15,33 ∠ 90° A</div>
+            <p>En forma rectangular:</p>
+            <div class="math-block">I2 = 0 + j15,33 A</div>
+            
+            <p><strong>Tensión en C:</strong> Al estar en paralelo, VC = <strong>230 V</strong>.</p>
+        </div>
+
+        <div class="solution-step">
+            <h3>Paso 4: Corriente Total e Impedancia Total</h3>
+            <p><strong>Corriente Total (Itot):</strong> Suma vectorial de I1 e I2.</p>
+            <div class="math-block">Itot = (7,66 - j7,66) + (0 + j15,33)</div>
+            <div class="math-block">Itot = 7,66 + j7,67 ≈ 10,84 ∠ 45° A</div>
+            <div class="result-box">Corriente Total = 10,84 A</div>
+
+            <p style="margin-top:15px"><strong>Impedancia Total (ZT):</strong></p>
+            <div class="math-block">ZT = V / Itot = 230∠0° / 10,84∠45° = 21,21 ∠ -45° Ω</div>
+            <p>Módulo: 21,21 Ω (Capacitiva).</p>
+        </div>
+
+        <div class="solution-step">
+            <h3>Paso 5: Potencias y Factor de Potencia</h3>
+            <p><strong>Potencia Activa (P):</strong> Solo consume la resistencia.</p>
+            <div class="math-block">P = I1² · R = 10,84² · 15 ≈ 1763 W</div>
+
+            <p><strong>Potencia Reactiva (Q):</strong> QL - QC.</p>
+            <p>QL = I1² · XL = 10,84² · 15 ≈ 1763 VAr (Inductiva)</p>
+            <p>QC = V² / XC = 230² / 15 ≈ 3526 VAr (Capacitiva)</p>
+            <div class="math-block">Qtotal = 1763 - 3526 = -1763 VAr</div>
+            <p><em>(El signo negativo indica carácter capacitivo).</em></p>
+
+            <p><strong>Potencia Aparente (S):</strong></p>
+            <div class="math-block">S = √(P² + Q²) = √(1763² + (-1763)²) ≈ 2493 VA</div>
+
+            <p><strong>Factor de Potencia (fp):</strong></p>
+            <div class="math-block">fp = cos(φ) = P / S = 1763 / 2493 ≈ 0,707</div>
+            <div class="result-box">FP = 0,707 (Capacitivo)</div>
+        </div>
+
+        <canvas id="powerTriangle" width="400" height="300"></canvas>
+    </div>
+
+    <!-- EJERCICIO 3 (U2) -->
+    <div id="ex3" class="exercise-content">
+        <h2>3. Corrección FP (Monofásico)</h2>
+	
+        <div class="problem-statement">
+	<p>Se tiene una instalación eléctrica dotada de una bomba eléctrica monofásica. La
+	potencia activa es de 10KW con un factor de potencia de 0.65. Se desea corregir el factor
+	de potencia a 0.95: calcula la capacidad del condensador necesario y dibuja su conexión
+	a la instalación.</p>
+            <p>P=10kW, FP 0.65 -> 0.95. Calcula el condensador.</p>
+        </div>
+        <div class="solution-step">
+            <p>Qc = 10000 · (tan(acos 0.65) - tan(acos 0.95)) = 8400 VAr.</p>
+            <p>C = 8400 / (230² · 314.16)</p>
+            <div class="result-box">C = 505,4 μF</div>
+        </div>
+    </div>
+
+    <!-- EJERCICIO 4 (U2) -->
+    <div id="ex4" class="exercise-content">
+        <h2>4. Corrección FP (Trifásico)</h2>
+        <div class="problem-statement">
+	
+            <p>P=15kW, 400V. FP 0.7 -> 0.9. Dimensiona batería y nuevas corrientes.</p></br>
+<p>En una instalación industrial se mide un factor de potencia de 0,7. Dimensiona la batería de condensadores 
+para mejorar el factor de potencia hasta 0,9. Los datos de dicha instalación son los siguientes:
+Potencia instalada 15 kW, frecuencia 5OHz, tensión entre fases 400 V.
+Calcula también la corriente eléctrica por la línea antes y después de mejorar el factor de
+potencia</p>
+        </div>
+        <div class="solution-step">
+            <p>Q batería = 15000 · (1.02 - 0.484)</p>
+            <div class="result-box">Qc = 8,04 kVAr</div>
+            <p style="margin-top:10px"><strong>Corrientes:</strong></p>
+            <p>Antes: 30,93 A <br> Después: 24,06 A</p>
+        </div>
+    </div>
+
+   
+
+<script>
+    function openExercise(exNumber) {
+        // Ocultar todos
+        const contents = document.querySelectorAll('.exercise-content');
+        contents.forEach(div => div.classList.remove('active'));
+
+        // Desactivar botones
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // Mostrar seleccionado (ID es ex1, ex2... ex6)
+        const selectedDiv = document.getElementById('ex' + exNumber);
+        if(selectedDiv) selectedDiv.classList.add('active');
+        
+        // Activar botón (índice array es exNumber-1)
+        if(buttons[exNumber-1]) buttons[exNumber-1].classList.add('active');
+
+        // Redibujar canvas si es ej 2
+        if(exNumber === 2) drawTriangle();
+    }
+
+    function drawTriangle() {
+        const canvas = document.getElementById('powerTriangle');
+        if (!canvas.getContext) return;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const startX = 50, startY = 50;
+        const scale = 0.15; 
+        const P = 1763 * scale; 
+        const Q = 1763 * scale; 
+
+        // Ejes
+        ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(startX + P + 20, startY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(startX, startY + Q + 20); ctx.stroke();
+
+        // Triángulo
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + P, startY);
+        ctx.lineTo(startX + P, startY + Q);
+        ctx.lineTo(startX, startY);
+        
+        ctx.fillStyle = 'rgba(0, 86, 179, 0.1)';
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#0056b3';
+        ctx.stroke();
+
+        // Textos
+        ctx.font = '14px Arial';
+        ctx.fillStyle = '#000';
+        ctx.fillText("P = 1763 W", startX + P/2 - 30, startY - 10);
+        ctx.fillText("Q = 1763 VAr", startX + P + 5, startY + Q/2);
+        
+        ctx.save();
+        ctx.translate(startX + P/2 - 10, startY + Q/2 + 10);
+        ctx.rotate(Math.PI / 4);
+        ctx.fillText("S = 2493 VA", 0, 0);
+        ctx.restore();
+
+        // Ángulo
+        ctx.beginPath();
+        ctx.arc(startX, startY, 30, 0, Math.PI/4, false);
+        ctx.stroke();
+        ctx.fillText("φ", startX + 35, startY + 20);
+    }
+</script>
+
+</body>
+</html>
