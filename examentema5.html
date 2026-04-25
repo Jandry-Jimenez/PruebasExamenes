@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Unidad 5: Máquinas Eléctricas Rotativas</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --box-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #dddddd;
+            --correct-bg: #d4edda;
+            --correct-border: #c3e6cb;
+            --correct-text: #155724;
+            --incorrect-bg: #f8d7da;
+            --incorrect-border: #f5c6cb;
+            --incorrect-text: #721c24;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--box-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h1 {
+            font-size: 22px;
+            color: var(--primary-color);
+        }
+
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .student-info input {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 10px 15px;
+            background: #e9ecef;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .tab-btn:hover {
+            background: #d6d8db;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Sections and Questions */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #444;
+            background: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .question-box {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #fafafa;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .options label {
+            display: block;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .options label:hover {
+            background: #f1f1f1;
+        }
+
+        .options input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        /* Buttons */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .btn-fullscreen { background-color: #6c757d; }
+        .btn-fullscreen:hover { background-color: #5a6268; }
+
+        .btn-submit { background-color: #28a745; width: 100%; font-size: 18px; margin-top: 10px;}
+        .btn-submit:hover { background-color: #218838; }
+        
+        .btn-submit-all { background-color: #17a2b8; width: 100%; font-size: 18px; margin-top: 10px;}
+        .btn-submit-all:hover { background-color: #138496; }
+
+        .btn-nav { background-color: var(--primary-color); }
+        .btn-nav:hover { background-color: #004494; }
+
+        /* Results Styles */
+        .result-container {
+            display: none;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #e2e3e5;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid #ccc;
+        }
+
+        .correct-ans {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+            color: var(--correct-text);
+        }
+
+        .wrong-ans {
+            background-color: var(--incorrect-bg) !important;
+            border-color: var(--incorrect-border) !important;
+            color: var(--incorrect-text);
+        }
+
+        .missed-correct {
+            font-weight: bold;
+            color: var(--correct-text);
+            border: 2px dashed var(--correct-border) !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 15px; margin: 10px; }
+            h1 { font-size: 18px; }
+            .tabs { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="exam-container">
+    <header>
+        <h1>EXAMEN UNIDAD 5: MÁQUINAS ELÉCTRICAS ROTATIVAS</h1>
+        <div class="student-info">
+            <input type="text" placeholder="Nombre y Apellidos" style="flex-grow: 1;">
+            <input type="date" placeholder="Fecha">
+        </div>
+        <button class="btn-fullscreen" onclick="toggleFullScreen()">⛶ Pantalla Completa</button>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showSection(1)">1. Alternadores</button>
+        <button class="tab-btn" onclick="showSection(2)">2. Asíncronos</button>
+        <button class="tab-btn" onclick="showSection(3)">3. Arranque</button>
+        <button class="tab-btn" onclick="showSection(4)">4. Monofásicos</button>
+        <button class="tab-btn" onclick="showSection(5)">5. Corriente Continua</button>
+    </div>
+
+    <form id="exam-form">
+        <!-- ================= APARTADO 1 ================= -->
+        <div id="sec1" class="section active">
+            <h2>APARTADO 1: Alternadores y Conceptos Generales</h2>
+            
+            <div class="question-box" data-answer="d">
+                <div class="question-text">1. Elige la respuesta correcta. En referencia a la constitución práctica de un alternador trifásico:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_1" value="a"> a) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q1_1" value="b"> b) El campo magnético se genera habitualmente en el estator (inductor) y la fuerza electromotriz se induce en el rotor móvil (inducido), recogiendo la corriente alterna mediante delgas.</label>
+                    <label><input type="radio" name="q1_1" value="c"> c) En todo caso, el estator aloja el circuito inductor de corriente continua, mientras que el rotor dispone de tres devanados independientes separados 120º geométricos.</label>
+                    <label><input type="radio" name="q1_1" value="d"> d) Normalmente, el circuito inducido queda fijo en el estator para evitar la extracción de corrientes elevadas a través de anillos rozantes, mientras que el campo magnético es generado por el rotor.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">2. Elige la respuesta correcta. En referencia al cálculo de la frecuencia y fem del alternador:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_2" value="a"> a) La frecuencia de salida de un alternador se calcula multiplicando el número de polos de excitación por la velocidad de giro en revoluciones por minuto, y dividiendo el resultado siempre entre 120.</label>
+                    <label><input type="radio" name="q1_2" value="b"> b) El valor eficaz de la fem inducida depende únicamente de la frecuencia de salida, del número de espiras por fase y del coeficiente de devanado, siendo independiente del flujo magnético.</label>
+                    <label><input type="radio" name="q1_2" value="c"> c) Con un par de polos, un ciclo completo de la onda senoidal se completa exactamente en una vuelta del rotor; por tanto, a 50 revoluciones por segundo se obtienen invariablemente 50 Hz.</label>
+                    <label><input type="radio" name="q1_2" value="d"> d) Todas las respuestas son correctas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">3. Elige la respuesta correcta. En referencia a los métodos para alimentar el circuito inductor de un alternador:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_3" value="a"> a) En la excitatriz mediante alternador auxiliar, el inducido del pequeño alternador es siempre fijo y su inductor móvil, rectificando la corriente alterna para alimentar el estator del alternador principal.</label>
+                    <label><input type="radio" name="q1_3" value="b"> b) El circuito inductor debe ser alimentado en todo caso con corriente alterna para producir el campo magnético variable necesario que induzca la fem en el estator.</label>
+                    <label><input type="radio" name="q1_3" value="c"> c) Todas las respuestas son falsas.</label>
+                    <label><input type="radio" name="q1_3" value="d"> d) Cuando se utiliza una dinamo excitatriz acoplada al eje, ésta proporciona al devanado inducido del alternador la corriente continua necesaria a través de un transformador reductor.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">4. Elige la respuesta correcta. En referencia a las curvas características del alternador:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_4" value="a"> a) La curva en vacío indica de forma exclusiva cómo cambia la fem inducida en función de la corriente que circula por el inducido, manteniendo la velocidad de giro constante.</label>
+                    <label><input type="radio" name="q1_4" value="b"> b) Todas las respuestas son correctas.</label>
+                    <label><input type="radio" name="q1_4" value="c"> c) La curva de carga o característica externa nos proporciona información sobre cómo cambia la fem inducida dependiendo de la corriente que circula por el inducido, a velocidad y excitación constantes, para cada tipo de carga.</label>
+                    <label><input type="radio" name="q1_4" value="d"> d) En la característica externa, el comportamiento de la tensión en la carga es idéntico siempre, independientemente de si la carga conectada es de naturaleza puramente resistiva, inductiva o capacitiva.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="a">
+                <div class="question-text">5. Elige la respuesta correcta. En referencia al acoplamiento de alternadores en paralelo a una red:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_5" value="a"> a) Es requisito imprescindible que proporcionen la misma tensión y frecuencia de salida, que el orden de fases sea idéntico y que las tensiones estén perfectamente en fase en el momento de la conexión.</label>
+                    <label><input type="radio" name="q1_5" value="b"> b) Basta únicamente con que la tensión de línea del alternador sea idéntica a la tensión de la red para proceder al acoplamiento automático sin riesgo de cortocircuito.</label>
+                    <label><input type="radio" name="q1_5" value="c"> c) En el momento de la conexión, las tensiones de los alternadores deben presentar un desfase constante de 120º respecto a la red para permitir la sincronización dinámica del equipo.</label>
+                    <label><input type="radio" name="q1_5" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">6. Elige la respuesta correcta. En referencia al circuito inducido del alternador:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_6" value="a"> a) Se compone de varias bobinas conectadas en estrella o triángulo, pero el centro nunca se conecta a tierra para evitar derivaciones de flujo magnético disperso.</label>
+                    <label><input type="radio" name="q1_6" value="b"> b) Está compuesto siempre por tres bobinas alojadas en un núcleo macizo de hierro dulce para maximizar las pérdidas por histéresis y aumentar el rendimiento térmico.</label>
+                    <label><input type="radio" name="q1_6" value="c"> c) Normalmente, las bobinas del estator se conectan en estrella con el centro (neutro) conectado a tierra, y las fuerzas electromotrices generadas en cada conductor están diseñadas para restarse y limitar la corriente.</label>
+                    <label><input type="radio" name="q1_6" value="d"> d) Todas las respuestas son incorrectas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">7. Elige la respuesta correcta. En referencia a la excitación del alternador mediante "Alternador auxiliar":</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_7" value="a"> a) En este sistema, no se requieren diodos rectificadores, ya que el alternador auxiliar genera directamente corriente continua desde su inducido móvil.</label>
+                    <label><input type="radio" name="q1_7" value="b"> b) Se emplean dos rectificadores: uno para generar la excitación del pequeño alternador a partir del inducido del grande, y otro para generar la excitación del alternador grande a partir del inducido del pequeño.</label>
+                    <label><input type="radio" name="q1_7" value="c"> c) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q1_7" value="d"> d) La excitación del alternador de mayor tamaño se obtiene aplicando la tensión directamente desde la red eléctrica principal a través de un autotransformador rotativo.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="a">
+                <div class="question-text">8. Elige la respuesta correcta. En referencia al rotor de un alternador trifásico:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_8" value="a"> a) Los electroimanes del rotor se alimentan con corriente continua a través de dos anillos colectores y sus correspondientes escobillas.</label>
+                    <label><input type="radio" name="q1_8" value="b"> b) El número de polos del rotor de excitación puede ser par o impar, dependiendo únicamente de la frecuencia de red deseada y de la velocidad de giro de la turbina.</label>
+                    <label><input type="radio" name="q1_8" value="c"> c) Todas las respuestas son correctas.</label>
+                    <label><input type="radio" name="q1_8" value="d"> d) En los alternadores reales de gran tamaño, el rotor siempre está construido como una jaula de ardilla en cortocircuito para prescindir de los anillos rozantes.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">9. Elige la respuesta correcta. En referencia al comportamiento dinámico del alternador bajo carga:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_9" value="a"> a) Si la carga es puramente capacitiva, la tensión en bornes siempre decae drásticamente a medida que aumenta la corriente en el inducido, debido a la reacción inductiva del estator.</label>
+                    <label><input type="radio" name="q1_9" value="b"> b) Todas las respuestas son incorrectas.</label>
+                    <label><input type="radio" name="q1_9" value="c"> c) La regulación del reóstato en el circuito de excitación de la dinamo excitatriz es inútil una vez que el alternador asume carga constante en régimen nominal.</label>
+                    <label><input type="radio" name="q1_9" value="d"> d) La curva de vacío muestra cómo varía la fuerza electromotriz inducida en función de la corriente de excitación, y en ella se aprecia que la fem aumenta linealmente de forma indefinida sin presentar saturación magnética.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">10. Elige la respuesta correcta. En referencia a la clasificación general de las máquinas eléctricas:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_10" value="a"> a) Los transformadores se consideran máquinas rotativas porque en su interior los electrones giran a la velocidad de sincronismo de la red eléctrica.</label>
+                    <label><input type="radio" name="q1_10" value="b"> b) Los motores transforman energía eléctrica en mecánica, mientras que los generadores transforman energía mecánica en eléctrica, existiendo en ambos un movimiento relativo entre sus piezas.</label>
+                    <label><input type="radio" name="q1_10" value="c"> c) En las máquinas rotativas, todas las piezas están completamente estáticas durante el funcionamiento, siendo el campo magnético la única magnitud que experimenta un desplazamiento relativo.</label>
+                    <label><input type="radio" name="q1_10" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+            
+            <button type="button" class="btn-submit" onclick="corregirApartado(1)">✔ Corregir Apartado 1</button>
+            <div id="resultado-sec1" class="result-container"></div>
+            
+            <div class="controls">
+                <span></span>
+                <button type="button" class="btn-nav" onclick="showSection(2)">Siguiente Apartado ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= APARTADO 2 ================= -->
+        <div id="sec2" class="section">
+            <h2>APARTADO 2: Motores Asíncronos Trifásicos y Caja de Bornes</h2>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">1. Elige la respuesta correcta. En referencia al principio de funcionamiento del motor asíncrono trifásico:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_1" value="a"> a) El giro se produce porque el rotor debe alcanzar siempre exactamente la velocidad de sincronismo del campo giratorio; de lo contrario, el motor se detiene por falta de par.</label>
+                    <label><input type="radio" name="q2_1" value="b"> b) El motor nunca podrá alcanzar la velocidad del campo magnético, ya que si esto ocurriese, el campo dejaría de ser variable respecto al rotor, desaparecería la fem inducida y no habría fuerza motriz.</label>
+                    <label><input type="radio" name="q2_1" value="c"> c) La creación de un campo magnético giratorio en el estator requiere ineludiblemente la inyección de corriente continua a través de anillos rozantes en los terminales "u, v, w".</label>
+                    <label><input type="radio" name="q2_1" value="d"> d) Todas las respuestas son correctas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">2. Elige la respuesta correcta. En referencia a la constitución del motor asíncrono de rotor en cortocircuito:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_2" value="a"> a) Todas las respuestas son incorrectas.</label>
+                    <label><input type="radio" name="q2_2" value="b"> b) El estator cuenta con tres bobinas desfasadas 120º, y el rotor está formado por un cilindro metálico tipo jaula de ardilla, cuyas varillas y discos extremos son material aislante para evitar cortocircuitos.</label>
+                    <label><input type="radio" name="q2_2" value="c"> c) Las varillas conductoras del rotor están siempre en circuito abierto durante el arranque para minimizar la corriente absorbida, cerrándose posteriormente mediante fuerza centrífuga.</label>
+                    <label><input type="radio" name="q2_2" value="d"> d) El campo magnético giratorio induce una fem en las varillas del rotor cortocircuitadas, generando corrientes que, al interactuar con el mismo campo magnético, producen el par de giro según la regla de la mano izquierda.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">3. Elige la respuesta correcta. En referencia al deslizamiento (S) en un motor asíncrono:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_3" value="a"> a) Todas las respuestas son correctas.</label>
+                    <label><input type="radio" name="q2_3" value="b"> b) El deslizamiento se define como el cociente entre la velocidad de giro del rotor y la velocidad de sincronismo, multiplicado por 100, y su valor en vacío es siempre del 0%.</label>
+                    <label><input type="radio" name="q2_3" value="c"> c) Se calcula como S = ((ns - n) / ns) · 100, variando con la carga acoplada; de forma que al arrastrar carga mecánica, el deslizamiento aumenta y el rotor se frena ligeramente respecto al campo magnético giratorio.</label>
+                    <label><input type="radio" name="q2_3" value="d"> d) Cuando el motor pasa de vacío a plena carga, el deslizamiento disminuye drásticamente acercando la velocidad angular del rotor a la de la red, reduciendo así la corriente absorbida.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">4. Elige la respuesta correcta. En referencia al arranque del motor de rotor en cortocircuito:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_4" value="a"> a) Al conectar el motor estando el rotor parado, la velocidad angular del rotor es cero y el campo giratorio induce una fem rotórica muy baja, lo que provoca que la corriente inicial sea menor que la corriente nominal de régimen.</label>
+                    <label><input type="radio" name="q2_4" value="b"> b) En el momento del arranque, el rotor actúa de forma idéntica al secundario de un transformador cortocircuitado, provocando una circulación de corriente rotórica muy elevada que hace que el estator absorba hasta 5 veces la corriente nominal.</label>
+                    <label><input type="radio" name="q2_4" value="c"> c) Conforme el rotor acelera, la diferencia de velocidades entre el campo giratorio y el rotor aumenta, incrementando progresivamente la corriente del estator hasta que el par motor iguala al par resistente.</label>
+                    <label><input type="radio" name="q2_4" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">5. Elige la respuesta correcta. En referencia a la curva característica mecánica y los tipos de carga del motor asíncrono:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_5" value="a"> a) En cargas de "Par variable" como bombas y ventiladores, el par resistente del mecanismo disminuye de forma proporcional a la raíz cuadrada de la velocidad del motor.</label>
+                    <label><input type="radio" name="q2_5" value="b"> b) Si el par resistente de la carga aplicada sobrepasa el par máximo que el motor puede desarrollar, el motor absorbe cada vez menos corriente protegiéndose a sí mismo térmicamente hasta detenerse suavemente.</label>
+                    <label><input type="radio" name="q2_5" value="c"> c) En aplicaciones de tracción como cintas transportadoras, el par demandado es generalmente "constante", exigiendo del motor un par uniforme sin importar su régimen de giro.</label>
+                    <label><input type="radio" name="q2_5" value="d"> d) Todas las respuestas son correctas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">6. Elige la respuesta correcta. En referencia al motor asíncrono de rotor bobinado (anillos rozantes):</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_6" value="a"> a) Funciona bajo el mismo principio de inducción que el de cortocircuito, pero sus bobinas rotóricas están conectadas a anillos rozantes para inyectar corriente continua durante todo su funcionamiento.</label>
+                    <label><input type="radio" name="q2_6" value="b"> b) Permite regular la corriente circulante por el rotor y suavizar el arranque conectando unas resistencias rotóricas, sin necesidad de reducir la tensión en el estator y manteniendo un gran par de arranque.</label>
+                    <label><input type="radio" name="q2_6" value="c"> c) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q2_6" value="d"> d) Al arrancar este tipo de motor, el par motor se reduce mucho más drásticamente que en un motor de rotor en cortocircuito debido a las excesivas pérdidas resistivas en los anillos colectores de grafito.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">7. Elige la respuesta correcta. En referencia a la caja de bornes y conexión de un motor asíncrono de jaula de ardilla:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_7" value="a"> a) Si la placa indica 400/230V y la tensión de línea de nuestra red es de 400V, el motor deberá conectarse única y exclusivamente en triángulo para que cada bobina reciba 230V.</label>
+                    <label><input type="radio" name="q2_7" value="b"> b) Las bobinas del estator (terminales U, V, W y X, Y, Z) sólo pueden conectarse en estrella si el motor supera los 15 kW, por mandato estricto del REBT para minimizar fluctuaciones.</label>
+                    <label><input type="radio" name="q2_7" value="c"> c) En un motor con placa 400/230V conectado en estrella a una red de línea de 400V, cada bobina quedará sometida internamente a una fase de 230V.</label>
+                    <label><input type="radio" name="q2_7" value="d"> d) Todas las respuestas son falsas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">8. Elige la respuesta correcta. En referencia a la placa de características de los motores asíncronos:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_8" value="a"> a) Para calcular las corrientes absorbidas por el motor desde la red, es suficiente con utilizar el valor de la potencia que indica la placa, puesto que dicha cifra representa en todo caso la potencia aparente (S) absorbida de la red eléctrica.</label>
+                    <label><input type="radio" name="q2_8" value="b"> b) En la caja de bornes de un motor de rotor devanado, además de los bornes estatóricos, aparecen bornes marcados en minúscula (k, l, m) correspondientes a las resistencias estatóricas fijas de protección.</label>
+                    <label><input type="radio" name="q2_8" value="c"> c) La potencia que se indica habitualmente en las características técnicas y la placa de estos motores se refiere a la potencia útil o mecánica disponible en el eje, por lo que el rendimiento (η) es indispensable para deducir la potencia eléctrica activa absorbida.</label>
+                    <label><input type="radio" name="q2_8" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">9. Elige la respuesta correcta. En referencia al comportamiento del motor en vacío frente al motor en carga:</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_9" value="a"> a) En carga nominal, el rotor gira de manera perfectamente síncrona con el campo estatórico, anulando por completo las pérdidas en los conductores del rotor.</label>
+                    <label><input type="radio" name="q2_9" value="b"> b) Al conectar una carga, el rotor se frena levemente, lo que genera un aumento de la fem inducida rotórica y de la corriente del rotor, generando el par necesario para equilibrar el par resistente externo.</label>
+                    <label><input type="radio" name="q2_9" value="c"> c) Todas las respuestas son correctas.</label>
+                    <label><input type="radio" name="q2_9" value="d"> d) Al funcionar en vacío, el deslizamiento es del 100%, lo que permite que la corriente rotórica sea máxima garantizando la auto-refrigeración óptima del cilindro de chapas magnéticas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">10. Elige la respuesta correcta. En referencia a las variantes constructivas del rotor en cortocircuito (jaula de ardilla):</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_10" value="a"> a) Los rotores de jaula de ardilla de ranuras profundas y los de doble jaula se utilizan exclusivamente para convertir motores asíncronos en generadores síncronos de inducción.</label>
+                    <label><input type="radio" name="q2_10" value="b"> b) En un rotor de doble jaula de ardilla, la jaula interior (de trabajo) tiene mayor sección y menor resistencia que la exterior (de arranque), optimizando el par durante todo el proceso de aceleración.</label>
+                    <label><input type="radio" name="q2_10" value="c"> c) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q2_10" value="d"> d) Las varillas del rotor en cortocircuito siempre se construyen de materiales con altísima permeabilidad magnética (como el acero dulce) y nunca con materiales conductores amagnéticos como el cobre o el aluminio.</label>
+                </div>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="corregirApartado(2)">✔ Corregir Apartado 2</button>
+            <div id="resultado-sec2" class="result-container"></div>
+
+            <div class="controls">
+                <button type="button" class="btn-nav" onclick="showSection(1)">⬅ Anterior</button>
+                <button type="button" class="btn-nav" onclick="showSection(3)">Siguiente ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= APARTADO 3 ================= -->
+        <div id="sec3" class="section">
+            <h2>APARTADO 3: Sistemas de Arranque, Inversión y Regulación</h2>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">1. Elige la respuesta correcta. En referencia a los sistemas de arranque de motores asíncronos trifásicos:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_1" value="a"> a) El modo de arranque directo es admisible para todo tipo de motores en la industria, ya que las fuertes caídas de tensión originadas por este método están completamente compensadas por la compañía eléctrica suministradora.</label>
+                    <label><input type="radio" name="q3_1" value="b"> b) El arranque mediante autotransformador consiste en conectar unas bobinas en paralelo con el estator, generando un divisor de corriente que incrementa el par con el cuadrado de la tensión.</label>
+                    <label><input type="radio" name="q3_1" value="c"> c) Para reducir la corriente en el arranque, muchos métodos reducen la tensión de alimentación, pero esto conlleva el inconveniente de que el par de arranque se reduce linealmente con la tensión.</label>
+                    <label><input type="radio" name="q3_1" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">2. Elige la respuesta correcta. En referencia al arranque estrella-triángulo:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_2" value="a"> a) Todas las respuestas son falsas.</label>
+                    <label><input type="radio" name="q3_2" value="b"> b) Para utilizar este método, el motor debe permitir ineludiblemente su alimentación en triángulo con la misma tensión que la tensión de línea de la red eléctrica a la que será conectado.</label>
+                    <label><input type="radio" name="q3_2" value="c"> c) Durante la primera fase (estrella), la tensión aplicada a cada bobina es 1,73 veces menor que la de la red, y por ende, el par de arranque resulta ser 3 veces mayor que en un arranque directo.</label>
+                    <label><input type="radio" name="q3_2" value="d"> d) Este arranque puede aplicarse siempre a cualquier motor trifásico independientemente de las tensiones que marque su placa, siempre y cuando se utilicen contactores de gran calibre.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">3. Elige la respuesta correcta. En referencia a la inversión de giro de motores asíncronos trifásicos:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_3" value="a"> a) Para invertir el giro, es necesario invertir el orden de entrada de las tres fases del estator simultáneamente empleando un arrancador estático de transistores en cascada cruzada.</label>
+                    <label><input type="radio" name="q3_3" value="b"> b) Se logra intercambiando entre sí únicamente dos de las fases de alimentación; en maniobras con contactores, se deben emplear enclavamientos (eléctricos y/o mecánicos) para evitar que ambos contactores cierren a la vez, lo que provocaría un cortocircuito.</label>
+                    <label><input type="radio" name="q3_3" value="c"> c) La inversión de giro se basa en cortocircuitar momentáneamente el rotor para forzar un freno electrodinámico y, seguidamente, invertir la conexión de los anillos rozantes de la jaula de ardilla.</label>
+                    <label><input type="radio" name="q3_3" value="d"> d) Todas las respuestas son correctas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">4. Elige la respuesta correcta. En referencia al arranque con resistencias estatóricas:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_4" value="a"> a) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q3_4" value="b"> b) El par motor durante este tipo de arranque aumenta exponencialmente al cuadrado respecto a la reducción de tensión provocada por las resistencias en derivación.</label>
+                    <label><input type="radio" name="q3_4" value="c"> c) Consiste en conectar unas resistencias en serie con los devanados del estator al inicio del proceso; de este modo se genera una división de tensión, lo que limita la corriente pero disminuye el par con el cuadrado de la tensión aplicada.</label>
+                    <label><input type="radio" name="q3_4" value="d"> d) El esquema de potencia requiere que el contactor de línea (K1M) abra ineludiblemente antes de que el contactor de puenteo (K2M) cierre sus contactos para evitar sobreintensidades transitorias en la red.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">5. Elige la respuesta correcta. En referencia al funcionamiento del arrancador estático (Soft Starter):</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_5" value="a"> a) Emplea semiconductores de potencia para controlar la intensidad y la tensión entregada al motor durante el arranque, resultando un método muy agresivo debido a la creación incontrolada de sobretensiones parásitas de alta frecuencia.</label>
+                    <label><input type="radio" name="q3_5" value="b"> b) Al contrario que el variador de frecuencia, el arrancador estático funciona modificando simultánea y permanentemente la tensión y la frecuencia de red aplicada al motor durante todo su régimen nominal de carga.</label>
+                    <label><input type="radio" name="q3_5" value="c"> c) Todas las respuestas son correctas.</label>
+                    <label><input type="radio" name="q3_5" value="d"> d) Es un equipo configurable que permite elegir la entrega de par según la carga y puede incluir funciones para frenar el motor de forma controlada y protegerlo contra falta de fase y sobrecargas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">6. Elige la respuesta correcta. En referencia a la regulación de velocidad de motores asíncronos trifásicos:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_6" value="a"> a) En un motor de inducción estándar alimentado a red directa, la velocidad se puede variar cómodamente alterando a voluntad el número de fases de la corriente aplicada sin modificar el rebobinado interno.</label>
+                    <label><input type="radio" name="q3_6" value="b"> b) Un motor con conexión Dahlander dispone siempre de dos devanados estatóricos físicamente independientes entre sí, diseñados para conmutar su número de polos sin interactuar eléctricamente.</label>
+                    <label><input type="radio" name="q3_6" value="c"> c) La velocidad de un motor asíncrono se determina fundamentalmente por la frecuencia de la red de alimentación y por el número de pares de polos con que está construido el devanado.</label>
+                    <label><input type="radio" name="q3_6" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">7. Elige la respuesta correcta. En referencia a la maniobra del arranque estrella-triángulo (circuito de contactores):</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_7" value="a"> a) La conmutación de la conexión de las bobinas se efectúa siempre a través de un relé térmico temporizado invertido que desactiva los fusibles F1F.</label>
+                    <label><input type="radio" name="q3_7" value="b"> b) El paso de la conexión estrella a la conexión triángulo es instantáneo y elimina por completo el pico de corriente de red absorbida que se presenta en los arranques directos.</label>
+                    <label><input type="radio" name="q3_7" value="c"> c) Todas las respuestas son correctas.</label>
+                    <label><input type="radio" name="q3_7" value="d"> d) Cuando el temporizador actúa tras el tiempo ajustado, debe asegurar la apertura del contactor de estrella antes de dar la orden de cierre al contactor de triángulo, para evitar el cruce de fases franco.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">8. Elige la respuesta correcta. En referencia a las gráficas del par en el arranque estrella-triángulo:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_8" value="a"> a) La curva del par en conexión triángulo queda siempre por debajo del par resistente de la máquina desde el instante de conexión, lo que obliga al motor a arrancar obligatoriamente en la configuración estrella.</label>
+                    <label><input type="radio" name="q3_8" value="b"> b) Al realizarse el cambio de estrella a triángulo, el motor ya debe estar girando a una velocidad cercana a la de sincronismo; en ese instante, tanto la corriente como el par experimentan un brusco salto al alza para acoplarse a las curvas propias de la conexión triángulo.</label>
+                    <label><input type="radio" name="q3_8" value="c"> c) Todas las respuestas son falsas.</label>
+                    <label><input type="radio" name="q3_8" value="d"> d) En el momento inicial (velocidad cero), el par en configuración estrella es tres veces superior al par máximo de la configuración triángulo, garantizando así arranques con altas cargas acopladas de manera constante.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">9. Elige la respuesta correcta. En referencia a las limitaciones por calentamiento en líneas durante el arranque:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_9" value="a"> a) El REBT prohíbe taxativamente en todo caso la conexión directa de cualquier clase de motor eléctrico, forzando invariablemente el uso de variadores de frecuencia.</label>
+                    <label><input type="radio" name="q3_9" value="b"> b) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q3_9" value="c"> c) La reducción de la corriente absorbida en un método de tensión reducida, como el arranque por autotransformador, no presenta ningún inconveniente prestacional, manteniendo intacto en todo momento el par máximo del motor.</label>
+                    <label><input type="radio" name="q3_9" value="d"> d) La conexión directa provoca elevadas corrientes de arranque (que pueden llegar a 4,5 o más veces la nominal en motores convencionales), lo cual puede generar fuertes caídas de tensión indeseables en la red y es por ello que se aplican métodos de arranque de tensión reducida.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">10. Elige la respuesta correcta. En referencia a la comparación entre el arranque con resistencias rotóricas y resistencias estatóricas:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_10" value="a"> a) El arranque con resistencias rotóricas se emplea en motores de jaula de ardilla y se caracteriza por una fuerte disminución del par motor debido a la drástica reducción de la tensión en los bornes estatóricos.</label>
+                    <label><input type="radio" name="q3_10" value="b"> b) El arranque por resistencias rotóricas se hace en escalones, no reduce la tensión del estator y, por lo tanto, el par motor no decae de manera tan perjudicial como en los métodos de tensión reducida.</label>
+                    <label><input type="radio" name="q3_10" value="c"> c) Ambos arranques son estructuralmente idénticos e intercambiables entre sí, pudiéndose aplicar en todos los tipos de motores de inducción.</label>
+                    <label><input type="radio" name="q3_10" value="d"> d) Todas las respuestas son correctas.</label>
+                </div>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="corregirApartado(3)">✔ Corregir Apartado 3</button>
+            <div id="resultado-sec3" class="result-container"></div>
+
+            <div class="controls">
+                <button type="button" class="btn-nav" onclick="showSection(2)">⬅ Anterior</button>
+                <button type="button" class="btn-nav" onclick="showSection(4)">Siguiente ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= APARTADO 4 ================= -->
+        <div id="sec4" class="section">
+            <h2>APARTADO 4: Motores Monofásicos y Universales</h2>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">1. Elige la respuesta correcta. En referencia al principio de funcionamiento del motor asíncrono monofásico puro (un solo devanado):</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_1" value="a"> a) Al conectar la única bobina inductora a corriente alterna, se origina un campo magnético giratorio puro idéntico al de un motor trifásico, pero a menor velocidad angular.</label>
+                    <label><input type="radio" name="q4_1" value="b"> b) El campo magnético generado es alternativo y fijo, lo que provoca fuerzas contrapuestas en el rotor; por esta razón, el motor es incapaz de arrancar por sí solo a menos que se le aplique un impulso inicial externo o se dote de un elemento auxiliar.</label>
+                    <label><input type="radio" name="q4_1" value="c"> c) Estos motores están diseñados para operar siempre con el rotor totalmente bloqueado aprovechando su elevado par de inducción en vacío.</label>
+                    <label><input type="radio" name="q4_1" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">2. Elige la respuesta correcta. En referencia al motor asíncrono monofásico de fase partida:</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_2" value="a"> a) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q4_2" value="b"> b) Se utiliza un devanado principal y otro auxiliar de mayor sección y menor resistencia que el principal, con el objetivo de retrasar la corriente del auxiliar en 120º geométricos exactos.</label>
+                    <label><input type="radio" name="q4_2" value="c"> c) Dispone de un devanado auxiliar alojado habitualmente en un tercio de las ranuras, que al ser más resistivo provoca que la corriente que lo atraviesa esté desfasada respecto a la del principal, originando un débil pero suficiente campo magnético giratorio para el arranque.</label>
+                    <label><input type="radio" name="q4_2" value="d"> d) Este motor funciona siempre gracias a un condensador electrolítico en derivación que mantiene el desfase constante independientemente de si el interruptor centrífugo se acciona o no.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="a">
+                <div class="question-text">3. Elige la respuesta correcta. En referencia al motor monofásico con condensador de arranque:</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_3" value="a"> a) En algunos diseños se emplean dos condensadores en paralelo: uno de capacidad fija conectado permanentemente y otro de mayor capacidad que se desconecta al llegar a cierta velocidad mediante un interruptor centrífugo.</label>
+                    <label><input type="radio" name="q4_3" value="b"> b) El condensador se conecta invariablemente en paralelo estricto con el devanado principal para absorber toda la potencia reactiva de la red y aumentar el deslizamiento en el arranque.</label>
+                    <label><input type="radio" name="q4_3" value="c"> c) Todas las respuestas son incorrectas.</label>
+                    <label><input type="radio" name="q4_3" value="d"> d) Si el condensador de arranque no se desconecta mediante el interruptor centrífugo y permanece de manera continua, el motor girará eternamente con un par motor superior, sin sufrir ningún tipo de sobrecalentamiento.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="a">
+                <div class="question-text">4. Elige la respuesta correcta. En referencia al motor asíncrono monofásico de espira en cortocircuito (polos sombreados):</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_4" value="a"> a) Está provisto de un estator de polos salientes sobre los que se arrolla la bobina principal, e incorpora en un extremo del polo una espira de cobre cortocircuitada donde se induce una fem y un flujo retrasado que posibilitan el arranque.</label>
+                    <label><input type="radio" name="q4_4" value="b"> b) Este tipo de diseño es muy complejo, caro y se reserva exclusivamente para aplicaciones industriales de gran potencia y exigencia de par.</label>
+                    <label><input type="radio" name="q4_4" value="c"> c) Es el único motor monofásico que permite la inversión electrónica de su sentido de giro con solo intercambiar los cables de alimentación principal gracias a la simetría de la espira.</label>
+                    <label><input type="radio" name="q4_4" value="d"> d) Todas las respuestas son correctas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">5. Elige la respuesta correcta. En referencia al uso de un motor trifásico en una red monofásica (Conexión Steinmetz):</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_5" value="a"> a) Todas las respuestas son verdaderas.</label>
+                    <label><input type="radio" name="q4_5" value="b"> b) Se logra conectando un condensador en paralelo con la carga mecánica, aumentando simultáneamente tanto la potencia útil del motor como su par de arranque por encima de los valores trifásicos nominales.</label>
+                    <label><input type="radio" name="q4_5" value="c"> c) Es un método apropiado mayoritariamente para motores de pequeña potencia; requiere conectar un condensador entre dos de los bornes del motor, teniendo en cuenta que esta configuración reduce significativamente el par de arranque y la potencia mecánica útil.</label>
+                    <label><input type="radio" name="q4_5" value="d"> d) La tensión de alimentación recomendada debe coincidir en todo caso con la tensión menor indicada en la placa de características (por ejemplo 230V), conectando indefectiblemente el estator en estrella para soportar el exceso de intensidad monofásica.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">6. Elige la respuesta correcta. En referencia al motor universal:</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_6" value="a"> a) Es estructuralmente un motor de inducción con espira de sombra que solo puede funcionar con corriente continua gracias a un puente de diodos integrado en su estator.</label>
+                    <label><input type="radio" name="q4_6" value="b"> b) Todas las respuestas son incorrectas.</label>
+                    <label><input type="radio" name="q4_6" value="c"> c) Al operar en corriente alterna, este motor no requiere ningún tipo de colector de delgas ni escobillas de grafito, minimizando su desgaste y garantizando el nulo chisporroteo a 10000 rpm.</label>
+                    <label><input type="radio" name="q4_6" value="d"> d) Se trata básicamente de un motor de corriente continua con excitación en serie respecto al inducido, cuyas piezas polares se laminan para reducir el fuerte sobrecalentamiento provocado por histéresis y corrientes parásitas (Foucault) al ser alimentado en alterna.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">7. Elige la respuesta correcta. En referencia a la inversión de giro de los motores monofásicos de inducción:</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_7" value="a"> a) En los motores de fase partida o con condensador, basta con intercambiar la polaridad del enchufe de alimentación de red (Fase y Neutro) para que el sentido del campo giratorio se invierta inmediatamente.</label>
+                    <label><input type="radio" name="q4_7" value="b"> b) Para invertir su sentido de giro, es necesario permutar las conexiones de entrada de la corriente en el devanado auxiliar con respecto al devanado principal.</label>
+                    <label><input type="radio" name="q4_7" value="c"> c) En el motor de espira en cortocircuito, la inversión de giro se realiza extrayendo el condensador centrífugo y conectándolo en serie a la espira de cobre.</label>
+                    <label><input type="radio" name="q4_7" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="a">
+                <div class="question-text">8. Elige la respuesta correcta. En referencia a la desconexión del devanado auxiliar en motores de fase partida:</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_8" value="a"> a) Conviene desconectar dicho devanado al alcanzar aproximadamente el 75% de la velocidad nominal mediante un interruptor centrífugo, ya que su alta resistividad ocasionaría excesivas pérdidas por efecto Joule e ineficiencia si permaneciera activo de continuo.</label>
+                    <label><input type="radio" name="q4_8" value="b"> b) El devanado auxiliar nunca debe ser desconectado, ya que de hacerlo el campo magnético pulsante alternativo frenaría instantáneamente el rotor hasta llevarlo al bloqueo absoluto.</label>
+                    <label><input type="radio" name="q4_8" value="c"> c) Se desconecta únicamente mediante el relé térmico estatórico cuando este detecta la falta de fase en la red de la compañía comercializadora.</label>
+                    <label><input type="radio" name="q4_8" value="d"> d) Todas las respuestas son correctas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">9. Elige la respuesta correcta. En referencia a los condensadores empleados en motores monofásicos:</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_9" value="a"> a) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q4_9" value="b"> b) El condensador introduce un retraso inductivo severo en la corriente del devanado principal cercano a 180º para generar una contrafuerza electromotriz durante el arranque.</label>
+                    <label><input type="radio" name="q4_9" value="c"> c) Un condensador conectado en serie con el devanado auxiliar provoca que la corriente que por este circula se acerque a un desfase de 90º respecto a la corriente del principal, optimizando así la creación del campo magnético giratorio y mejorando el par de arranque en comparación con la fase partida convencional.</label>
+                    <label><input type="radio" name="q4_9" value="d"> d) Según la conexión Steinmetz, a mayor frecuencia de la red (Hz), siempre se requerirá un condensador de mucha mayor capacidad (µF/kW) para equilibrar las pérdidas rotóricas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">10. Elige la respuesta correcta. En referencia a la aplicación del motor universal:</div>
+                <div class="options">
+                    <label><input type="radio" name="q4_10" value="a"> a) Sólo se puede utilizar en aplicaciones estáticas de tensión regulada, ya que al carecer de cualquier método de autorregulación, a la menor pérdida de carga, su velocidad decae hasta cero.</label>
+                    <label><input type="radio" name="q4_10" value="b"> b) Debido a que no disponen de elementos sujetos a desgaste ni requieren colector de delgas, son muy adecuados para equipos de trabajo ininterrumpido en entornos industriales severos o sumergibles.</label>
+                    <label><input type="radio" name="q4_10" value="c"> c) Se emplean comúnmente en pequeños electrodomésticos (taladros portátiles, batidoras) por su capacidad para alcanzar elevadísimas velocidades de giro que son fácilmente regulables variando la tensión aplicada.</label>
+                    <label><input type="radio" name="q4_10" value="d"> d) Todas las respuestas son incorrectas.</label>
+                </div>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="corregirApartado(4)">✔ Corregir Apartado 4</button>
+            <div id="resultado-sec4" class="result-container"></div>
+
+            <div class="controls">
+                <button type="button" class="btn-nav" onclick="showSection(3)">⬅ Anterior</button>
+                <button type="button" class="btn-nav" onclick="showSection(5)">Siguiente ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= APARTADO 5 ================= -->
+        <div id="sec5" class="section">
+            <h2>APARTADO 5: Máquinas de Corriente Continua (Dinamos y Motores)</h2>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">1. Elige la respuesta correcta. En referencia al colector de delgas de un generador de corriente continua (dinamo):</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_1" value="a"> a) El colector de delgas está compuesto por anillos lisos y continuos unidos sin aislamiento entre ellos, lo que garantiza el paso de la fuerza contraelectromotriz al circuito exterior.</label>
+                    <label><input type="radio" name="q5_1" value="b"> b) Está montado fijamente en el estator, recibiendo la tensión rectificada directamente desde el electroimán auxiliar de los polos de conmutación.</label>
+                    <label><input type="radio" name="q5_1" value="c"> c) Si una espira gira y se conecta a dos anillos rozantes lisos (sin partir), se extrae corriente continua pura hacia el circuito exterior debido a la rectificación natural de las escobillas.</label>
+                    <label><input type="radio" name="q5_1" value="d"> d) Formado por semianillos o láminas de cobre aisladas entre sí por mica, solidarias al eje giratorio, tiene la función primordial de rectificar mecánicamente la fem alterna inducida en las espiras, convirtiéndola en una corriente continua en el circuito exterior.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">2. Elige la respuesta correcta. En referencia a las bobinas del inducido y su conexionado en máquinas de CC:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_2" value="a"> a) En el bobinado imbricado, el principio y el final de cada bobina se conectan a delgas opuestas físicamente a 180º del colector, requiriendo indefectiblemente únicamente dos escobillas independientemente del número de polos.</label>
+                    <label><input type="radio" name="q5_2" value="b"> b) En el bobinado ondulado, el principio de cada bobina se conecta a una delga de un polo magnético, y el final a una delga correspondiente al polo magnético siguiente, pudiendo funcionar en la práctica con solo dos escobillas independientemente del número total de polos magnéticos de la máquina.</label>
+                    <label><input type="radio" name="q5_2" value="c"> c) En un inducido, cuantas menos bobinas y menos delgas tenga el rotor acopladas a la carcasa, más suave, plana y uniforme (con menor rizado) será la señal de tensión obtenida.</label>
+                    <label><input type="radio" name="q5_2" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="a">
+                <div class="question-text">3. Elige la respuesta correcta. En referencia al fenómeno de la "Reacción del inducido" en las dinamos:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_3" value="a"> a) Consiste en que el campo transversal creado por las corrientes del rotor se suma al campo principal producido por los polos inductores, provocando una desviación del eje neutro que ocasiona chispeo perjudicial en las escobillas al conmutar entre delgas.</label>
+                    <label><input type="radio" name="q5_3" value="b"> b) Es un fenómeno beneficioso que incrementa la velocidad de sincronismo de la máquina al eliminar la resistencia de contacto térmica en el colector de delgas.</label>
+                    <label><input type="radio" name="q5_3" value="c"> c) Todas las respuestas son correctas.</label>
+                    <label><input type="radio" name="q5_3" value="d"> d) Ocurre exclusivamente en vacío, ya que al conectar una carga externa los polos de conmutación absorben automáticamente el exceso de flujo magnético longitudinal y alinean perfectamente las escobillas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">4. Elige la respuesta correcta. En referencia a los tipos de dinamo según su excitación:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_4" value="a"> a) La dinamo con excitación en serie se caracteriza por ser extraordinariamente estable ante variaciones de carga pesada, ya que al trabajar completamente en vacío alcanza de inmediato su máxima tensión de excitación.</label>
+                    <label><input type="radio" name="q5_4" value="b"> b) La dinamo autoexcitada en derivación (shunt) es ideal para trabajar con cargas muy elevadas; pues a mayor demanda de corriente de la carga, la tensión en los bornes aumenta de forma geométrica asegurando la robustez de la máquina.</label>
+                    <label><input type="radio" name="q5_4" value="c"> c) La dinamo con excitación compuesta (compound) divide su inductor en dos partes: una conectada en serie y otra en derivación con el inducido, logrando en la práctica un funcionamiento mucho más estable frente a variaciones de carga.</label>
+                    <label><input type="radio" name="q5_4" value="d"> d) Ninguna de las respuestas es correcta.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">5. Elige la respuesta correcta. En referencia a la Fuerza Contraelectromotriz (FCEM) de un motor de CC:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_5" value="a"> a) Según la ley de Lenz, la FCEM tiene un sentido idéntico a la tensión aplicada para potenciar y acelerar de manera descontrolada el paso de corriente libre por los devanados del estator.</label>
+                    <label><input type="radio" name="q5_5" value="b"> b) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q5_5" value="c"> c) Aparece únicamente en generadores parados y provoca un sobrecalentamiento letal en la carcasa si no se frena el rotor mecánicamente con resortes de compresión.</label>
+                    <label><input type="radio" name="q5_5" value="d"> d) Se induce en los conductores del rotor al cortar las líneas del campo inductor mientras giran; su sentido se opone a la tensión aplicada a la máquina limitando la corriente del inducido, y su valor es proporcional al flujo y a la velocidad de giro.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">6. Elige la respuesta correcta. En referencia a la regulación de velocidad y comportamiento en carga de un motor de CC:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_6" value="a"> a) Todas las respuestas son correctas.</label>
+                    <label><input type="radio" name="q5_6" value="b"> b) Cuando el motor pasa de trabajar en vacío a arrastrar una carga pesada, su velocidad tiende a decaer, lo que ocasiona que disminuya la FCEM, lo cual permite la absorción de mayor corriente del inducido para producir el aumento del par motor necesario.</label>
+                    <label><input type="radio" name="q5_6" value="c"> c) La velocidad de un motor de CC es completamente insensible e inmodificable frente a los cambios de la corriente de excitación y de la tensión inducida, funcionando en esencia como un motor asíncrono estricto.</label>
+                    <label><input type="radio" name="q5_6" value="d"> d) Para aumentar la velocidad de giro actuando sobre la excitación, debemos intercalar y disminuir al máximo el valor resistivo del reóstato de campo para lograr un flujo inductor máximo en los polos.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="b">
+                <div class="question-text">7. Elige la respuesta correcta. En referencia al motor de corriente continua con excitación Serie:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_7" value="a"> a) Si se deja operando este motor en vacío y se disminuye la carga a valores mínimos, la máquina entra en modo de frenado reostático automático sin sobrepasar nunca su velocidad nominal.</label>
+                    <label><input type="radio" name="q5_7" value="b"> b) Al trabajar en vacío y presentar corrientes de carga bajas, su velocidad de giro puede aumentar de manera desenfrenada hasta niveles peligrosos (embalamiento), motivo por el cual siempre debe arrancar mecánicamente acoplado a la carga, siendo muy apreciado para proporcionar elevados pares de arranque en grúas y tracción.</label>
+                    <label><input type="radio" name="q5_7" value="c"> c) Mantiene su velocidad matemáticamente constante desde el arranque hasta el bloqueo total, por lo que su campo de aplicación más habitual son las máquinas herramienta de gran precisión, como tornos CNC.</label>
+                    <label><input type="radio" name="q5_7" value="d"> d) Todas las respuestas son falsas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="d">
+                <div class="question-text">8. Elige la respuesta correcta. En referencia a la constitución de los devanados en una máquina de CC:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_8" value="a"> a) El circuito inductor se construye siempre como un devanado trifásico de hilo fino en el rotor, con las piezas alojadas entre los rodamientos traseros en estrella y las escobillas conectadas en triángulo.</label>
+                    <label><input type="radio" name="q5_8" value="b"> b) El estator de una dinamo se compone ineludiblemente de chapas magnéticas extremadamente finas y apiladas para evitar a toda costa las pérdidas por histéresis, mientras que el rotor suele ser un bloque cilíndrico fundido macizo.</label>
+                    <label><input type="radio" name="q5_8" value="c"> c) Ninguna de las respuestas es correcta.</label>
+                    <label><input type="radio" name="q5_8" value="d"> d) El inductor es un electroimán fijo situado en el estator, encargado de la generación del campo magnético principal (excitación), mientras que el inducido móvil es un núcleo cilíndrico de chapas apiladas provisto de ranuras para las bobinas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="c">
+                <div class="question-text">9. Elige la respuesta correcta. En referencia a la inversión del sentido de giro en los motores de corriente continua:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_9" value="a"> a) Es imposible invertir eléctricamente la marcha de estos motores; la única alternativa industrial es el empleo de cajas de engranajes reductoras e inversores mecánicos externos en el propio eje.</label>
+                    <label><input type="radio" name="q5_9" value="b"> b) Consiste siempre en la sustitución de la fuente de alimentación CC externa por un puente rectificador trifásico de diodos de silicio controlados de media onda sin variar ningún cable de la caja de bornes.</label>
+                    <label><input type="radio" name="q5_9" value="c"> c) Existen dos métodos eléctricos: invertir la polaridad de las conexiones de todo el circuito inducido manteniendo fija la del circuito de excitación, o bien invertir la polaridad del devanado de excitación manteniendo fija la del inducido.</label>
+                    <label><input type="radio" name="q5_9" value="d"> d) Todas las respuestas son correctas.</label>
+                </div>
+            </div>
+
+            <div class="question-box" data-answer="a">
+                <div class="question-text">10. Elige la respuesta correcta. En referencia a la corrección de la reacción del inducido en las máquinas de corriente continua:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5_10" value="a"> a) Este perjudicial efecto puede mitigarse ya sea rotando físicamente los portaescobillas hasta colocarlos sobre la nueva posición del eje neutro desplazado, o bien instalando unos polos auxiliares de conmutación conectados invariablemente en serie con el inducido para compensar la desviación del campo.</label>
+                    <label><input type="radio" name="q5_10" value="b"> b) Todas las respuestas son incorrectas.</label>
+                    <label><input type="radio" name="q5_10" value="c"> c) Se soluciona de forma definitiva interconectando un condensador electrolítico en derivación entre las escobillas positiva y negativa, lo cual absorbe las corrientes espurias del colector.</label>
+                    <label><input type="radio" name="q5_10" value="d"> d) Al incorporar polos principales de excitación independiente con hilo muy grueso en cortocircuito en lugar de los interpolos de conmutación, la máquina neutraliza el campo transversal en un solo paso.</label>
+                </div>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="corregirApartado(5)">✔ Corregir Apartado 5</button>
+            <div id="resultado-sec5" class="result-container"></div>
+
+            <div class="controls">
+                <button type="button" class="btn-nav" onclick="showSection(4)">⬅ Anterior</button>
+            </div>
+            
+            <br><hr><br>
+            <button type="button" class="btn-submit-all" onclick="corregirExamenCompleto()">📝 Corregir Todo el Examen (Global)</button>
+            <div id="resultado-global" class="result-container"></div>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    // Navegación entre apartados
+    function showSection(num) {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById('sec' + num).classList.add('active');
+        document.querySelectorAll('.tab-btn')[num - 1].classList.add('active');
+        
+        window.scrollTo(0, 0);
+    }
+
+    // Pantalla Completa
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                alert(`Error al intentar iniciar el modo pantalla completa: ${err.message} (${err.name})`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    // Corregir un único apartado
+    function corregirApartado(numSec) {
+        let score = 0;
+        const seccion = document.getElementById('sec' + numSec);
+        const preguntas = seccion.querySelectorAll('.question-box');
+        const totalPreguntas = preguntas.length;
+
+        preguntas.forEach(q => {
+            const respuestaCorrecta = q.getAttribute('data-answer');
+            const opciones = q.querySelectorAll('input[type="radio"]');
+            
+            opciones.forEach(opt => {
+                const label = opt.parentElement;
+                
+                label.classList.remove('correct-ans', 'wrong-ans', 'missed-correct');
+
+                if (opt.checked) {
+                    if (opt.value === respuestaCorrecta) {
+                        score++;
+                        label.classList.add('correct-ans');
+                    } else {
+                        label.classList.add('wrong-ans');
+                    }
+                }
+
+                if (opt.value === respuestaCorrecta && !opt.checked) {
+                    label.classList.add('missed-correct');
+                }
+            });
+        });
+
+        const notaDiez = ((score / totalPreguntas) * 10).toFixed(2);
+        const resultDiv = document.getElementById('resultado-sec' + numSec);
+        
+        let mensaje = "";
+        if (notaDiez >= 5) {
+            mensaje = `<span style="color: green;">¡Aprobado!</span>`;
+        } else {
+            mensaje = `<span style="color: red;">Suspenso. Sigue repasando.</span>`;
+        }
+
+        resultDiv.innerHTML = `Has acertado ${score} de ${totalPreguntas} en este apartado.<br>Nota del Apartado ${numSec}: <strong>${notaDiez} / 10</strong><br>${mensaje}`;
+        resultDiv.style.display = 'block';
+    }
+
+    // Corregir todo el examen
+    function corregirExamenCompleto() {
+        let score = 0;
+        const preguntas = document.querySelectorAll('.question-box');
+        const totalPreguntas = preguntas.length;
+
+        preguntas.forEach(q => {
+            const respuestaCorrecta = q.getAttribute('data-answer');
+            const opciones = q.querySelectorAll('input[type="radio"]');
+            
+            opciones.forEach(opt => {
+                const label = opt.parentElement;
+                label.classList.remove('correct-ans', 'wrong-ans', 'missed-correct');
+
+                if (opt.checked) {
+                    if (opt.value === respuestaCorrecta) {
+                        score++;
+                        label.classList.add('correct-ans');
+                    } else {
+                        label.classList.add('wrong-ans');
+                    }
+                }
+                if (opt.value === respuestaCorrecta && !opt.checked) {
+                    label.classList.add('missed-correct');
+                }
+            });
+        });
+
+        const notaDiez = ((score / totalPreguntas) * 10).toFixed(2);
+        const resultDiv = document.getElementById('resultado-global');
+        
+        let mensaje = "";
+        if (notaDiez >= 5) {
+            mensaje = `<span style="color: green;">¡Examen Aprobado!</span>`;
+        } else {
+            mensaje = `<span style="color: red;">Examen Suspenso.</span>`;
+        }
+
+        resultDiv.innerHTML = `Puntuación Global: ${score} de ${totalPreguntas} preguntas.<br>Tu Nota Media es: <strong>${notaDiez} / 10</strong><br>${mensaje}`;
+        resultDiv.style.display = 'block';
+
+        // Ir al resultado
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
