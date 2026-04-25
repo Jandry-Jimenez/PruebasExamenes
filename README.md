@@ -7,6 +7,6 @@ Asignatura
 <!-- #[Ir al Examen de Autocad](autocad.html) -->
 <!--[Ir al Examen de Subestaciones](subestaciones.html) -->
 <!--[Ir al Examen de Teleco](telecot1.html)  -->
-<!-[Examen Recuperación Centrales](recucentrales.html) -->
-<!-[Examen Recuperación Solares](solart1.html) -->
+<!--[Examen Recuperación Centrales](recucentrales.html) -->
+<!--[Examen Recuperación Solares](solart1.html) -->
 [Ir al Examen de Centrales Tema 5 IA](examentema5.html)
