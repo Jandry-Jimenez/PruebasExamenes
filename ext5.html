@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación: Automatismos Programables</title>
+    <style>
+        :root {
+            --primary: #1e293b;
+            --primary-light: #334155;
+            --accent: #0284c7;
+            --accent-hover: #0369a1;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --success: #15803d;
+            --success-bg: #f0fdf4;
+            --error: #b91c1c;
+            --error-bg: #fef2f2;
+            --warning: #b45309;
+            --warning-bg: #fffbeb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+
+        .block-title {
+            font-size: 1.15rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 35px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+            font-weight: 700;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .options-list {
+            list-style: none;
+        }
+
+        .option-item {
+            margin-bottom: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 12px;
+            margin-top: 5px;
+            accent-color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        /* Result Styles */
+        .option-label.correct {
+            background-color: var(--success-bg) !important;
+            border-color: var(--success) !important;
+            color: var(--success) !important;
+            font-weight: 600;
+        }
+
+        .option-label.incorrect {
+            background-color: var(--error-bg) !important;
+            border-color: var(--error) !important;
+            color: var(--error) !important;
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+            border-left: 4px solid;
+        }
+
+        .feedback-box.correct-feedback {
+            background-color: var(--success-bg);
+            border-left-color: var(--success);
+            color: #166534;
+        }
+
+        .feedback-box.incorrect-feedback {
+            background-color: var(--error-bg);
+            border-left-color: var(--error);
+            color: #991b1b;
+        }
+
+        .feedback-box.unanswered-feedback {
+            background-color: var(--warning-bg);
+            border-left-color: var(--warning);
+            color: #92400e;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .badge-correct { background-color: #dcfce7; color: #15803d; }
+        .badge-incorrect { background-color: #fee2e2; color: #b91c1c; }
+        .badge-unanswered { background-color: #fef3c7; color: #d97706; }
+
+        /* Scoreboard Panel */
+        .results-panel {
+            background-color: var(--primary);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            display: none;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            border: 4px solid rgba(255,255,255,0.2);
+        }
+
+        .score-num {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            margin: 20px auto 0 auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
+        }
+
+        .stat-item h4 {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            text-transform: uppercase;
+        }
+
+        .stat-item p {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .btn-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-reset {
+            background-color: var(--primary-light);
+            box-shadow: none;
+            margin-left: 10px;
+        }
+
+        .btn-reset:hover {
+            background-color: var(--primary);
+        }
+
+        .disabled-label {
+            cursor: default !important;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Cuestionario de Evaluación</h1>
+        <p>Automatismos Programables &bull; 40 Preguntas</p>
+    </header>
+
+    <!-- Score Panel visible only after submission -->
+    <div id="resultsPanel" class="results-panel">
+        <div class="score-circle">
+            <span class="score-num" id="scoreValue">0.0</span>
+        </div>
+        <h3>Resultado de la Evaluación</h3>
+        <p id="scoreMessage" style="color: #cbd5e1; margin-top: 5px;"></p>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4>Correctas</h4>
+                <p id="statsCorrect" style="color: #4ade80;">0</p>
+            </div>
+            <div class="stat-item">
+                <h4>Incorrectas</h4>
+                <p id="statsIncorrect" style="color: #f87171;">0</p>
+            </div>
+            <div class="stat-item">
+                <h4>Sin responder</h4>
+                <p id="statsUnanswered" style="color: #fbbf24;">0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Form -->
+    <form id="quizForm">
+        <div id="quizContainer"></div>
+
+        <div class="btn-container">
+            <button type="button" id="submitBtn" class="btn" onclick="gradeQuiz()">Enviar y Corregir</button>
+            <button type="button" id="resetBtn" class="btn btn-reset" onclick="resetQuiz()" style="display: none;">Reiniciar Evaluación</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Complete data representing the 40 questions of the blocks
+    const quizData = [
+        // BLOQUE 1
+        {
+            id: 1,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "En relación con las características que diferencian los sistemas de control en bucle abierto y en bucle cerrado:",
+            options: {
+                a: "Los sistemas en bucle abierto se caracterizan porque el sistema de control recibe retroalimentación constante del valor de la variable del proceso que quiere controlar, permitiendo estabilidad ante perturbaciones.",
+                b: "Ninguna de las respuestas es correcta.",
+                c: "Los sistemas en bucle cerrado se caracterizan por recibir información en sus entradas sobre el valor de la variable que controlan y, por lo tanto, se trata de sistemas que están realimentados.",
+                d: "Los sistemas en bucle cerrado son más sencillos y económicos de calibrar que los de bucle abierto, requiriendo siempre menos instrumentación de medida."
+            },
+            correct: "c",
+            explanation: "Los sistemas en bucle cerrado están realimentados al recibir información de la salida mediante sensores. La opción 'a' es falsa porque describe el bucle cerrado pero lo atribuye al bucle abierto. La opción 'd' es falsa porque el bucle cerrado es más complejo de calibrar e instrumentar al requerir sensores y reguladores."
+        },
+        {
+            id: 2,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "En la pirámide de la automatización industrial, respecto a las diferencias fundamentales entre el Nivel 4 y el Nivel 5:",
+            options: {
+                a: "El Nivel 4 monitoriza únicamente sistemas productivos, mientras que el Nivel 5 es el nivel de gestión integrado de la empresa que monitoriza tanto las partes productivas como las no productivas.",
+                b: "El Nivel 4 monitoriza de forma integrada toda la infraestructura de la empresa (productiva y no productiva), mientras que el Nivel 5 supervisa únicamente los dispositivos de campo directamente.",
+                c: "Todas las respuestas son correctas.",
+                d: "El Nivel 4 se asocia directamente a la supervisión con sistemas SCADA locales de cada máquina, mientras que el Nivel 5 gestiona la nube a través del Nivel 6."
+            },
+            correct: "a",
+            explanation: "La diferencia técnica fundamental radica en que el Nivel 4 monitoriza únicamente el sistema productivo, mientras que el Nivel 5 incluye la monitorización y gestión total de la empresa (tanto áreas productivas como no productivas)."
+        },
+        {
+            id: 3,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "Con respecto al uso de las memorias RAM y EPROM en la Unidad Central de Procesos (CPU) de un autómata programable:",
+            options: {
+                a: "La memoria RAM es de carácter no volátil y mantiene el programa cargado aunque cese la alimentación eléctrica externa.",
+                b: "Todas las respuestas son incorrectas.",
+                c: "La memoria EPROM es de tipo volátil y se borra de manera inmediata cuando el autómata programable se queda sin suministro de tensión eléctrica.",
+                d: "La memoria RAM es volátil y se borra al quedar el equipo sin alimentación, mientras que la EPROM es no volátil y mantiene el programa aunque cese la alimentación."
+            },
+            correct: "d",
+            explanation: "La memoria RAM es por naturaleza volátil (requiere alimentación continua para retener los datos), mientras que la memoria EPROM es no volátil y resguarda la información permanentemente."
+        },
+        {
+            id: 4,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "Respecto a la fuente de alimentación interna de un PLC y la conexión de los sensores:",
+            options: {
+                a: "La tensión de trabajo interna del autómata suele ser siempre de 230 V en corriente alterna para alimentar de forma directa los sensores analógicos de campo.",
+                b: "Cuando se utiliza una gran cantidad de sensores activos que consumen corriente de forma significativa, se debe recurrir obligatoriamente a una fuente de alimentación externa para evitar sobrecargar la fuente interna del autómata.",
+                c: "Los sensores de tipo pasivo nunca pueden ser alimentados directamente por el autómata programable, requiriendo en todo caso de un transformador intermedio de aislamiento galvánico.",
+                d: "Ninguna de las respuestas es correcta."
+            },
+            correct: "b",
+            explanation: "La fuente interna de la CPU tiene límites de salida estrictos. Un exceso de demanda por sensores activos puede sobrecargarla y dañarla, de manera que se requiere el uso de fuentes de alimentación externas."
+        },
+        {
+            id: 5,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "En referencia a las características de los módulos de salidas digitales a relé y a transistor de un PLC:",
+            options: {
+                a: "Las salidas a relé son libres de tensión, soportan mayores corrientes y permiten conmutar tanto en corriente continua como en alterna, pero son más lentas en su conmutación que las salidas a transistor.",
+                b: "Las salidas a transistor soportan mayores corrientes de salida que las de relé y pueden trabajar indistintamente con tensiones de corriente continua y corriente alterna en todo caso.",
+                c: "Las salidas a transistor son mecánicamente más lentas en su conmutación que las de relé, lo que limita su uso a procesos con baja frecuencia de conmutación.",
+                d: "Todas las respuestas son correctas."
+            },
+            correct: "a",
+            explanation: "Las salidas de relé son electromecánicas, lo que les permite manejar mayores corrientes y ambos tipos de corriente (CA/CC), pero sufren de un tiempo de respuesta de conmutación muy superior al de los transistores de estado sólido."
+        },
+        {
+            id: 6,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "En referencia a los estándares de señales del módulo de entradas analógicas de un autómata programable:",
+            options: {
+                a: "El estándar de tensión de 0 a 10 Vcc y el estándar de corriente de 4 a 20 mA son los rangos de señales más comúnmente utilizados en la industria.",
+                b: "El estándar de corriente más utilizado para entradas analógicas se encuentra siempre en el rango de -10 a +10 mA.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "Las entradas analógicas detectan únicamente estados de todo o nada (valores discretos) para generar eventos de comparación por flanco positivo."
+            },
+            correct: "a",
+            explanation: "En los sistemas de automatización industrial, las señales normalizadas estándar de voltaje son de 0 a 10 Vcc y de corriente de 4 a 20 mA."
+        },
+        {
+            id: 7,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "Respecto a la comparación entre la lógica cableada y la lógica programada en automatismos industriales:",
+            options: {
+                a: "La lógica cableada ofrece mayor flexibilidad económica y rapidez de modificación que la lógica programada, ya que cualquier cambio se realiza de forma inmediata sin modificar conexiones físicas.",
+                b: "En la lógica programada, cualquier cambio en el funcionamiento del proceso requiere únicamente reprogramar el PLC, evitando la necesidad de recablear el circuito de mando o reduciendo estas modificaciones al mínimo.",
+                c: "La lógica cableada sustituye por completo el uso de la CPU y los sensores digitales de campo, haciendo que el PLC dependa exclusivamente de actuadores analógicos.",
+                d: "Todas las respuestas son correctas."
+            },
+            correct: "b",
+            explanation: "La flexibilidad es el principal beneficio de la lógica programada; las modificaciones de lógica se implementan alterando las líneas de código de software en lugar de reestructurar cableados físicos de mando."
+        },
+        {
+            id: 8,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "Atendiendo a la clasificación de los autómatas programables según su modularidad:",
+            options: {
+                a: "Todas las respuestas son incorrectas.",
+                b: "Los autómatas compactos son aquellos en los que la fuente de alimentación está siempre fuera de la envolvente principal para optimizar la disipación térmica.",
+                c: "Los autómatas modulares integran todos sus elementos (entradas, salidas, CPU y fuente de alimentación) en una sola envolvente sellada sin opción a ampliación de ningún tipo.",
+                d: "Los autómatas semicompactos se caracterizan porque algunos de sus elementos, como por ejemplo la fuente de alimentación, se sitúan fuera de la envolvente principal."
+            },
+            correct: "d",
+            explanation: "Los PLC semicompactos cuentan con un núcleo principal pero externalizan ciertos módulos de base comunes, como por ejemplo la fuente de alimentación."
+        },
+        {
+            id: 9,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "Con respecto a los periféricos y el software de supervisión SCADA en los sistemas de control industrial:",
+            options: {
+                a: "El software SCADA se instala directamente en la memoria RAM del autómata para sustituir de manera íntegra a los interfaces de programación propios del PLC.",
+                b: "Los paneles de operación (OP) son periféricos gráficos o textuales cuya única función en todo caso es forzar las salidas analógicas sin permitir la modificación de parámetros internos del sistema.",
+                c: "Los programas SCADA permiten informar y controlar en todo momento el estado del proceso productivo desde la pantalla de un ordenador, pero no sustituyen a las interfaces de programación propias del PC.",
+                d: "Ninguna de las respuestas es correcta."
+            },
+            correct: "c",
+            explanation: "SCADA funciona como una capa superior de visualización, almacenamiento e interfaz con el operario mediante ordenadores o pantallas, operando de manera ajena e independiente al software técnico usado para programar la CPU del PLC."
+        },
+        {
+            id: 10,
+            block: 1,
+            blockTitle: "Bloque 1: Introducción y estructura del autómata programable",
+            question: "En lo concerniente a las variables de proceso, las señales de tipo digital o 'todo-nada' y las analógicas se diferencian en que:",
+            options: {
+                a: "Las señales analógicas solo pueden tomar dos valores discretos en régimen permanente a lo largo del tiempo, mientras que las digitales transportan la información exclusivamente en su amplitud.",
+                b: "Las señales todo-nada o binarias solo pueden tener dos valores diferentes en régimen permanente a lo largo del tiempo, mientras que las analógicas pueden tomar cualquier valor dentro de unos determinados márgenes.",
+                c: "Las señales digitales se asocian en todo caso únicamente a variables físicas continuas como la temperatura, la luminosidad o la velocidad angular de un motor.",
+                d: "Todas las respuestas son correctas."
+            },
+            correct: "b",
+            explanation: "Las señales digitales (binarias) representan dos estados diferenciados (0 y 1 / Off y On), mientras que las señales analógicas describen un continuo infinito de valores intermedios dentro de una escala física definida."
+        },
+
+        // BLOQUE 2
+        {
+            id: 11,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "En referencia a las tablas de verdad aplicadas a la electrónica digital:",
+            options: {
+                a: "Si un circuito lógico dispone de cuatro variables de entrada independientes, se tendrán un total de 16 combinaciones posibles en su tabla de verdad, calculadas mediante la expresión 2<sup>4</sup> = 16.",
+                b: "Si un circuito lógico dispone de tres variables de entrada, se tendrán en todo caso únicamente 6 combinaciones posibles de entrada en la tabla de verdad.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "El número máximo de combinaciones posibles en una tabla de verdad se determina multiplicando el número de variables de entrada por el número de salidas activas del sistema."
+            },
+            correct: "a",
+            explanation: "El total de combinaciones lógicas viene determinado por 2<sup>n</sup>, donde n representa el número de variables. Para 4 entradas independientes: 2<sup>4</sup> = 16 combinaciones."
+        },
+        {
+            id: 12,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "Con respecto a las funciones lógicas básicas y sus equivalencias eléctricas:",
+            options: {
+                a: "La función NOT tiene una entrada y una salida, proporcionando el mismo valor lógico que su entrada y equivaliendo físicamente a un interruptor normalmente abierto en serie con una lámpara.",
+                b: "La función directa equivale a un interruptor normalmente cerrado en serie con una bombilla, donde al pulsar el interruptor (entrada a 1) la bombilla se apaga de inmediato.",
+                c: "La función NOT tiene una entrada y una salida, proporcionando el valor contrario de su entrada y equivaliendo eléctricamente a un interruptor normalmente cerrado en serie con una bombilla.",
+                d: "Todas las respuestas son correctas."
+            },
+            correct: "c",
+            explanation: "La compuerta NOT realiza la inversión de la entrada; su circuito eléctrico analógico es un pulsador normalmente cerrado que interrumpe el paso de corriente al presionarlo (entrada activa)."
+        },
+        {
+            id: 13,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "En referencia a la función lógica XOR (O exclusiva):",
+            options: {
+                a: "Su salida se mantendrá en valor lógico 1 en todo caso siempre que ambas entradas tengan el mismo valor lógico de forma simultánea.",
+                b: "Equivale eléctricamente a dos interruptores conectados en paralelo, donde la bombilla se enciende únicamente cuando ambos interruptores se activan al mismo tiempo.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "Su salida equivale a una suma de productos negados (A·B̄ + Ā·B), encendiéndose la bombilla asociada únicamente cuando se acciona uno solo de los dos pulsadores de entrada."
+            },
+            correct: "d",
+            explanation: "La función XOR genera una salida en nivel alto '1' si y solo si sus entradas presentan valores opuestos. Se representa analíticamente como (A · B̄ + Ā · B)."
+        },
+        {
+            id: 14,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "Para obtener la ecuación lógica de salida Q a partir del esquema de un circuito de puertas lógicas:",
+            options: {
+                a: "Se debe leer el esquema de derecha a izquierda, acumulando únicamente los términos que correspondan a las entradas inversas de las puertas NAND.",
+                b: "Se debe leer el esquema de izquierda a derecha, escribiendo a la salida de cada puerta lógica de manera progresiva la operación de dicha puerta.",
+                c: "El orden de lectura del esquema es indiferente, puesto que las ecuaciones obtenidas siempre se simplifican mediante el álgebra de Boole sumando una unidad de forma secuencial.",
+                d: "Todas las respuestas son incorrectas."
+            },
+            correct: "b",
+            explanation: "El análisis secuencial correcto evalúa las señales partiendo del bloque de entradas a la izquierda y avanza progresivamente hacia la salida ubicada a la derecha."
+        },
+        {
+            id: 15,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "El procedimiento secuencial estándar para la obtención de la tabla de verdad de una ecuación lógica dada consiste en:",
+            options: {
+                a: "Sustituir el valor de cada variable directamente en la ecuación de salida para cada combinación binaria posible de entrada, operando hasta determinar la salida final.",
+                b: "Analizar el número de variables de entrada para escribir sus columnas correspondientes y detallar todas las combinaciones posibles empezando por todos los bits en '0' e ir sumando una unidad de forma sucesiva.",
+                c: "Todas las respuestas son correctas.",
+                d: "Multiplicar las variables de entrada que se encuentren en paralelo y restar aquellas que se encuentren asociadas en serie mediante puertas lógicas OR."
+            },
+            correct: "c",
+            explanation: "Las opciones 'a' y 'b' describen adecuadamente los pasos necesarios y complementarios que forman el procedimiento estándar para elaborar una tabla de verdad completa."
+        },
+        {
+            id: 16,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "Para la obtención de la ecuación lógica expresada en miniterms (suma de productos) a partir de una tabla de verdad:",
+            options: {
+                a: "Nos debemos fijar en las filas cuya salida tiene valor \"0\", componiendo el producto de las sumas de las variables de entrada negadas.",
+                b: "Nos debemos fijar en las filas cuya salida tiene valor \"1\", componiendo un producto lógico por cada una de estas filas donde las variables con valor \"0\" se niegan y las que tienen valor \"1\" no, para finalmente sumar dichos productos.",
+                c: "Se deben sumar directamente todas las combinaciones que presenten un valor de entrada máximo sin tener en cuenta el estado de la salida en todo caso.",
+                d: "Ninguna de las respuestas es correcta."
+            },
+            correct: "b",
+            explanation: "La obtención de la ecuación por miniterms (primera forma canónica) se basa en sumar productos lógicos derivados de las filas con resultado '1', negando aquellas entradas con valor '0'."
+        },
+        {
+            id: 17,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "Al obtener la ecuación lógica a partir de la tabla de verdad basándonos en los maxterms (producto de sumas):",
+            options: {
+                a: "Nos debemos fijar en los valores de salida \"0\", donde por cada una de estas filas tendremos una suma en la que las variables con valor \"0\" no se niegan y las variables con valor \"1\" se niegan, componiendo finalmente el producto de las sumas.",
+                b: "Nos debemos fijar en los valores de salida \"1\", donde las variables con valor \"0\" se mantienen directas y las variables con valor \"1\" se multiplican de forma paralela.",
+                c: "Todas las respuestas son incorrectas.",
+                d: "Se realiza el producto de las variables que presenten un valor de salida idéntico a uno, sumando de forma directa todas las variables negadas que dependan del reloj."
+            },
+            correct: "a",
+            explanation: "La expresión por maxterms (segunda forma canónica) requiere analizar las combinaciones de salida con valor '0' para generar sumas algebraicas (donde '0' es directo y '1' es negado) y multiplicar el conjunto resultante."
+        },
+        {
+            id: 18,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "En lo relativo a las funciones lógicas negadas NAND, NOR y NXOR:",
+            options: {
+                a: "La función NAND proporciona una salida a 0 únicamente cuando todas sus entradas se encuentran a valor lógico 1 simultáneamente.",
+                b: "La función NOR proporciona una salida a 1 en todo caso siempre que al menos una de sus entradas se encuentre activa en nivel alto.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "La función NXOR invierte el resultado de la función OR clásica, proporcionando una salida a 1 cuando solo una de las entradas es diferente."
+            },
+            correct: "a",
+            explanation: "Por definición, la función NAND es la inversa de la AND; genera una salida '0' solo en el estado donde todas sus señales de entrada son '1'."
+        },
+        {
+            id: 19,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "Para rellenar de forma sistemática y sin errores las columnas de entrada de una tabla de verdad de tres variables (A, B, C):",
+            options: {
+                a: "Se debe contar en binario desde 000 hasta 111 de forma progresiva (0, 1, 2, 3...), lo que equivale a sumar un uno binario sucesivamente en cada nueva fila de la tabla.",
+                b: "Se deben alternar únicamente los valores de la variable de mayor peso de forma que siempre sumen un valor impar respecto a las salidas.",
+                c: "Todas las respuestas son correctas.",
+                d: "Se debe duplicar la cantidad de filas en cada iteración del reloj digital, de forma que la salida Q sea en todo caso complementaria a la entrada A."
+            },
+            correct: "a",
+            explanation: "La manera uniforme de estructurar las variables es representarlas como el conteo binario secuencial equivalente de números enteros ordenados desde 0 hasta (2<sup>n</sup> - 1)."
+        },
+        {
+            id: 20,
+            block: 2,
+            blockTitle: "Bloque 2: Introducción a la electrónica digital y tablas de verdad",
+            question: "El comportamiento lógico de un circuito digital integrado estándar se basa en que:",
+            options: {
+                a: "Funciona con valores continuos y proporcionales de tensión asignando valores analógicos intermedios entre 1 y 0 para cada estado intermedio de un sensor.",
+                b: "Funciona con valores discretos de tensión (por ejemplo, conectado o desconectado), donde la CPU interpreta un \"1\" lógico cuando el valor de tensión es el máximo y un \"0\" lógico cuando es el mínimo.",
+                c: "La alimentación del circuito integrado siempre se realiza de forma interna a través del módulo de salidas digitales sin requerir cableado externo a parte.",
+                d: "Ninguna de las respuestas es correcta."
+            },
+            correct: "b",
+            explanation: "La electrónica digital procesa exclusivamente valores discretos de tensión, de forma que los voltajes de alimentación límites se asocian de manera unívoca a estados lógicos '0' y '1'."
+        },
+
+        // BLOQUE 3
+        {
+            id: 21,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "En referencia a la diferencia operativa fundamental entre los circuitos combinacionales y los secuenciales:",
+            options: {
+                a: "En los circuitos secuenciales, el estado de las salidas depende únicamente del estado actual de las entradas, sin tener en cuenta ningún estado anterior.",
+                b: "En los circuitos secuenciales, el estado de las salidas depende tanto del estado actual de las entradas como del estado anterior de las propias salidas mediante un lazo de realimentación.",
+                c: "Todas las respuestas son correctas.",
+                d: "Los circuitos secuenciales prescinden de todo tipo de puertas lógicas combinacionales, basándose exclusivamente en resistencias variables de protección."
+            },
+            correct: "b",
+            explanation: "Los circuitos secuenciales introducen memoria en el proceso mediante el uso de lazos de realimentación, logrando que el estado de salida dependa de las entradas actuales y de su estado histórico."
+        },
+        {
+            id: 22,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "Respecto a la clasificación de los sistemas secuenciales en asíncronos y síncronos:",
+            options: {
+                a: "En los sistemas asíncronos, el valor de la salida cambia únicamente cuando lo ordena una señal de reloj o sincronismo de forma periódica.",
+                b: "En los sistemas síncronos, el valor de la salida cambia inmediatamente cada vez que cambia cualquiera de las entradas de forma independiente a la señal de reloj.",
+                c: "En los sistemas síncronos, el cambio de la salida se produce cuando cambian las entradas y además lo ordena la señal de reloj, pudiendo activarse por nivel (alto/bajo) o por flanco (ascendente/descendente).",
+                d: "Todas las respuestas son incorrectas."
+            },
+            correct: "c",
+            explanation: "Los sistemas síncronos se encuentran acoplados a una señal de reloj común, autorizando los cambios de estado exclusivamente en los instantes de transiciones definidos (por nivel o por flanco)."
+        },
+        {
+            id: 23,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "Con respecto al comportamiento de un biestable RS asíncrono construido mediante puertas NOR:",
+            options: {
+                a: "Cuando ambas entradas se encuentran a valor lógico 0 (R=0, S=0), la salida del biestable cambia de estado de forma oscilatoria e indefinida.",
+                b: "Cuando se actúa sobre la entrada SET (S=1, R=0), la salida Q pasa a tener valor lógico 1, mientras que al actuar sobre RESET (R=1, S=0) la salida Q pasa a valor lógico 0.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "La combinación de entradas R=1 y S=1 es una condición normal de funcionamiento que establece la salida Q en un estado de memoria permanente de alta velocidad."
+            },
+            correct: "b",
+            explanation: "El biestable responde a su entrada de activación SET (S=1) llevando la salida a alto, y a RESET (R=1) llevándola a bajo. La combinación (0,0) representa memoria (no cambio)."
+        },
+        {
+            id: 24,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "En lo relativo al biestable JK y su relación con el biestable RS:",
+            options: {
+                a: "El biestable JK introduce dos estados de indeterminación adicionales cuando ambas entradas se encuentran a valor lógico 0 de forma simultánea.",
+                b: "Todas las respuestas son incorrectas.",
+                c: "El biestable JK solventa la indeterminación del biestable RS, de modo que cuando ambas entradas se encuentran a 1 (J=1, K=1), el estado de la salida conmuta (cambia al valor contrario del estado anterior).",
+                d: "El biestable JK es siempre de tipo puramente asíncrono y no puede ser gobernado bajo ninguna circunstancia por una señal de reloj o sincronismo."
+            },
+            correct: "c",
+            explanation: "El diseño del biestable JK evita la inestabilidad de las entradas simultáneas (1,1) de un biestable RS clásico, usándolas para conmutar el estado de salida."
+        },
+        {
+            id: 25,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "Respecto al funcionamiento del biestable tipo D:",
+            options: {
+                a: "Copia a la salida el estado que presenta su entrada única D en el momento de producirse la transición activa de la señal de reloj, y suele emplearse en modo síncrono.",
+                b: "Funciona de forma idéntica a un biestable JK cuando sus entradas se cortocircuitan para mantener un desfase constante de 180 grados en la salida Q'.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "Presenta un estado de indeterminación crítica e irreversible cuando su entrada única D se mantiene de forma permanente a valor lógico 0."
+            },
+            correct: "a",
+            explanation: "El biestable D (Dlay / Retardo) replica el estado de la entrada D en su salida ante el flanco activo del reloj, sirviendo como celda elemental de memoria de un bit."
+        },
+        {
+            id: 26,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "En referencia al comportamiento del biestable tipo T (toggle):",
+            options: {
+                a: "Aprovecha la propiedad de conmutación del biestable JK para cambiar el estado de la salida respecto al anterior únicamente cuando su entrada T se encuentra a valor lógico 1 ante la señal de sincronismo.",
+                b: "Mantiene de forma indefinida la salida en estado lógico 0 en todo caso siempre que se detecte una transición por flanco de bajada en su entrada T.",
+                c: "Todas las respuestas son correctas.",
+                d: "Se diseña conectando en serie dos biestables RS alimentados con tensiones de corriente alterna desfasadas."
+            },
+            correct: "a",
+            explanation: "La acción del biestable T es la inversión del estado de salida (Toggle) cada vez que se detecta un pulso de reloj, siempre que la habilitación T esté en un estado activo '1'."
+        },
+        {
+            id: 27,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "En lo concerniente a las señales de sincronismo o reloj (CLK) utilizadas en los circuitos lógicos secuenciales:",
+            options: {
+                a: "El flanco de subida (frente ascendente) representa la transición de la señal desde el nivel alto (1) hasta el nivel bajo (0).",
+                b: "El flanco de bajada (frente descendente) representa la transición física de la señal de reloj desde el valor lógico 0 hasta el valor lógico 1.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "La señal de sincronismo suele tener forma de tren de pulsos digitales, y en los esquemas electrónicos la activación por flanco positivo se representa mediante un símbolo de triángulo en la entrada de reloj."
+            },
+            correct: "d",
+            explanation: "En la simbología normalizada, los flancos se indican mediante un triángulo en la entrada de reloj. Las definiciones de flanco de subida y de bajada se encuentran invertidas en las opciones 'a' y 'b'."
+        },
+        {
+            id: 28,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "En referencia a la indeterminación en un biestable RS asíncrono con puertas NOR:",
+            options: {
+                a: "Se produce de forma crítica cuando las entradas presentan los valores R=1 y S=1 de forma simultánea, dando lugar a una situación no deseada que puede provocar errores de funcionamiento.",
+                b: "Provoca que la salida Q y su negada Q' pasen a mantener su valor previo de forma indefinida sin importar las perturbaciones de la red.",
+                c: "Todas las respuestas son correctas.",
+                d: "Se produce exclusivamente cuando ambas entradas se encuentran a valor lógico 0, forzando a las puertas NOR a trabajar en zona activa lineal."
+            },
+            correct: "a",
+            explanation: "Con compuertas NOR, forzar simultáneamente R=1 y S=1 obliga a ambas salidas (Q y Q') a tomar un valor lógico '0', contradiciendo la naturaleza complementaria del biestable y ocasionando inestabilidad lógica si cambian de valor a la vez."
+        },
+        {
+            id: 29,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "El concepto de realimentación en circuitos secuenciales se implementa mediante:",
+            options: {
+                a: "La desconexión total de las entradas analógicas de forma que el microprocesador dependa únicamente de las marcas internas.",
+                b: "La conexión de la salida de una puerta de retorno hacia una o varias de las entradas de las puertas lógicas del propio circuito.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "La derivación de la señal de alimentación de 24 Vcc de la fuente hacia la carcasa metálica del autómata para asegurar la descarga a tierra de las interferencias."
+            },
+            correct: "b",
+            explanation: "La realimentación consiste físicamente en redirigir la salida de un elemento hacia la entrada del propio circuito para mantener un estado lógico retenido de manera estable."
+        },
+        {
+            id: 30,
+            block: 3,
+            blockTitle: "Bloque 3: Circuitos secuenciales y biestables",
+            question: "En referencia a la capacidad de memoria de los biestables (latch o flip-flop):",
+            options: {
+                a: "Permiten mantener el estado de su salida constante sin variación en todo caso hasta que se actúe de forma deliberada sobre sus entradas de control.",
+                b: "Requieren obligatoriamente la descarga periódica de sus condensadores de alta capacidad cada vez que la CPU del autómata realiza un ciclo de programa.",
+                c: "Todas las respuestas son incorrectas.",
+                d: "Se limitan a reproducir en tiempo real la señal de entrada analógica de 4 a 20 mA sin retener la información ante un fallo de tensión."
+            },
+            correct: "a",
+            explanation: "La naturaleza del biestable es la estabilidad de sus estados (0 o 1), preservando su valor de forma indefinida hasta que se presente un estímulo de control en las entradas de disparo."
+        },
+
+        // BLOQUE 4
+        {
+            id: 31,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "En el lenguaje de programación por bloques FBD (denominado FUP en Siemens), la categoría de \"Conectores y constantes\" (CO) se caracteriza por:",
+            options: {
+                a: "Integrar los bloques de funciones especiales como los temporizadores con retardo a la conexión y desconexión únicamente.",
+                b: "Permitir realizar la conexión entre el LOGO y su entorno, además de almacenar valores de señales y datos (como entradas, salidas y marcas).",
+                c: "Controlar exclusivamente las variables de comunicación a través de cables RJ-45 sin permitir el uso de marcas auxiliares internas.",
+                d: "Todas las respuestas son correctas."
+            },
+            correct: "b",
+            explanation: "Los conectores y constantes (CO) son los elementos lógicos y físicos que permiten enlazar el hardware externo (sensores, actuadores) y registros auxiliares internos con el motor de lógica del PLC."
+        },
+        {
+            id: 32,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "Respecto a la distinción entre Funciones Generales (GF) y Funciones Especiales (SF) en lenguaje FBD:",
+            options: {
+                a: "Las Funciones Generales (GF) incluyen bloques lógicos basados en puertas lógicas (AND, OR, NOT), mientras que las Funciones Especiales (SF) aportan funciones específicas como temporizadores, contadores y comparadores.",
+                b: "Las Funciones Especiales (SF) consta únicamente de puertas lógicas sencillas de dos entradas, mientras que las Funciones Generales (GF) abarcan los relés autoenclavadores de memoria.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "Las Funciones Generales (GF) requieren de forma obligatoria el uso de un terminal físico de programación manual para poder enlazarse con los bloques SF."
+            },
+            correct: "a",
+            explanation: "Las Funciones Generales (GF) cubren las operaciones binarias elementales basadas en álgebra de Boole. Las Funciones Especiales (SF) albergan las subrutinas complejas de control secuencial con parámetros ajustables."
+        },
+        {
+            id: 33,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "En lo relativo al condicionado de funciones en FBD, si queremos que la salida Q2 se active únicamente si la entrada I3 está activa y, además, la salida Q1 se encuentra previamente en estado activo:",
+            options: {
+                a: "Se debe conectar la salida Q1 y la entrada I3 a las entradas de un bloque lógico de tipo AND antes de atacar el bloque que controla la salida Q2.",
+                b: "Se debe cortocircuitar la entrada I3 directamente con la bobina física de desactivación RESET de la salida Q1.",
+                c: "Todas las respuestas son correctas.",
+                d: "Se debe conectar un temporizador de impulsos asíncronos en paralelo con la entrada I3 para independizar el comportamiento de ambas salidas."
+            },
+            correct: "a",
+            explanation: "Para modelar la conjunción simultánea ('y además') de dos condiciones o estados, se recurre a una compuerta de producto lógico AND."
+        },
+        {
+            id: 34,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "Respecto al funcionamiento del temporizador con retardo a la conexión (TON) en un autómata programable:",
+            options: {
+                a: "Activa su salida de forma instantánea al ponerse a 1 su entrada de disparo (trigger), manteniéndola activa una vez transcurrido el tiempo preseleccionado.",
+                b: "Activa su salida únicamente cuando ha transcurrido el tiempo preseleccionado desde que se puso a 1 su entrada de disparo (trigger), siempre y cuando dicha entrada de disparo se mantenga en valor lógico 1 durante todo ese intervalo.",
+                c: "Permite mantener la salida activada de forma indefinida en todo caso, incluso si la señal de disparo pasa a cero antes de completarse el tiempo de temporización configurado.",
+                d: "Ninguna de las respuestas es correcta."
+            },
+            correct: "b",
+            explanation: "El temporizador TON inicia la cuenta temporal ante el flanco ascendente de disparo y requiere que la señal se mantenga en '1' de forma continua durante toda la temporización para poder activar su salida al finalizar la misma."
+        },
+        {
+            id: 35,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "Con respecto al temporizador con retardo a la desconexión (TOF):",
+            options: {
+                a: "Activa su salida de forma inmediata al activarse su entrada de disparo (trigger). Al pasar el trigger a cero, la salida se mantiene activa durante el tiempo preseleccionado antes de desactivarse.",
+                b: "Su salida permanece desactivada mientras la entrada de disparo (trigger) se mantenga en valor lógico 1, y se activa de manera instantánea cuando el trigger pasa a valor lógico 0.",
+                c: "Todas las respuestas son incorrectas.",
+                d: "Requiere de forma indispensable que la entrada RESET se mantenga permanentemente a valor lógico 1 para que la salida comience a temporizar de forma normal."
+            },
+            correct: "a",
+            explanation: "El bloque TOF reacciona de manera inmediata encendiendo la salida con el trigger activo. El retardo actúa como una extensión de duración de la señal que se inicia exclusivamente cuando la señal de disparo cae a cero."
+        },
+        {
+            id: 36,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "En referencia a las marcas internas (M) en la programación de autómatas:",
+            options: {
+                a: "Son bits auxiliares utilizados para operaciones internas en la memoria del autómata, comportándose de manera similar a los relés auxiliares de la lógica cableada, sin activar de forma directa ninguna salida física del PLC.",
+                b: "Son bornas de conexión física situadas en el chasis del autómata que permiten desviar corrientes de fuga analógicas hacia la CPU.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "Se identifican obligatoriamente con la letra \"Q\" seguida de un número de canal físico para comandar contactores en el circuito de fuerza."
+            },
+            correct: "a",
+            explanation: "Las marcas internas (M o bits de memoria) sirven para retener resultados parciales de la lógica en la memoria RAM de trabajo del PLC, funcionando exactamente igual que un relé auxiliar físico pero sin consumir salidas de hardware directas."
+        },
+        {
+            id: 37,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "Respecto a la simbología convencional utilizada en la programación en lenguaje Ladder (LD) o KOP:",
+            options: {
+                a: "Los contactos representan las salidas físicas directas del autómata, mientras que las bobinas se asocian a las señales de entrada de los sensores de campo.",
+                b: "Los contactos representan elementos de tipo bit que detectan estados de variables (abiertos o cerrados), mientras que las bobinas representan salidas donde se escribe el resultado lógico de una red de contactos.",
+                c: "Todas las respuestas son correctas.",
+                d: "El símbolo de una bobina con una letra \"S\" en su interior representa un contacto normalmente cerrado con retardo a la desconexión por flanco negativo."
+            },
+            correct: "b",
+            explanation: "En lenguaje de contactos (Ladder), los contactos actúan como elementos de consulta (lectura de estado), mientras que las bobinas actúan como elementos de ejecución o asignación (escritura de estado)."
+        },
+        {
+            id: 38,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "En lo relativo a las operaciones lógicas en lenguaje de contactos (Ladder):",
+            options: {
+                a: "Una conexión de contactos en serie equivale eléctricamente a una operación lógica AND, mientras que una conexión de contactos en paralelo equivale a una operación lógica OR.",
+                b: "Una conexión de contactos en paralelo equivale a una operación lógica AND, mientras que la conexión en serie se utiliza únicamente para representar la operación NOT mediante bobinas directas.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "Los contactos en paralelo requieren que todos sus operandos asociados estén en todo caso activos a valor lógico 0 para poder activar la bobina de salida de forma directa."
+            },
+            correct: "a",
+            explanation: "La distribución en serie condiciona el flujo a la conducción simultánea de todos sus contactos (función AND). El paralelo ofrece caminos alternativos, bastando que conduzca una sola de las ramas (función OR)."
+        },
+        {
+            id: 39,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "Con respecto a las operaciones de memoria en lenguaje Ladder mediante realimentación o bloques SET/RESET:",
+            options: {
+                a: "La realimentación por contacto requiere que el contacto en paralelo a la entrada de Marcha pertenezca a la propia bobina de salida, teniendo ambos el mismo direccionamiento (por ejemplo, Q1).",
+                b: "Las bobinas de activación (SET) y desactivación (RESET) actúan de modo que al activar la bobina SET (S) la salida asociada se pone a 1 y se mantiene en ese estado de memoria, requiriendo activar la bobina RESET (R) para ponerla a 0.",
+                c: "Todas las respuestas son correctas.",
+                d: "El uso de bobinas SET y RESET simplifica el diseño de programas de memoria en comparación con los de realimentación por contacto."
+            },
+            correct: "c",
+            explanation: "Las opciones 'a', 'b' y 'd' exponen de forma correcta los métodos aplicados para generar retención de memoria en programación de contactos (Ladder)."
+        },
+        {
+            id: 40,
+            block: 4,
+            blockTitle: "Bloque 4: Lenguajes de programación (FBD, LADDER, operaciones de memoria y contadores)",
+            question: "En referencia al funcionamiento y elementos de un bloque contador en la programación en lenguaje Ladder (LD):",
+            options: {
+                a: "El bloque contador incrementa su valor almacenado a través de la entrada CD (descontar) y decrementa dicho valor a través de la entrada CU (contar) cada vez que se detecta una señal analógica continua.",
+                b: "Cuando el valor almacenado en el contador alcanza o supera el valor de preselección (PV), los contactos abiertos y cerrados asociados a dicho contador cambian de estado, permitiendo activar o desactivar salidas en el programa.",
+                c: "Ninguna de las respuestas es correcta.",
+                d: "El contador se inicializa obligatoriamente a su valor máximo de preselección (PV) en todo caso cada vez que la entrada de reset (R) se mantiene en un estado lógico permanente de cero."
+            },
+            correct: "b",
+            explanation: "Al alcanzar el umbral prefijado (PV - Preset Value), el contador activa su bandera de salida, conmutando todos sus contactos dependientes asociados dentro del programa principal. Las entradas CU y CD se encuentran cruzadas de significado en la opción 'a', y el comportamiento de la entrada de reinicio es opuesto al indicado en la opción 'd'."
+        }
+    ];
+
+    // Function to render questions dynamically
+    function renderQuiz() {
+        const container = document.getElementById('quizContainer');
+        container.innerHTML = '';
+        
+        let currentBlock = 0;
+
+        quizData.forEach((q, idx) => {
+            // Render block header if it changes
+            if (q.block !== currentBlock) {
+                currentBlock = q.block;
+                const blockHeader = document.createElement('h3');
+                blockHeader.className = 'block-title';
+                blockHeader.innerText = q.blockTitle;
+                container.appendChild(blockHeader);
+            }
+
+            // Create question card
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${q.id}`;
+
+            const qText = document.createElement('div');
+            qText.className = 'question-text';
+            qText.innerHTML = `${idx + 1}. ${q.question}`;
+            card.appendChild(qText);
+
+            // Options container
+            const optionsList = document.createElement('div');
+            optionsList.className = 'options-list';
+
+            Object.keys(q.options).forEach(optKey => {
+                const optionItem = document.createElement('div');
+                optionItem.className = 'option-item';
+
+                const label = document.createElement('label');
+                label.className = 'option-label';
+                label.id = `label-${q.id}-${optKey}`;
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `question-${q.id}`;
+                radio.value = optKey;
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(` ${optKey}) ${q.options[optKey]}`));
+                optionItem.appendChild(label);
+                optionsList.appendChild(optionItem);
+            });
+
+            card.appendChild(optionsList);
+
+            // Feedback box placeholder
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback-box';
+            feedback.id = `feedback-${q.id}`;
+            card.appendChild(feedback);
+
+            container.appendChild(card);
+        });
+    }
+
+    // Function to correct and grade the quiz
+    function gradeQuiz() {
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let unansweredCount = 0;
+
+        quizData.forEach(q => {
+            const selectedOpt = document.querySelector(`input[name="question-${q.id}"]:checked`);
+            const card = document.getElementById(`card-${q.id}`);
+            const feedbackBox = document.getElementById(`feedback-${q.id}`);
+            
+            // Remove previous badge or classes if present
+            const oldBadge = card.querySelector('.badge');
+            if (oldBadge) oldBadge.remove();
+
+            const badge = document.createElement('span');
+            badge.className = 'badge';
+
+            // Process all labels in this question to lock them
+            Object.keys(q.options).forEach(optKey => {
+                const lbl = document.getElementById(`label-${q.id}-${optKey}`);
+                lbl.classList.add('disabled-label');
+                const radioInput = lbl.querySelector('input[type="radio"]');
+                if (radioInput) radioInput.disabled = true;
+            });
+
+            if (!selectedOpt) {
+                // Question was not answered
+                unansweredCount++;
+                badge.innerText = "Sin responder";
+                badge.classList.add('badge-unanswered');
+                card.insertBefore(badge, card.firstChild);
+
+                // Highlight correct answer in green
+                document.getElementById(`label-${q.id}-${q.correct}`).classList.add('correct');
+
+                // Fill feedback
+                feedbackBox.className = 'feedback-box unanswered-feedback';
+                feedbackBox.innerHTML = `<strong>Opción correcta: ${q.correct.toUpperCase()}</strong>.<br>${q.explanation}`;
+                feedbackBox.style.display = 'block';
+            } else {
+                const userChoice = selectedOpt.value;
+
+                if (userChoice === q.correct) {
+                    correctCount++;
+                    badge.innerText = "Correcto";
+                    badge.classList.add('badge-correct');
+                    card.insertBefore(badge, card.firstChild);
+
+                    // Green highlight
+                    document.getElementById(`label-${q.id}-${q.correct}`).classList.add('correct');
+
+                    // Fill feedback
+                    feedbackBox.className = 'feedback-box correct-feedback';
+                    feedbackBox.innerHTML = `<strong>¡Correcto!</strong>.<br>${q.explanation}`;
+                    feedbackBox.style.display = 'block';
+                } else {
+                    incorrectCount++;
+                    badge.innerText = "Incorrecto";
+                    badge.classList.add('badge-incorrect');
+                    card.insertBefore(badge, card.firstChild);
+
+                    // Red highlight on user's choice and green on correct one
+                    document.getElementById(`label-${q.id}-${userChoice}`).classList.add('incorrect');
+                    document.getElementById(`label-${q.id}-${q.correct}`).classList.add('correct');
+
+                    // Fill feedback
+                    feedbackBox.className = 'feedback-box incorrect-feedback';
+                    feedbackBox.innerHTML = `<strong>Respuesta incorrecta. La opción correcta es la ${q.correct.toUpperCase()}</strong>.<br>${q.explanation}`;
+                    feedbackBox.style.display = 'block';
+                }
+            }
+        });
+
+        // Score scale 1 to 10
+        const totalQuestions = quizData.length;
+        const rawScore = (correctCount / totalQuestions) * 10;
+        const finalScore = Math.round(rawScore * 100) / 100; // Round to 2 decimals
+
+        // Render stats on top panel
+        document.getElementById('scoreValue').innerText = finalScore.toFixed(1);
+        document.getElementById('statsCorrect').innerText = correctCount;
+        document.getElementById('statsIncorrect').innerText = incorrectCount;
+        document.getElementById('statsUnanswered').innerText = unansweredCount;
+
+        // Custom score text feedback
+        let message = '';
+        if (finalScore >= 9) {
+            message = "Excelente asimilación de contenidos teóricos del autómata programable.";
+        } else if (finalScore >= 7) {
+            message = "Buen rendimiento general en los diferentes bloques de evaluación.";
+        } else if (finalScore >= 5) {
+            message = "Evaluación aprobada. Hay áreas conceptuales que se pueden repasar.";
+        } else {
+            message = "Es recomendable un repaso detenido de las explicaciones proporcionadas.";
+        }
+        document.getElementById('scoreMessage').innerText = message;
+
+        // Visual layout updates
+        document.getElementById('resultsPanel').style.display = 'block';
+        document.getElementById('submitBtn').style.display = 'none';
+        document.getElementById('resetBtn').style.display = 'inline-block';
+
+        // Smooth scroll to top of page to see results panel
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Function to reset the quiz state
+    function resetQuiz() {
+        document.getElementById('resultsPanel').style.display = 'none';
+        document.getElementById('submitBtn').style.display = 'inline-block';
+        document.getElementById('resetBtn').style.display = 'none';
+        
+        renderQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize the application on load
+    window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
