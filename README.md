@@ -11,4 +11,4 @@ Asignatura
 <!--[Examen Recuperación Solares](solart1.html) -->
 <!-- [Ir al Examen de Centrales Tema 5 IA](examentema5.html) -->
 <!-- [Examen Tema 4 Centrales Transformadores](ExamenT4Transformadores2.html) -->
-[Examen Tema 5 Telecontrol](ext5.html)
+[Examen Test Tema 4 & 5 Telecontrol](TelecoT45.html)
