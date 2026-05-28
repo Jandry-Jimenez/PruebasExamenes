@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moodle Quiz - Examen de Equipamiento y Automatismos</title>
+    <style>
+        :root {
+            --moodle-blue: #0f6cb5;
+            --moodle-bg: #f8f9fa;
+            --moodle-border: #dee2e6;
+            --moodle-orange: #f29d38;
+            --text-color: #333333;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--moodle-border);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .moodle-logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--moodle-orange);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .course-title {
+            font-size: 0.95rem;
+            color: #6a737d;
+            border-left: 1px solid var(--moodle-border);
+            padding-left: 10px;
+        }
+
+        .quiz-header-banner {
+            background-color: var(--moodle-blue);
+            color: #ffffff;
+            padding: 25px 20px;
+        }
+
+        .quiz-header-banner h1 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .quiz-layout {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .quiz-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Bloque de info superior */
+        .block-selector-wrapper {
+            background: #ffffff;
+            border: 1px solid var(--moodle-border);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .block-selector-wrapper label {
+            font-weight: bold;
+        }
+
+        .btn-block {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-block:hover {
+            background-color: #dee2e6;
+        }
+
+        .btn-block.active {
+            background-color: var(--moodle-blue);
+            color: #ffffff;
+            border-color: var(--moodle-blue);
+        }
+
+        /* Tarjeta de Pregunta estilo Moodle */
+        .que {
+            display: flex;
+            border: 1px solid #cad0d5;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .que {
+                flex-direction: column;
+            }
+            .que .info {
+                width: auto !important;
+                border-right: none !important;
+                border-bottom: 1px solid #cad0d5;
+            }
+        }
+
+        .que .info {
+            width: 140px;
+            padding: 15px;
+            background-color: var(--moodle-bg);
+            border-right: 1px solid #cad0d5;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .que .info .qno {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+
+        .que .info .state {
+            margin-bottom: 10px;
+        }
+
+        .que .info .grade-info {
+            font-style: italic;
+        }
+
+        .que .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .que .qtext {
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .que .image-container {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .que .ablock {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .que .option-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 12px;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            background-color: #fafbfc;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+
+        .que .option-item:hover {
+            background-color: #f1f3f5;
+        }
+
+        .que .option-item input {
+            margin-top: 4px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .que .option-item.correct-bg {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724 !important;
+        }
+
+        .que .option-item.incorrect-bg {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24 !important;
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid var(--success-color);
+        }
+
+        .feedback-box.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        /* Sidebar Widgets */
+        .card-widget {
+            background-color: #ffffff;
+            border: 1px solid var(--moodle-border);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-widget h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-bottom: 1px solid var(--moodle-border);
+            padding-bottom: 8px;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
+            border: 1px solid #a1a1a8;
+            border-radius: 4px;
+            background-color: #ffffff;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item.answered {
+            background-color: #ced4da;
+            color: #212529;
+        }
+
+        .nav-item.correct {
+            background-color: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .nav-item.incorrect {
+            background-color: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
+        }
+
+        .nav-item.active {
+            border: 2px solid var(--moodle-blue);
+        }
+
+        .timer-display {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #d32f2f;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background-color: var(--moodle-blue);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .btn-submit:hover {
+            background-color: #0d5ea1;
+        }
+
+        .score-banner {
+            background-color: #e2f0d9;
+            border: 1px solid #95c184;
+            color: #385723;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <span class="moodle-logo">Moodle</span>
+        <span class="course-title">Cuestionarios de Evaluación</span>
+    </div>
+</header>
+
+<div class="quiz-header-banner">
+    <h1 id="block-banner-title">Evaluación del Bloque</h1>
+</div>
+
+<div class="container">
+    <div class="block-selector-wrapper">
+        <label>Selecciona el bloque del examen:</label>
+        <button class="btn-block active" onclick="switchBlock('CE3A')">CE3A</button>
+        <button class="btn-block" onclick="switchBlock('CE3D')">CE3D</button>
+        <button class="btn-block" onclick="switchBlock('CE3E')">CE3E</button>
+        <button class="btn-block" onclick="switchBlock('CE3G')">CE3G</button>
+        <button class="btn-block" onclick="switchBlock('CE4A')">CE4A</button>
+        <button class="btn-block" onclick="switchBlock('CE4D')">CE4D</button>
+        <button class="btn-block" onclick="switchBlock('CE4E')">CE4E</button>
+    </div>
+
+    <div class="quiz-layout">
+        <!-- Area de Preguntas -->
+        <main class="main-content">
+            <div id="score-display-area"></div>
+            <form id="quiz-form" onsubmit="event.preventDefault();">
+                <div id="questions-container"></div>
+            </form>
+        </main>
+
+        <!-- Sidebar / Bloque Moodle Navigation -->
+        <aside class="sidebar">
+            <div class="card-widget">
+                <h3>Tiempo restante</h3>
+                <div class="timer-display" id="timer">0:20:00</div>
+            </div>
+
+            <div class="card-widget">
+                <h3>Navegación por el cuestionario</h3>
+                <div class="nav-grid" id="nav-grid">
+                    <!-- Dinámico -->
+                </div>
+                <button type="button" class="btn-submit" id="submit-btn" onclick="submitActiveBlock()">Finalizar y Enviar</button>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+    // Base de datos de preguntas original
+    const originalDatabase = {
+        CE3A: [
+            {
+                qText: "Elige la respuesta correcta. En referencia los generadores de corriente alterna:",
+                options: [
+                    "El generador asíncrono se debe acelerar empleando medios externos para que resulte rentable su utilización.",
+                    "El generador asíncrono, consume reactiva y requiere el uso de condensadores para su funcionamiento.",
+                    "El generador asíncrono es un motor asíncrono que produce corriente alterna a la frecuencia de red, cuando se acelera por encima de su velocidad de sincronismo.",
+                    "Todas las opciones son correctas."
+                ],
+                correct: "El generador asíncrono es un motor asíncrono que produce corriente alterna a la frecuencia de red, cuando se acelera por encima de su velocidad de sincronismo."
+            },
+            {
+                qText: "Elige la respuesta correcta. La regulación de los alternadores, entre otras cosas:",
+                options: [
+                    "Consiste en ajustar la corriente de excitación del inductor para que proporcione una tensión de red estable.",
+                    "Consiste en ajustar el voltaje de excitación del inducido para que proporcione una tensión de red estable.",
+                    "Ninguna respuesta es correcta",
+                    "Depende de la intensidad el campo magnético del inducido."
+                ],
+                correct: "Consiste en ajustar la corriente de excitación del inductor para que proporcione una tensión de red estable."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los alternadores:",
+                options: [
+                    "La frecuencia de la onda senoidal que proporciona un alternador, depende del número de pares de polos (número de bobinas) de que dispone.",
+                    "La frecuencia de la onda senoidal que proporciona un alternador, depende de la velocidad a la que gira.",
+                    "La frecuencia de la onda senoidal depende del voltaje al que se alimenta el inducido.",
+                    "Todas las respuestas son correctas."
+                ],
+                correct: "La frecuencia de la onda senoidal que proporciona un alternador, depende de la velocidad a la que gira."
+            },
+            {
+                qText: "Elige la respuesta correcta. Entre los generadores de corriente alterna:",
+                options: [
+                    "Todas las respuestas son correctas.",
+                    "Se tienen generadores síncronos y generadores asíncronos.",
+                    "En el generador asíncrono el campo magnético gira a distinta velocidad que el eje.",
+                    "En el alternador el campo magnético gira a la misma velocidad que el eje."
+                ],
+                correct: "Todas las respuestas son correctas."
+            },
+            {
+                qText: "Elige la respuesta correcta.",
+                options: [
+                    "El alternador auxiliar produce corriente alterna que se debe rectificar para alimentar el inducido de un alternador.",
+                    "La excitatriz es una dinamo que alimenta el inducido de un alternador.",
+                    "Ninguna de las respuestas es correcta.",
+                    "La excitatriz es un alternador que alimenta el inducido de un alternador."
+                ],
+                correct: "Ninguna de las respuestas es correcta."
+            },
+            {
+                qText: "Elige la respuesta correcta.",
+                options: [
+                    "Ninguna de las respuestas es correcta.",
+                    "Los alternadores son equipos que producen corriente alterna, pero se alimentan con corriente continua.",
+                    "Los alternadores son un ejemplo típico de máquina asíncrona y si se aceleran lo suficiente pueden trabajar como motor.",
+                    "Los alternadores son equipos que producen corriente alterna y no necesitan alimentación para funcionar porque en todo caso ellos mismos producen la energía que requieren."
+                ],
+                correct: "Los alternadores son equipos que producen corriente alterna, pero se alimentan con corriente continua."
+            },
+            {
+                qText: "Elige la respuesta correcta.",
+                options: [
+                    "Todas las respuestas son incorrectas.",
+                    "Es igual que en los generadores asíncronos, en ambos casos (generadores síncronos y asíncronos) se debe ajustar la velocidad de giro para obtener una frecuencia constante.",
+                    "Todas las respuestas son correctas.",
+                    "Consiste en ajustar su velocidad de giro para que proporcione una frecuencia constante."
+                ],
+                correct: "Consiste en ajustar su velocidad de giro para que proporcione una frecuencia constante."
+            }
+        ],
+        CE3D: [
+            {
+                qText: "Elige la respuesta correcta. La capacidad de las baterías:",
+                options: [
+                    "Representa la cantidad de energía eléctrica que se puede almacenar en una batería y que se podría obtener en teoría durante una descarga completa.",
+                    "Todas las respuestas son correctas.",
+                    "Se mide en Watios hora",
+                    "Se mide en Amperios hora"
+                ],
+                correct: "Se mide en Watios hora"
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a las baterías, cuando una batería de 12V se descarga a una profundidad de descarga del 50%:",
+                options: [
+                    "Presenta una diferencia de potencial en sus bornes de 12V.",
+                    "Presenta una diferencia de potencial en sus bornes ligeramente inferior a 12V.",
+                    "Presenta una diferencia de potencial en sus bornes de 6V.",
+                    "No presenta una diferencia de potencial en sus bornes diferente a la que presentaría si estuviese totalmente cargada."
+                ],
+                correct: "Presenta una diferencia de potencial en sus bornes ligeramente inferior a 12V."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a las baterías:",
+                options: [
+                    "Las baterías de plomo-ácido proporcionan gran cantidad de energía en poco tiempo sin que su vida útil se reduzca excesivamente.",
+                    "En general las baterías de plomo ácido permiten pocos ciclos de descarga.",
+                    "Las baterías de níquel sufren menor autodescarga que las de plomo-ácido.",
+                    "Las baterías de litio proporcionan gran cantidad de energía en poco tiempo sin que su vida útil se reduzca excesivamente."
+                ],
+                correct: "Las baterías de plomo-ácido proporcionan gran cantidad de energía en poco tiempo sin que su vida útil se reduzca excesivamente."
+            },
+            {
+                qText: "Elige la respuesta correcta. La capacidad de las baterías depende entre otras cosas de:",
+                options: [
+                    "Ninguna de las respuestas es correcta.",
+                    "El tiempo que dura la descarga, descargas lentas dan lugar a capacidades menores.",
+                    "El tiempo que dura la descarga, descargas rápidas dan lugar a capacidades menores.",
+                    "El tiempo que dura la descarga, descargas rápidas dan lugar a capacidades mayores."
+                ],
+                correct: "El tiempo que dura la descarga, descargas rápidas dan lugar a capacidades menores."
+            },
+            {
+                qText: "Elige la respuesta correcta. Se debe alimentar una carga que consume 600Wh durante tres días, y se alimenta a 24V. Sabiendo que se tiene un tipo de batería que soporta un profundidad de descarga del 80%, de entre las siguientes se debe elegir una capacidad de:",
+                options: [
+                    "70 Ah",
+                    "100 Wh",
+                    "1800 Wh",
+                    "100 Ah"
+                ],
+                correct: "100 Ah"
+            },
+            {
+                qText: "Elige la respuesta correcta. Se debe configurar un banco de baterías de 36V, y se dispone de 6 baterías de 12V. ¿Cómo se procede?",
+                options: [
+                    "Se conectan dos bancos en serie de tres baterías en paralelo cada banco.",
+                    "Se conectan dos bancos en paralelo de tres baterías en serie cada banco.",
+                    "Se conecta un banco de tres baterías en paralelo y se almacenan las tres restantes.",
+                    "No es posible llevar a cabo la configuración descrita."
+                ],
+                correct: "Se conectan dos bancos en paralelo de tres baterías en serie cada banco."
+            },
+            {
+                qText: "Elige la respuesta correcta. Las baterías se construyen:",
+                options: [
+                    "Conectando en serie varias celdas metal-óxido, que contienen un electrolito en su interior.",
+                    "Ninguna de las respuestas en correcta.",
+                    "Conectando en configuración mixta varias celdas, que están inmersas en un vaso con un electrolito.",
+                    "Conectando en paralelo varias celdas, metal-óxido, que contienen un electrolito en su interior."
+                ],
+                correct: "Ninguna de las respuestas en correcta."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a las baterías:",
+                options: [
+                    "Las dos afirmaciones son correctas.",
+                    "Las baterías de níquel soportan bien las altas y bajas temperaturas.",
+                    "Ninguna de las dos afirmaciones es correcta.",
+                    "Las baterías de litio permiten almacenar mayor cantidad de energía en menor espacio que las de plomo-ácido."
+                ],
+                correct: "Las dos afirmaciones son correctas."
+            }
+        ],
+        CE3E: [
+            {
+                qText: "Elige la respuesta correcta. En referencia a los cargadores de baterías:",
+                options: [
+                    "Para seleccionar un cargador de baterías, es conveniente consultar la ficha técnica del cargador y saber qué tecnología emplean las baterías a cargar. Se selecciona siempre el cargador que proporciona más etapas de carga.",
+                    "Para seleccionar un cargador de baterías, es conveniente consultar la ficha técnica de las baterías y seleccionar el cargador atendiendo únicamente al tiempo de carga. Se selecciona siempre el cargador con tiempo de carga más reducido.",
+                    "Ninguna de las respuestas es correcta.",
+                    "Si se desea una etapa de ecualización en la carga de baterías, es conveniente consultar las fichas técnicas del cargador y de las baterías para seleccionar el cargador más apropiado."
+                ],
+                correct: "Si se desea una etapa de ecualización en la carga de baterías, es conveniente consultar las fichas técnicas del cargador y de las baterías para seleccionar el cargador más apropiado."
+            },
+            {
+                qText: "Elige la respuesta correcta. Existen rectificadores de varios tipos, entre otros:",
+                options: [
+                    "Se tiene los rectificadores compuestos por un puente de Graetz y dos fuentes de alimentación, o una fuente con doble salida; presentan pérdidas de voltaje debidas a la caída de tensión en un diodo.",
+                    "Todas las respuestas son correctas.",
+                    "Se tienen los rectificadores compuestos por dos diodos y dos fuentes de alimentación o una fuente con doble salida; presentan pérdidas de voltaje debidas a la caída de tensión en un diodo.",
+                    "Se tienen rectificadores compuestos por un diodo y dos fuentes de alimentación o una fuente con doble salida; presentan pérdidas de voltaje debidas a la caída de tensión en un diodo."
+                ],
+                correct: "Se tienen los rectificadores compuestos por dos diodos y dos fuentes de alimentación o una fuente con doble salida; presentan pérdidas de voltaje debidas a la caída de tensión en un diodo."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los sistemas de alimentación ininterrumpida:",
+                options: [
+                    "En todo caso disponen de baterías, además de un rectificador que permite llevar a cabo la carga de baterías, y de un oscilador para alimentar la carga.",
+                    "En todo caso disponen de un by-pass que permite alimentar las cargas desde la red eléctrica si la calidad del suministro eléctrico es la adecuada, y desconectar la red cuando la calidad del suministro no es la adecuada.",
+                    "En todo caso incluyen un sistema que analiza la señal de la red eléctrica y la modifica continuamente, para adaptarla a las necesidades de la carga que alimenta.",
+                    "Todas las respuestas son correctas."
+                ],
+                correct: "En todo caso disponen de baterías, además de un rectificador que permite llevar a cabo la carga de baterías, y de un oscilador para alimentar la carga."
+            },
+            {
+                qText: "Elige la respuesta correcta. Observa la siguiente imagen y elige la respuesta correcta. La siguiente imagen representa:",
+                imageType: "UPS",
+                options: [
+                    "Un SAI online",
+                    "Un SAI online de doble conversión",
+                    "Un SAI offline",
+                    "Ninguna de las respuestas es correcta."
+                ],
+                correct: "Un SAI online de doble conversión"
+            },
+            {
+                qText: "Elige la respuesta correcta. Normalmente la etapa final de que dispone un rectificador es:",
+                options: [
+                    "Un estabilizador de tensión, que se puede configurar con un diodo zéner conectado en directa.",
+                    "Un estabilizador de corriente, que se puede configurar con un diodo zéner conectado en inversa.",
+                    "Un estabilizador de tensión, que se puede configurar con un diodo zéner conectado en inversa.",
+                    "Un condensador que estabiliza la tensión a valores múltiplo de 0.7V."
+                ],
+                correct: "Un estabilizador de tensión, que se puede configurar con un diodo zéner conectado en inversa."
+            },
+            {
+                qText: "Elige la respuesta correcta.",
+                options: [
+                    "Un rectificador de media onda necesita el mismo condensador que un rectificador de onda completa para obtener la misma salida.",
+                    "Ninguna de las respuestas es correcta.",
+                    "Un rectificador de media onda necesita un condensador con menor capacidad que un rectificador de onda completa.",
+                    "Un rectificador de media onda necesita un condensador con mayor capacidad que un rectificador de onda completa."
+                ],
+                correct: "Un rectificador de media onda necesita un condensador con mayor capacidad que un rectificador de onda completa."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los cargadores de baterías:",
+                options: [
+                    "Disponen de un rectificador y todos llevan a cabo una fase de bulk en primer lugar.",
+                    "Disponen de un rectificador y todos llevan a cabo una fase de ecualización antes de empezar con la carga de las baterías.",
+                    "Disponen internamente de un SAI que gestiona la carga de baterías.",
+                    "Disponen de un rectificador y de forma general, llevan a cabo una fase de carga rápida inicial, absorción y flotación, en este orden."
+                ],
+                correct: "Disponen de un rectificador y de forma general, llevan a cabo una fase de carga rápida inicial, absorción y flotación, en este orden."
+            }
+        ],
+        CE3G: [
+            {
+                qText: "Elige la respuesta correcta. Las luminarias de emergencia deben tener un sistema de accionamiento con corte breve:",
+                options: [
+                    "Correcto, debe empezar a funcionar en menos de 5 segundos.",
+                    "Correcto, debe empezar a funcionar en menos de 0.5 segundos.",
+                    "Correcto, debe empezar a funcionar en menos de 0.05 segundos.",
+                    "Correcto, debe empezar a funcionar en menos de 1 segundo."
+                ],
+                correct: "Correcto, debe empezar a funcionar en menos de 0.5 segundos."
+            },
+            {
+                qText: "Elige la respuesta correcta. El alumbrado de zonas de alto riesgo:",
+                options: [
+                    "Debe proporcionar un nivel de iluminación de 5 lux para terminar trabajos esenciales de una planta.",
+                    "Debe proporcionar un nivel de iluminación adecuado para terminar trabajos esenciales de una planta (al menos un 10% de la iluminación normal de la zona ó 15 lux).",
+                    "Debe proporcionar un nivel de iluminación igual que el normal de la zona, para terminar trabajos esenciales de una planta.",
+                    "Debe proporcionar un nivel de iluminación de 10 lux para terminar trabajos esenciales de una planta."
+                ],
+                correct: "Debe proporcionar un nivel de iluminación adecuado para terminar trabajos esenciales de una planta (al menos un 10% de la iluminación normal de la zona ó 15 lux)."
+            },
+            {
+                qText: "Elige la respuesta correcta. El alumbrado de emergencia se clasifica en:",
+                options: [
+                    "Alumbrado de seguridad y de zonas de alto riesgo.",
+                    "Alumbrado de evacuación, antipánico y de zonas de alto riesgo.",
+                    "Alumbrado de seguridad y alumbrado de evacuación.",
+                    "Ninguna de las respuestas es correcta."
+                ],
+                correct: "Ninguna de las respuestas es correcta."
+            },
+            {
+                qText: "Elige la respuesta correcta. En relación con el alumbrado de emergencia:",
+                options: [
+                    "El telemando facilita el mantenimiento de la instalación de alumbrado de emergencia.",
+                    "El telemando indica qué luminarias se deben reparar mediante un código que aparece en una pantalla.",
+                    "El telemando es un equipo que permite gestionar todas las luminarias del alumbrado de emergencia.",
+                    "Todas las respuestas son correctas."
+                ],
+                correct: "Todas las respuestas son correctas."
+            },
+            {
+                qText: "Elige la respuesta correcta. El alumbrado antipánico:",
+                options: [
+                    "Es especialmente importante en zonas con equipos de control para emergencias.",
+                    "Debe proporcionar una autonomía de 2 horas.",
+                    "Ninguna de las respuestas es correcta.",
+                    "Debe proporcionar un nivel de iluminación de 1lux en los recorridos de evacuación."
+                ],
+                correct: "Ninguna de las respuestas es correcta."
+            },
+            {
+                qText: "Elige la respuesta correcta. El alumbrado de evacuación:",
+                options: [
+                    "Debe proporcionar un nivel de iluminación de 1 lux en los recorridos de evacuación.",
+                    "Todas las respuestas son correctas.",
+                    "Debe proporcionar un nivel de iluminación de 5 lux en zonas con equipos de control para emergencias.",
+                    "Debe proporcionar una autonomía de 1 hora."
+                ],
+                correct: "Todas las respuestas son correctas."
+            },
+            {
+                qText: "Elige la respuesta correcta. Las luminarias de emergencia pueden ser de varios tipos entre otros:",
+                options: [
+                    "Todas las respuestas son correctas.",
+                    "De alumbrado combinado que emplea varias lámparas que funcionan a la vez cuando hay suministro eléctrico, y al menos una sola lámpara de las anteriores cuando hay fallo de red.",
+                    "De alumbrado combinado que emplea varias lámparas que funcionan a la vez cuando hay suministro eléctrico, y al menos una sola lámpara distinta de las anteriores cuando hay fallo de red.",
+                    "De alumbrado permanente, que funcionan de manera continua cuando hay suministro eléctrico y cuando hay fallo de red."
+                ],
+                correct: "Todas las respuestas son correctas."
+            }
+        ],
+        CE4A: [
+            {
+                qText: "Elige la respuesta correcta. Los variadores de frecuencia:",
+                options: [
+                    "Todas las respuestas son correctas",
+                    "Son equipos que se han vuelto populares desde hace unos 20 años, debido al desarrollo y mejora de ciertos elementos de electrónica de potencia.",
+                    "Son equipos no imprescindibles, pero si recomendables cuando se emplean motores eléctricos de inducción.",
+                    "Permiten gestionar de modo flexible el arranque, la parada y el funcionamiento general de un motor eléctrico de inducción."
+                ],
+                correct: "Todas las respuestas son correctas"
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los variadores de frecuencia:",
+                options: [
+                    "Todos disponen de convertidor CC-CC",
+                    "Nunca disponen de convertidores CC-CC, sino de onduladores CA-CC.",
+                    "Disponen de convertidor CC-CC únicamente los variadores con rectificador controlado",
+                    "Disponen de convertidor CC-CC únicamente los variadores sin rectificador controlado"
+                ],
+                correct: "Disponen de convertidor CC-CC únicamente los variadores sin rectificador controlado"
+            },
+            {
+                qText: "Elige la respuesta correcta. El variador de frecuencia:",
+                options: [
+                    "Puede tener un circuito intermedio que estabiliza la señal CC rectificada.",
+                    "En todo caso, internamente dispone de bobinas en el circuito intermedio para estabilizar la corriente.",
+                    "Todas las respuestas son correctas.",
+                    "En todo caso, internamente dispone de condensadores en el circuito intermedio para estabilizar la tensión."
+                ],
+                correct: "Puede tener un circuito intermedio que estabiliza la señal CC rectificada."
+            },
+            {
+                qText: "Elige la respuesta correcta. El procedimiento de uso de un variador de frecuencia se resumen en:",
+                options: [
+                    "Restaurar el variador a valores de fábrica, definir en el variador los parámetros del motor a emplear, elegir y configurar la macro deseada, y proceder al arranque.",
+                    "Definir en el variador los parámetros del motor a emplear, elegir y configurar la macro deseada, y proceder al arranque.",
+                    "Ninguna de las respuestas es correcta.",
+                    "Restaurar el variador a valores de fábrica, elegir y configurar la macro deseada, definir en el variador los parámetros del motor a emplear y proceder al arranque."
+                ],
+                correct: "Restaurar el variador a valores de fábrica, definir en el variador los parámetros del motor a emplear, elegir y configurar la macro deseada, y proceder al arranque."
+            },
+            {
+                qText: "Elige la respuesta correcta. El variador de frecuencia:",
+                options: [
+                    "El variador de frecuencia es un dispositivo muy parecido al arrancador suave, pero el primero permite modificar la frecuencia y el voltaje de salida, y el segundo sólo la frecuencia de salida.",
+                    "Es un dispositivo que ajusta el valor de tensión de salida elevándolo progresivamente a la vez que eleva la frecuencia.",
+                    "Es un dispositivo más fácil de programar que el arrancador suave.",
+                    "Es un dispositivo que ajusta el valor de frecuencia de salida elevándola progresivamente mientras mantiene la tensión eficaz senoidal fija."
+                ],
+                correct: "Es un dispositivo que ajusta el valor de tensión de salida elevándolo progresivamente a la vez que eleva la frecuencia."
+            },
+            {
+                qText: "Elige la respuesta correcta. El variador de frecuencia básicamente:",
+                options: [
+                    "Toma la corriente alterna de la red eléctrica y la transforma en corriente continua a través de transistores de distinta naturaleza, para posteriormente pasar la corriente continua a corriente alterna a través de puentes de diodos, y cuya frecuencia de salida es variable.",
+                    "Incorporan un circuito de control pero no de regulación, y nunca disponen interfaz o pantalla para el diálogo hombre-máquina.",
+                    "Todas las respuestas son correctas.",
+                    "Toma la corriente alterna de la red eléctrica y la transforma en corriente continua a través de un rectificador, para posteriormente pasar la corriente continua a corriente alterna a través de un inversor cuya frecuencia y voltaje de salida son variables."
+                ],
+                correct: "Toma la corriente alterna de la red eléctrica y la transforma en corriente continua a través de un rectificador, para posteriormente pasar la corriente continua a corriente alterna a través de un inversor cuya frecuencia y voltaje de salida son variables."
+            },
+            {
+                qText: "Elige la respuesta correcta. Entre los variadores de frecuencia que se pueden encontrar en el mercado existen:",
+                options: [
+                    "Todas las respuestas son correctas.",
+                    "Variadores con entrada trifásica y salida monofásica.",
+                    "Variadores con entrada monofásica y salida monofásica.",
+                    "Variadores con entrada monofásica y salida trifásica."
+                ],
+                correct: "Variadores con entrada monofásica y salida trifásica."
+            }
+        ],
+        CE4D: [
+            {
+                qText: "Elige la respuesta correcta. Normalmente cuando un parque eólico dispone de un sistema SCADA es posible:",
+                options: [
+                    "El SCADA es un sistema físico, tangible, no es un sistema de comunicación.",
+                    "Obtener información de los equipos instalados en un aerogenerador (veletas, anemómetros...).",
+                    "Obtener información de cada aerogenerador a través del SCADA.",
+                    "Controlar el funcionamiento de cada aerogenerador de manera independiente desde el SCADA."
+                ],
+                correct: "Obtener información de cada aerogenerador a través del SCADA."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los autómatas:",
+                options: [
+                    "Siempre incluyen una fuente de alimentación externa.",
+                    "Internamente trabajan en corriente continua pero se pueden alimentar en corriente alterna y en ese caso necesitan de una fuente de alimentación (interna o externa).",
+                    "Siempre incluyen una fuente de alimentación interna.",
+                    "Internamente trabajan en corriente alterna pero se pueden alimentar en corriente continua y en ese caso necesitan una fuente de alimentación externa."
+                ],
+                correct: "Internamente trabajan en corriente continua pero se pueden alimentar en corriente alterna y en ese caso necesitan de una fuente de alimentación (interna o externa)."
+            },
+            {
+                qText: "Elige la respuesta correcta. La siguiente imagen, muestra un autómata programable:",
+                imageType: "PLC",
+                options: [
+                    "Compacto",
+                    "Modular",
+                    "Semicompacto",
+                    "Ninguna de las respuestas es correcta"
+                ],
+                correct: "Modular"
+            },
+            {
+                qText: "Elige la respuesta correcta. Los autómatas compactos:",
+                options: [
+                    "Ninguna de las respuestas es correcta.",
+                    "En algunos casos permiten ampliaciones, pudiendo aumentar el número de salidas en la cantidad se desee.",
+                    "En algunos casos permiten ampliaciones, pudiendo aumentar el número de entradas digitales en la cantidad se desee.",
+                    "No son ampliables en la mayoría de los casos."
+                ],
+                correct: "Ninguna de las respuestas es correcta."
+            },
+            {
+                qText: "Elige la respuesta correcta. El autómata programable LOGO de serie dispone en todo caso de:",
+                options: [
+                    "Entradas y salidas analógicas y digitales.",
+                    "Ninguna de las respuestas es correcta.",
+                    "Entradas y salidas digitales.",
+                    "Entradas y salidas analógicas."
+                ],
+                correct: "Entradas y salidas digitales."
+            },
+            {
+                qText: "Elige la respuesta correcta. Un sistema SCADA:",
+                options: [
+                    "Ninguna de las respuestas es correcta.",
+                    "Es un sistema de intercambio de información sobre un proceso automatizado.",
+                    "Es un sistema que permite programar un autómata.",
+                    "Forma parte del hardware de un proceso automatizado."
+                ],
+                correct: "Es un sistema de intercambio de información sobre un proceso automatizado."
+            },
+            {
+                qText: "Elige la respuesta correcta.",
+                options: [
+                    "Todos los sistemas que incluyen un autómata programable, son sistemas con regulación.",
+                    "Un sistema regulado es más robusto frente a interferencias externas, y normalmente incluye un autómata.",
+                    "Ninguna de las respuestas es correcta.",
+                    "Ninguno de los sistemas que incluyen un autómata programable, son sistemas con regulación."
+                ],
+                correct: "Un sistema regulado es más robusto frente a interferencias externas, y normalmente incluye un autómata."
+            },
+            {
+                qText: "Elige la respuesta correcta. En un sistema automatizado una interfaz:",
+                options: [
+                    "Se aplica al bornero de entradas y al bornero de salidas.",
+                    "Todas las respuestas son correctas.",
+                    "Es una conexión para intercambio de datos.",
+                    "Puede ser un periférico de salida (una pantalla de visualización de datos)."
+                ],
+                correct: "Todas las respuestas son correctas."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los sensores:",
+                options: [
+                    "Los sensores activos se pueden alimentar desde una fuente de alimentación externa al autómata cuando trabajan a distinta tensión.",
+                    "Los sensores pasivos se pueden alimentar directamente desde el autómata en todo caso, aunque la tensión nominal sea diferente.",
+                    "Los sensores activos se pueden alimentar desde la fuente de alimentación interna al autómata, solamente cuando trabajan a distinta tensión.",
+                    "Los sensores activos se pueden alimentar directamente desde el autómata en cualquier caso si trabajan a la misma tensión (no se debe tener en cuenta nada más que la tensión)."
+                ],
+                correct: "Los sensores activos se pueden alimentar desde una fuente de alimentación externa al autómata cuando trabajan a distinta tensión."
+            },
+            {
+                qText: "Elige la respuesta correcta. Los autómatas programables modulares:",
+                options: [
+                    "Normalmente incluyen una pantalla.",
+                    "Ninguna de las respuestas es correcta.",
+                    "Pueden disponer de entradas, salidas y conexiones a red en distintos encapsulados.",
+                    "Disponen de teclados."
+                ],
+                correct: "Pueden disponer de entradas, salidas y conexiones a red en distintos encapsulados."
+            }
+        ],
+        CE4E: [
+            {
+                qText: "Elige la respuesta correcta. Las pantallas y los paneles de operación:",
+                options: [
+                    "Pueden representar información gráfica sobre cada elemento del sistema. Se llaman visualizadores.",
+                    "Pueden representar información textual, y entonces mostrarán mensajes de texto. Se llaman paneles de operación.",
+                    "Los paneles de operación son más intuitivos que los visualizadores para su utilización.",
+                    "Todas las respuestas son correctas"
+                ],
+                correct: "Los paneles de operación son más intuitivos que los visualizadores para su utilización."
+            },
+            {
+                qText: "Elige la respuesta correcta. Los paneles de operación son periféricos que:",
+                options: [
+                    "Se utilizan para modificar parámetros del sistema y obtener mensajes de alarmas, visualizar el estado del proceso, modificar entradas y salidas, y para programar el autómata",
+                    "Se utilizan únicamente para modificar parámetros del sistema y obtener mensajes de alarmas.",
+                    "Se utilizan únicamente para modificar parámetros del sistema.",
+                    "Se utilizan para modificar parámetros del sistema y obtener mensajes de alarmas, visualizar el estado del proceso y modificar entradas y salidas."
+                ],
+                correct: "Se utilizan para modificar parámetros del sistema y obtener mensajes de alarmas, visualizar el estado del proceso y modificar entradas y salidas."
+            },
+            {
+                qText: "Elige la respuesta correcta. Algunos ejemplos de periféricos de un sistema automatizado pueden ser:",
+                options: [
+                    "Los sensores, actuadores y la propia red eléctrica.",
+                    "La interfaz de entradas, la interfaz de salidas y la propia red eléctrica se pueden considerar periféricos.",
+                    "Impresoras, tarjetas de memoria, paneles de operación...",
+                    "Ninguna de las puestas es correcta."
+                ],
+                correct: "Impresoras, tarjetas de memoria, paneles de operación..."
+            },
+            {
+                qText: "Elige la respuesta correcta. La siguiente imagen se corresponde con:",
+                imageType: "CONSOLE",
+                options: [
+                    "Un PLC",
+                    "Un panel de operación",
+                    "Ninguna de las puestas es correcta.",
+                    "Un terminal de programación"
+                ],
+                correct: "Un terminal de programación"
+            },
+            {
+                qText: "Elige la respuesta correcta. En la siguiente imagen se observa:",
+                imageType: "TOUCH",
+                options: [
+                    "Un panel de operación",
+                    "Un PLC",
+                    "Ninguna de las puestas es correcta.",
+                    "Un terminal de programación"
+                ],
+                correct: "Un panel de operación"
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los periféricos:",
+                options: [
+                    "Son equipos que se pueden conectar al autómata directamente, a la interfaz de entrada.",
+                    "Son equipos que se pueden conectar al autómata directamente, a la interfaz de salida.",
+                    "Son equipos que se pueden conectar al autómata directamente cuando se tiene un autómata compacto, de forma interna sobre una placa base, porque están bajo el mismo encapsulado.",
+                    "Son equipos que se pueden conectar al autómata a través de una red de datos o de manera directa a través de su propia interfaz de comunicación."
+                ],
+                correct: "Son equipos que se pueden conectar al autómata a través de una red de datos o de manera directa a través de su propia interfaz de comunicación."
+            },
+            {
+                qText: "Elige la respuesta correcta. Las consolas de programación portátiles o terminales de programación:",
+                options: [
+                    "Con el paso del tiempo han caído en desuso y en la actualidad se emplean únicamente para programar autómatas antiguos.",
+                    "Son específicos para cada autómata, es decir, una consola permite programar sólo un modelo de autómata de un fabricante concreto.",
+                    "Todas las respuestas con correctas.",
+                    "Son un periférico que permite programar un autómata."
+                ],
+                correct: "Todas las respuestas con correctas."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los equipos que se emplean para automatización:",
+                options: [
+                    "Los autómatas deben estar diseñados para soportar las condiciones de operación más duras del entorno, por ser el elemento más importante del sistema.",
+                    "Ninguna de las respuestas es totalmente correcta. Es conveniente estudiar cada caso de manera particular y elegir autómata y periféricos adecuados al entorno en que se instalan, porque puede ocurrir que autómata y periféricos se instalen en distintos entornos.",
+                    "Los periféricos deben estar diseñados para soportar las condiciones de operación más duras del entorno, por encontrarse justo donde se realizan los procesos.",
+                    "En todo caso, tanto los autómatas como los periféricos se encuentran encerrados en cuadros eléctricos, por lo tanto es el cuadro que los alberga quien debe soportar las condiciones de trabajo más duras."
+                ],
+                correct: "Ninguna de las respuestas es totalmente correcta. Es conveniente estudiar cada caso de manera particular y elegir autómata y periféricos adecuados al entorno en que se instalan, porque puede ocurrir que autómata y periféricos se instalen en distintos entornos."
+            },
+            {
+                qText: "Elige la respuesta correcta. En referencia a los periféricos:",
+                options: [
+                    "Ninguna de las respuestas es correcta.",
+                    "Son parte del autómata y de hecho cuando se trata de autómatas compactos, bajo el mismo encapsulado, se encuentran periféricos y autómata.",
+                    "Son parte del sistema automatizado, pero no del autómata, y sólo se utilizan con autómatas semicompactos y modulares.",
+                    "Son parte del autómata, pero sólo se utilizan con autómatas modulares, y por lo tanto autómata y periféricos, se encuentran bajo distintos encapsulados."
+                ],
+                correct: "Ninguna de las respuestas es correcta."
+            },
+            {
+                qText: "Elige la respuesta correcta. En caso de ser necesaria una ampliación de un sistema automatizado que ya dispone de un autómata:",
+                options: [
+                    "Una posible solución sería ampliar el sistema con un autómata nuevo de similares características al existente, conectado en bus o en red al autómata existente. Esta solución podría ser más rápida de implementar y económica.",
+                    "No es posible ampliar un sistema automatizado bajo ningún concepto, y siempre se debe diseñar un sistema nuevo.",
+                    "Una posible solución sería emplear un autómata nuevo con mayor capacidad. Esta solución es la más económica en todo caso.",
+                    "Es conveniente emplear un sistema de automatización cableado para la ampliación."
+                ],
+                correct: "Una posible solución sería ampliar el sistema con un autómata nuevo de similares características al existente, conectado en bus o en red al autómata existente. Esta solución podría ser más rápida de implementar y económica."
+            }
+        ]
+    };
+
+    // Estado del Quiz
+    const quizState = {
+        activeBlock: 'CE3A',
+        blocks: {}
+    };
+
+    // Función de barajado (Algoritmo Fisher-Yates)
+    function shuffleArray(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // Inicializar datos mezclados de manera segura para cada bloque
+    function initializeBlocks() {
+        for (const blockKey in originalDatabase) {
+            // Mezclamos las preguntas del bloque
+            const shuffledQs = shuffleArray(originalDatabase[blockKey]).map((q, idx) => {
+                return {
+                    id: `${blockKey}_q_${idx}`,
+                    qText: q.qText,
+                    imageType: q.imageType || null,
+                    // Mezclamos las opciones
+                    options: shuffleArray(q.options),
+                    correct: q.correct
+                };
+            });
+
+            quizState.blocks[blockKey] = {
+                questions: shuffledQs,
+                answers: {}, // Guardar las respuestas del usuario { questionId: selectedOptionText }
+                submitted: false,
+                score: null
+            };
+        }
+    }
+
+    // Renderizar SVGs dinámicos para preguntas que contienen diagramas
+    function getSVGContent(type) {
+        if (type === 'UPS') {
+            return `
+            <svg viewBox="0 0 500 200" width="100%" height="auto" style="max-width: 500px; display: block; margin: 0 auto; border: 1px solid #ccc; background: #fff;">
+              <rect x="100" y="60" width="85" height="50" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+              <text x="142" y="80" dominant-baseline="middle" text-anchor="middle" font-size="10" font-family="sans-serif">Rectificador</text>
+              <text x="142" y="100" dominant-baseline="middle" text-anchor="middle" font-size="14" font-family="sans-serif">∿/⎓</text>
+
+              <rect x="100" y="140" width="85" height="30" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+              <text x="142" y="160" dominant-baseline="middle" text-anchor="middle" font-size="10" font-family="sans-serif">Baterías</text>
+
+              <rect x="235" y="60" width="60" height="50" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+              <text x="265" y="85" dominant-baseline="middle" text-anchor="middle" font-size="10" font-family="sans-serif">Bypass</text>
+
+              <rect x="340" y="60" width="85" height="50" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+              <text x="382" y="80" dominant-baseline="middle" text-anchor="middle" font-size="10" font-family="sans-serif">Estabilizador</text>
+              <text x="382" y="100" dominant-baseline="middle" text-anchor="middle" font-size="14" font-family="sans-serif">∿</text>
+
+              <path d="M 20 85 L 100 85" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+              <text x="60" y="70" text-anchor="middle" font-size="10" font-family="sans-serif">Entrada CA Red</text>
+
+              <path d="M 185 85 L 235 85" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+              <path d="M 142 110 L 142 140" fill="none" stroke="#333" stroke-width="2"/>
+              <path d="M 295 85 L 340 85" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+              <path d="M 425 85 L 480 85" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+              <text x="455" y="70" text-anchor="middle" font-size="10" font-family="sans-serif">Salida CA</text>
+
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+                </marker>
+              </defs>
+            </svg>`;
+        }
+        if (type === 'PLC') {
+            return `
+            <svg viewBox="0 0 400 150" width="100%" height="auto" style="max-width: 400px; display: block; margin: 0 auto; border: 1px solid #ccc; background: #fafafa;">
+              <rect x="10" y="10" width="380" height="130" rx="5" fill="#e0e0e0" stroke="#bbb" stroke-width="2"/>
+              <rect x="20" y="20" width="60" height="110" rx="3" fill="#003366" stroke="#001a33" stroke-width="2"/>
+              <text x="50" y="75" fill="#fff" text-anchor="middle" font-size="10" font-family="sans-serif">PS</text>
+              <rect x="85" y="20" width="70" height="110" rx="3" fill="#003366" stroke="#001a33" stroke-width="2"/>
+              <rect x="95" y="30" width="50" height="30" fill="#222"/>
+              <text x="120" y="48" fill="#0f0" text-anchor="middle" font-size="10" font-family="monospace">RUN</text>
+              <text x="120" y="100" fill="#fff" text-anchor="middle" font-size="10" font-family="sans-serif">CPU</text>
+              <rect x="160" y="20" width="40" height="110" rx="3" fill="#444" stroke="#222" stroke-width="2"/>
+              <text x="180" y="75" fill="#fff" text-anchor="middle" font-size="8" font-family="sans-serif">DI</text>
+              <rect x="205" y="20" width="40" height="110" rx="3" fill="#444" stroke="#222" stroke-width="2"/>
+              <text x="225" y="75" fill="#fff" text-anchor="middle" font-size="8" font-family="sans-serif">DO</text>
+              <rect x="250" y="20" width="40" height="110" rx="3" fill="#444" stroke="#222" stroke-width="2"/>
+              <text x="270" y="75" fill="#fff" text-anchor="middle" font-size="8" font-family="sans-serif">AI</text>
+              <rect x="295" y="20" width="40" height="110" rx="3" fill="#444" stroke="#222" stroke-width="2"/>
+              <text x="315" y="75" fill="#fff" text-anchor="middle" font-size="8" font-family="sans-serif">AO</text>
+            </svg>`;
+        }
+        if (type === 'CONSOLE') {
+            return `
+            <svg viewBox="0 0 200 250" width="100%" height="auto" style="max-width: 180px; display: block; margin: 0 auto; background: transparent;">
+              <rect x="30" y="10" width="140" height="230" rx="15" fill="#757575" stroke="#424242" stroke-width="3"/>
+              <rect x="45" y="25" width="110" height="60" rx="5" fill="#aed581" stroke="#558b2f" stroke-width="2"/>
+              <text x="55" y="45" font-family="monospace" font-size="9" fill="#1b5e20">> PROGRAM MODE</text>
+              <text x="55" y="60" font-family="monospace" font-size="9" fill="#1b5e20">> ADDR: 0001</text>
+              <text x="55" y="75" font-family="monospace" font-size="9" fill="#1b5e20">> LD  I0.0</text>
+              <g fill="#424242" stroke="#212121">
+                <rect x="45" y="105" width="22" height="15" rx="3" fill="#e0e0e0"/>
+                <rect x="73" y="105" width="22" height="15" rx="3" fill="#e0e0e0"/>
+                <rect x="101" y="105" width="22" height="15" rx="3" fill="#e0e0e0"/>
+                <rect x="129" y="105" width="22" height="15" rx="3" fill="#d32f2f"/>
+                <rect x="45" y="128" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="73" y="128" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="101" y="128" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="129" y="128" width="22" height="15" rx="3" fill="#1565c0"/>
+                <rect x="45" y="151" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="73" y="151" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="101" y="151" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="129" y="151" width="22" height="15" rx="3" fill="#1565c0"/>
+                <rect x="45" y="174" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="73" y="174" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="101" y="174" width="22" height="15" rx="3" fill="#fff"/>
+                <rect x="129" y="174" width="22" height="15" rx="3" fill="#2e7d32"/>
+              </g>
+            </svg>`;
+        }
+        if (type === 'TOUCH') {
+            return `
+            <svg viewBox="0 0 250 180" width="100%" height="auto" style="max-width: 200px; display: block; margin: 0 auto; background: transparent;">
+              <rect x="10" y="10" width="230" height="160" rx="8" fill="#37474f" stroke="#212121" stroke-width="4"/>
+              <rect x="25" y="25" width="200" height="130" rx="2" fill="#000" stroke="#000" stroke-width="2"/>
+              <rect x="30" y="30" width="190" height="120" fill="#006064"/>
+              <text x="35" y="45" fill="#fff" font-family="sans-serif" font-size="10" font-weight="bold">PANEL DE CONTROL</text>
+              <rect x="45" y="65" width="40" height="65" fill="#00acc1" stroke="#fff"/>
+              <rect x="45" y="90" width="40" height="40" fill="#00e5ff"/>
+              <text x="65" y="105" fill="#000" font-family="sans-serif" font-size="8" text-anchor="middle">62%</text>
+              <circle cx="130" cy="75" r="10" fill="#d32f2f" stroke="#fff"/>
+              <text x="130" y="95" fill="#fff" font-family="sans-serif" font-size="8" text-anchor="middle">PARADA</text>
+              <circle cx="175" cy="75" r="10" fill="#388e3c" stroke="#fff"/>
+              <text x="175" y="95" fill="#fff" font-family="sans-serif" font-size="8" text-anchor="middle">MARCHA</text>
+              <text x="210" y="140" fill="#ffeb3b" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="bold">TOUCH</text>
+            </svg>`;
+        }
+        return '';
+    }
+
+    // Dibujar bloque activo
+    function renderActiveBlock() {
+        const activeKey = quizState.activeBlock;
+        const blockData = quizState.blocks[activeKey];
+        const container = document.getElementById('questions-container');
+        container.innerHTML = '';
+
+        // Título dinámico según rango de bloques
+        let mainTitle = "";
+        const u4Blocks = ['CE3A', 'CE3D', 'CE3E', 'CE3G', 'CE4A'];
+        
+        if (u4Blocks.includes(activeKey)) {
+            mainTitle = "EXAMEN UNIDAD 4: CONTROL DE EQUIPAMIENTO ELÉCTRICO Y ELECTRÓNICO";
+        } else {
+            mainTitle = "EXAMEN UNIDAD 5. AUTOMATISMOS PROGRAMABLES";
+        }
+
+        document.getElementById('block-banner-title').textContent = `${mainTitle} - Bloque ${activeKey}`;
+
+        // Renderizar banner de nota si ya está enviado
+        const scoreArea = document.getElementById('score-display-area');
+        if (blockData.submitted) {
+            scoreArea.innerHTML = `<div class="score-banner">Calificación final de este bloque: ${blockData.score.toFixed(2)} de 10,00</div>`;
+            document.getElementById('submit-btn').style.display = 'none';
+        } else {
+            scoreArea.innerHTML = '';
+            document.getElementById('submit-btn').style.display = 'block';
+        }
+
+        blockData.questions.forEach((q, index) => {
+            const isAnswered = blockData.answers[q.id] !== undefined;
+            const selectedAnswer = blockData.answers[q.id];
+            const qNum = index + 1;
+
+            const queDiv = document.createElement('div');
+            queDiv.className = 'que';
+            queDiv.id = `q-element-${q.id}`;
+
+            // Columna de información
+            let stateText = isAnswered ? "Respuesta guardada" : "Sin responder aún";
+            let pointsText = "Puntúa como 1,00";
+            if (blockData.submitted) {
+                const isCorrect = selectedAnswer === q.correct;
+                stateText = isCorrect ? "Respuesta correcta" : "Respuesta incorrecta";
+                if (!isAnswered) stateText = "No respondida";
+            }
+
+            const infoHtml = `
+                <div class="info">
+                    <div class="qno">Pregunta ${qNum}</div>
+                    <div class="state">${stateText}</div>
+                    <div class="grade-info">${pointsText}</div>
+                </div>
+            `;
+
+            // Contenedor de la pregunta y opciones
+            let imageHtml = q.imageType ? `<div class="image-container">${getSVGContent(q.imageType)}</div>` : '';
+
+            let optionsHtml = '';
+            q.options.forEach((opt, optIdx) => {
+                const letter = String.fromCharCode(97 + optIdx); // a, b, c, d
+                const isSelected = selectedAnswer === opt;
+                const isDisabled = blockData.submitted ? 'disabled' : '';
+                
+                let optClass = 'option-item';
+                if (blockData.submitted) {
+                    if (opt === q.correct) {
+                        optClass += ' correct-bg';
+                    } else if (isSelected && opt !== q.correct) {
+                        optClass += ' incorrect-bg';
+                    }
+                }
+
+                optionsHtml += `
+                    <label class="${optClass}">
+                        <input type="radio" name="input_${q.id}" value="${opt.replace(/"/g, '&quot;')}" 
+                               onchange="saveAnswer('${q.id}', this.value)" ${isSelected ? 'checked' : ''} ${isDisabled}>
+                        <span>${letter}. ${opt}</span>
+                    </label>
+                `;
+            });
+
+            let feedbackHtml = '';
+            if (blockData.submitted) {
+                if (selectedAnswer === q.correct) {
+                    feedbackHtml = `<div class="feedback-box correct">✓ ¡Respuesta correcta!</div>`;
+                } else {
+                    feedbackHtml = `
+                        <div class="feedback-box incorrect">
+                            ✗ Respuesta incorrecta.<br>
+                            <span style="font-weight: normal;">La respuesta correcta es: <strong>${q.correct}</strong></span>
+                        </div>`;
+                }
+            }
+
+            const contentHtml = `
+                <div class="content">
+                    <div class="qtext">${q.qText}</div>
+                    ${imageHtml}
+                    <div class="ablock">
+                        <div class="answer">${optionsHtml}</div>
+                    </div>
+                    ${feedbackHtml}
+                </div>
+            `;
+
+            queDiv.innerHTML = infoHtml + contentHtml;
+            container.appendChild(queDiv);
+        });
+
+        renderNavigation();
+    }
+
+    // Renderizar la barra de navegación lateral Moodle
+    function renderNavigation() {
+        const activeKey = quizState.activeBlock;
+        const blockData = quizState.blocks[activeKey];
+        const grid = document.getElementById('nav-grid');
+        grid.innerHTML = '';
+
+        blockData.questions.forEach((q, index) => {
+            const qNum = index + 1;
+            const btn = document.createElement('div');
+            btn.className = 'nav-item';
+            btn.textContent = qNum;
+
+            const isAnswered = blockData.answers[q.id] !== undefined;
+
+            if (blockData.submitted) {
+                const isCorrect = blockData.answers[q.id] === q.correct;
+                if (isAnswered && isCorrect) {
+                    btn.classList.add('correct');
+                } else if (isAnswered && !isCorrect) {
+                    btn.classList.add('incorrect');
+                } else {
+                    btn.classList.add('incorrect'); // Sin responder se considera incorrecto al enviar
+                }
+            } else if (isAnswered) {
+                btn.classList.add('answered');
+            }
+
+            btn.onclick = () => {
+                const el = document.getElementById(`q-element-${q.id}`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            };
+
+            grid.appendChild(btn);
+        });
+    }
+
+    // Guardar respuesta provisional en el estado local del cliente
+    function saveAnswer(qId, val) {
+        const activeKey = quizState.activeBlock;
+        quizState.blocks[activeKey].answers[qId] = val;
+        renderNavigation();
+        
+        // Actualizar etiqueta de estado de respuesta rápida del DOM
+        const qElem = document.getElementById(`q-element-${qId}`);
+        if (qElem) {
+            const stateDiv = qElem.querySelector('.info .state');
+            if (stateDiv) stateDiv.textContent = "Respuesta guardada";
+        }
+    }
+
+    // Cambiar entre los distintos bloques del examen
+    function switchBlock(blockKey) {
+        // Guardar estado visual activo de botones superiores
+        const buttons = document.querySelectorAll('.btn-block');
+        buttons.forEach(btn => {
+            if (btn.textContent === blockKey) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        quizState.activeBlock = blockKey;
+        renderActiveBlock();
+    }
+
+    // Calcular nota del bloque y corregir
+    function submitActiveBlock() {
+        const activeKey = quizState.activeBlock;
+        const blockData = quizState.blocks[activeKey];
+
+        if (blockData.submitted) return;
+
+        let correctCount = 0;
+        blockData.questions.forEach(q => {
+            const userAns = blockData.answers[q.id];
+            if (userAns !== undefined && userAns === q.correct) {
+                correctCount++;
+            }
+        });
+
+        // Nota escalada del 0 al 10 según respuestas acertadas
+        const finalScore = (correctCount / blockData.questions.length) * 10;
+        
+        blockData.score = finalScore;
+        blockData.submitted = true;
+
+        renderActiveBlock();
+    }
+
+    // Simular un temporizador de Moodle que desciende paulatinamente (20 minutos)
+    function startTimer() {
+        let seconds = 20 * 60; // Establecido en 20 minutos
+        const timerLabel = document.getElementById('timer');
+        
+        const interval = setInterval(() => {
+            seconds--;
+            if (seconds <= 0) {
+                clearInterval(interval);
+                timerLabel.textContent = "¡Tiempo agotado!";
+                return;
+            }
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            timerLabel.textContent = `${hrs}:${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }, 1000);
+    }
+
+    // Ejecutar al iniciar página
+    window.onload = () => {
+        initializeBlocks();
+        renderActiveBlock();
+        startTimer();
+    };
+</script>
+
+</body>
+</html>
